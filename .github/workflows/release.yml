@@ -17,7 +17,7 @@ jobs:
           - macos-14           # macOS arm64 (Apple Silicon)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: pypa/cibuildwheel@v2.19
         env:
@@ -26,7 +26,7 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64
           CIBW_TEST_COMMAND: "python -c \"import fastphylo; print(fastphylo.__version__)\""
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cibw-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
@@ -35,12 +35,12 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - run: pip install build && python -m build --sdist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
@@ -53,7 +53,7 @@ jobs:
     permissions:
       id-token: write   # required for Trusted Publishing (OIDC)
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: cibw-*
           path: dist
