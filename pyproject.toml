@@ -24,8 +24,5 @@ align = ["pyfamsa>=0.6.0"]
 wheel.packages = ["src/fastphylo"]
 cmake.build-type = "Release"
 
-[tool.scikit-build.cmake.define]
-CMAKE_OSX_ARCHITECTURES = "arm64"
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
