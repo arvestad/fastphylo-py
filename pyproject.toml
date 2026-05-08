@@ -1,0 +1,31 @@
+[build-system]
+requires = ["scikit-build-core>=0.9", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "fastphylo"
+version = "0.1.0"
+description = "Molecular sequence analysis with fast C++ backends"
+requires-python = ">=3.12"
+license = {text = "GNU General Public License v3 (GPLv3)"}
+classifiers = [
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+readme = "README.md"
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+align = ["pyfamsa>=0.6.0"]
+
+[tool.scikit-build]
+wheel.packages = ["src/fastphylo"]
+cmake.build-type = "Release"
+
+[tool.scikit-build.cmake.define]
+CMAKE_OSX_ARCHITECTURES = "arm64"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

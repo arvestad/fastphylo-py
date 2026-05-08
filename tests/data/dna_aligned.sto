@@ -1,0 +1,17 @@
+# STOCKHOLM 1.0
+#=GF DE  Small DNA test alignment
+
+#=GS seq1 DE first sequence
+#=GS seq1 OS Homo sapiens
+#=GS seq2 DE second sequence
+#=GS seq2 OS Mus musculus
+#=GS seq3 DE third sequence
+#=GS seq3 OS Rattus norvegicus
+#=GS seq4 DE fourth sequence
+#=GS seq4 OS Gallus gallus
+
+seq1  ACGTACGTACGTACGTACGTACGTACGTAC
+seq2  ACGTACGTACGTACGTCCGTACGTACGTAC
+seq3  ACGAACGTACGTACGTACGTACGTACGTAC
+seq4  ACGTACGTAGGTACGTACGTACGCACGTAC
+//

@@ -1,0 +1,29 @@
+# Build artifacts
+_skbuild/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+*.so
+*.dylib
+*.pyd
+
+# C++ build output
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.a
+
+# Python env
+.venv/
+venv/
+.env
+
+# Editor
+.DS_Store
+*.swp
+*.swo
+*.~
