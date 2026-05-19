@@ -13,8 +13,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest      # Linux x86_64 (manylinux)
-          - macos-13           # macOS x86_64
-          - macos-14           # macOS arm64 (Apple Silicon)
+          - macos-14           # macOS arm64 runner — builds universal2 wheel
 
     steps:
       - uses: actions/checkout@v6
@@ -22,8 +21,9 @@ jobs:
       - uses: pypa/cibuildwheel@v2.19
         env:
           CIBW_BUILD: "cp312-* cp313-*"
-          CIBW_SKIP: "*-musllinux_*"   # skip musl (Alpine); glibc only
+          CIBW_SKIP: "*-musllinux_*"        # skip musl (Alpine); glibc only
           CIBW_ARCHS_LINUX: x86_64
+          CIBW_ARCHS_MACOS: universal2      # single wheel covers x86_64 + arm64
           CIBW_TEST_COMMAND: "python -c \"import fastphylo; print(fastphylo.__version__)\""
 
       - uses: actions/upload-artifact@v7
