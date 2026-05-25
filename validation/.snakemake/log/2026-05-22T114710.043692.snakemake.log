@@ -1,0 +1,90 @@
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+host: math148d
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+simulate                 34
+estimate_distances       34
+true_distances           34
+aggregate                17
+plot_error               17
+plot_scatter             17
+summarize                 1
+all                       1
+total                   155
+
+Select jobs to execute...
+Execute 4 jobs...
+[Fri May 22 11:47:10 2026]
+localrule simulate:
+    output: results/dna/k2p/rep1/alignment.fa, results/dna/k2p/rep1/alignment.treefile
+    jobid: 14
+    reason: Missing output files: results/dna/k2p/rep1/alignment.treefile, results/dna/k2p/rep1/alignment.fa
+    wildcards: dtype=dna, model=k2p, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:47:10 2026]
+localrule simulate:
+    output: results/protein/BLOSUM62/rep1/alignment.fa, results/protein/BLOSUM62/rep1/alignment.treefile
+    jobid: 97
+    reason: Missing output files: results/protein/BLOSUM62/rep1/alignment.treefile, results/protein/BLOSUM62/rep1/alignment.fa
+    wildcards: dtype=protein, model=BLOSUM62, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:47:10 2026]
+localrule simulate:
+    output: results/dna/tn93/rep0/alignment.fa, results/dna/tn93/rep0/alignment.treefile
+    jobid: 20
+    reason: Missing output files: results/dna/tn93/rep0/alignment.fa, results/dna/tn93/rep0/alignment.treefile
+    wildcards: dtype=dna, model=tn93, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:47:10 2026]
+localrule simulate:
+    output: results/protein/Dayhoff/rep0/alignment.fa, results/protein/Dayhoff/rep0/alignment.treefile
+    jobid: 103
+    reason: Missing output files: results/protein/Dayhoff/rep0/alignment.treefile, results/protein/Dayhoff/rep0/alignment.fa
+    wildcards: dtype=protein, model=Dayhoff, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+RuleException:
+CalledProcessError in file "/Users/arve/src/pysekvenser/validation/Snakefile", line 51:
+Command 'set -euo pipefail;  
+        python scripts/simulate.py             --prefix results/dna/tn93/rep0/alignment             --model TN93             --dtype dna             --length 1000             --n-sequences 20' returned non-zero exit status 2.
+[Fri May 22 11:47:10 2026]
+Error in rule simulate:
+    message: None
+    jobid: 20
+    output: results/dna/tn93/rep0/alignment.fa, results/dna/tn93/rep0/alignment.treefile
+    shell:
+        
+        python scripts/simulate.py             --prefix results/dna/tn93/rep0/alignment             --model TN93             --dtype dna             --length 1000             --n-sequences 20
+        
+        (command exited with non-zero exit code)
+Removing output files of failed job simulate since they might be corrupted:
+results/dna/tn93/rep0/alignment.treefile
+[Fri May 22 11:47:10 2026]
+Finished jobid: 97 (Rule: simulate)
+1 of 155 steps (1%) done
+[Fri May 22 11:47:10 2026]
+Finished jobid: 103 (Rule: simulate)
+2 of 155 steps (1%) done
+[Fri May 22 11:47:10 2026]
+Finished jobid: 14 (Rule: simulate)
+3 of 155 steps (2%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Fri May 22 11:47:10 2026]
+Error in rule simulate:
+    message: None
+    jobid: 20
+    output: results/dna/tn93/rep0/alignment.fa, results/dna/tn93/rep0/alignment.treefile
+    shell:
+        
+        python scripts/simulate.py             --prefix results/dna/tn93/rep0/alignment             --model TN93             --dtype dna             --length 1000             --n-sequences 20
+        
+        (command exited with non-zero exit code)
+Complete log(s): /Users/arve/src/pysekvenser/validation/.snakemake/log/2026-05-22T114710.043692.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -27,3 +27,8 @@ venv/
 *.swp
 *.swo
 *.~
+
+# Validation — generated data and figures
+validation/results/
+validation/plots/
+validation/summary/

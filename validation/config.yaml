@@ -1,0 +1,25 @@
+n_sequences: 20
+seq_length_dna: 1000
+seq_length_protein: 500
+replicates: 10          # override with --config replicates=100 for the full run
+
+dna_models:
+  - {name: jc,   iqtree: JC}
+  - {name: k2p,  iqtree: K80}
+  - {name: tn93, iqtree: TN93}
+
+protein_models:
+  - {name: WAG,       iqtree: WAG}
+  - {name: LG,        iqtree: LG}
+  - {name: JTT,       iqtree: JTT}
+  - {name: JTT_DCMut, iqtree: JTTDCMut}
+  - {name: VT,        iqtree: VT}
+  - {name: HIVb,      iqtree: HIVb}
+  - {name: HIVw,      iqtree: HIVw}
+  - {name: cpREV,     iqtree: cpREV}
+  - {name: BLOSUM62,  iqtree: BLOSUM62}
+  - {name: Dayhoff,   iqtree: Dayhoff}
+  - {name: DCMUT,     iqtree: DCMUT}
+  - {name: MtREV,     iqtree: mtREV}
+  - {name: RtREV,     iqtree: rtREV}
+  - {name: PMB,       iqtree: PMB}

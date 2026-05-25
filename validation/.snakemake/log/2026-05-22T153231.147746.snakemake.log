@@ -1,0 +1,234 @@
+Assuming unrestricted shared filesystem usage.
+host: math148d
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+aggregate            15
+summarize             1
+render_summary        1
+total                17
+
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 15:32:33 2026]
+localrule aggregate:
+    input: results/protein/MtREV/rep0/true_distances.tsv, results/protein/MtREV/rep1/true_distances.tsv, results/protein/MtREV/rep2/true_distances.tsv, results/protein/MtREV/rep3/true_distances.tsv, results/protein/MtREV/rep4/true_distances.tsv, results/protein/MtREV/rep5/true_distances.tsv, results/protein/MtREV/rep6/true_distances.tsv, results/protein/MtREV/rep7/true_distances.tsv, results/protein/MtREV/rep8/true_distances.tsv, results/protein/MtREV/rep9/true_distances.tsv, results/protein/MtREV/rep0/estimated_distances.tsv, results/protein/MtREV/rep1/estimated_distances.tsv, results/protein/MtREV/rep2/estimated_distances.tsv, results/protein/MtREV/rep3/estimated_distances.tsv, results/protein/MtREV/rep4/estimated_distances.tsv, results/protein/MtREV/rep5/estimated_distances.tsv, results/protein/MtREV/rep6/estimated_distances.tsv, results/protein/MtREV/rep7/estimated_distances.tsv, results/protein/MtREV/rep8/estimated_distances.tsv, results/protein/MtREV/rep9/estimated_distances.tsv
+    output: results/protein/MtREV/all.tsv
+    jobid: 436
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=MtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:35 2026]
+Finished jobid: 436 (Rule: aggregate)
+1 of 17 steps (6%) done
+Execute 1 jobs...
+[Fri May 22 15:32:35 2026]
+localrule aggregate:
+    input: results/dna/jc/rep0/true_distances.tsv, results/dna/jc/rep1/true_distances.tsv, results/dna/jc/rep2/true_distances.tsv, results/dna/jc/rep3/true_distances.tsv, results/dna/jc/rep4/true_distances.tsv, results/dna/jc/rep5/true_distances.tsv, results/dna/jc/rep6/true_distances.tsv, results/dna/jc/rep7/true_distances.tsv, results/dna/jc/rep8/true_distances.tsv, results/dna/jc/rep9/true_distances.tsv, results/dna/jc/rep0/estimated_distances.tsv, results/dna/jc/rep1/estimated_distances.tsv, results/dna/jc/rep2/estimated_distances.tsv, results/dna/jc/rep3/estimated_distances.tsv, results/dna/jc/rep4/estimated_distances.tsv, results/dna/jc/rep5/estimated_distances.tsv, results/dna/jc/rep6/estimated_distances.tsv, results/dna/jc/rep7/estimated_distances.tsv, results/dna/jc/rep8/estimated_distances.tsv, results/dna/jc/rep9/estimated_distances.tsv
+    output: results/dna/jc/all.tsv
+    jobid: 2
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=dna, model=jc
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:37 2026]
+Finished jobid: 2 (Rule: aggregate)
+2 of 17 steps (12%) done
+Execute 1 jobs...
+[Fri May 22 15:32:37 2026]
+localrule aggregate:
+    input: results/protein/RtREV/rep0/true_distances.tsv, results/protein/RtREV/rep1/true_distances.tsv, results/protein/RtREV/rep2/true_distances.tsv, results/protein/RtREV/rep3/true_distances.tsv, results/protein/RtREV/rep4/true_distances.tsv, results/protein/RtREV/rep5/true_distances.tsv, results/protein/RtREV/rep6/true_distances.tsv, results/protein/RtREV/rep7/true_distances.tsv, results/protein/RtREV/rep8/true_distances.tsv, results/protein/RtREV/rep9/true_distances.tsv, results/protein/RtREV/rep0/estimated_distances.tsv, results/protein/RtREV/rep1/estimated_distances.tsv, results/protein/RtREV/rep2/estimated_distances.tsv, results/protein/RtREV/rep3/estimated_distances.tsv, results/protein/RtREV/rep4/estimated_distances.tsv, results/protein/RtREV/rep5/estimated_distances.tsv, results/protein/RtREV/rep6/estimated_distances.tsv, results/protein/RtREV/rep7/estimated_distances.tsv, results/protein/RtREV/rep8/estimated_distances.tsv, results/protein/RtREV/rep9/estimated_distances.tsv
+    output: results/protein/RtREV/all.tsv
+    jobid: 467
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=RtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:38 2026]
+Finished jobid: 467 (Rule: aggregate)
+3 of 17 steps (18%) done
+Execute 1 jobs...
+[Fri May 22 15:32:38 2026]
+localrule aggregate:
+    input: results/protein/cpREV/rep0/true_distances.tsv, results/protein/cpREV/rep1/true_distances.tsv, results/protein/cpREV/rep2/true_distances.tsv, results/protein/cpREV/rep3/true_distances.tsv, results/protein/cpREV/rep4/true_distances.tsv, results/protein/cpREV/rep5/true_distances.tsv, results/protein/cpREV/rep6/true_distances.tsv, results/protein/cpREV/rep7/true_distances.tsv, results/protein/cpREV/rep8/true_distances.tsv, results/protein/cpREV/rep9/true_distances.tsv, results/protein/cpREV/rep0/estimated_distances.tsv, results/protein/cpREV/rep1/estimated_distances.tsv, results/protein/cpREV/rep2/estimated_distances.tsv, results/protein/cpREV/rep3/estimated_distances.tsv, results/protein/cpREV/rep4/estimated_distances.tsv, results/protein/cpREV/rep5/estimated_distances.tsv, results/protein/cpREV/rep6/estimated_distances.tsv, results/protein/cpREV/rep7/estimated_distances.tsv, results/protein/cpREV/rep8/estimated_distances.tsv, results/protein/cpREV/rep9/estimated_distances.tsv
+    output: results/protein/cpREV/all.tsv
+    jobid: 312
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=cpREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:40 2026]
+Finished jobid: 312 (Rule: aggregate)
+4 of 17 steps (24%) done
+Execute 1 jobs...
+[Fri May 22 15:32:40 2026]
+localrule aggregate:
+    input: results/protein/DCMUT/rep0/true_distances.tsv, results/protein/DCMUT/rep1/true_distances.tsv, results/protein/DCMUT/rep2/true_distances.tsv, results/protein/DCMUT/rep3/true_distances.tsv, results/protein/DCMUT/rep4/true_distances.tsv, results/protein/DCMUT/rep5/true_distances.tsv, results/protein/DCMUT/rep6/true_distances.tsv, results/protein/DCMUT/rep7/true_distances.tsv, results/protein/DCMUT/rep8/true_distances.tsv, results/protein/DCMUT/rep9/true_distances.tsv, results/protein/DCMUT/rep0/estimated_distances.tsv, results/protein/DCMUT/rep1/estimated_distances.tsv, results/protein/DCMUT/rep2/estimated_distances.tsv, results/protein/DCMUT/rep3/estimated_distances.tsv, results/protein/DCMUT/rep4/estimated_distances.tsv, results/protein/DCMUT/rep5/estimated_distances.tsv, results/protein/DCMUT/rep6/estimated_distances.tsv, results/protein/DCMUT/rep7/estimated_distances.tsv, results/protein/DCMUT/rep8/estimated_distances.tsv, results/protein/DCMUT/rep9/estimated_distances.tsv
+    output: results/protein/DCMUT/all.tsv
+    jobid: 405
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=DCMUT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:42 2026]
+Finished jobid: 405 (Rule: aggregate)
+5 of 17 steps (29%) done
+Execute 1 jobs...
+[Fri May 22 15:32:42 2026]
+localrule aggregate:
+    input: results/protein/BLOSUM62/rep0/true_distances.tsv, results/protein/BLOSUM62/rep1/true_distances.tsv, results/protein/BLOSUM62/rep2/true_distances.tsv, results/protein/BLOSUM62/rep3/true_distances.tsv, results/protein/BLOSUM62/rep4/true_distances.tsv, results/protein/BLOSUM62/rep5/true_distances.tsv, results/protein/BLOSUM62/rep6/true_distances.tsv, results/protein/BLOSUM62/rep7/true_distances.tsv, results/protein/BLOSUM62/rep8/true_distances.tsv, results/protein/BLOSUM62/rep9/true_distances.tsv, results/protein/BLOSUM62/rep0/estimated_distances.tsv, results/protein/BLOSUM62/rep1/estimated_distances.tsv, results/protein/BLOSUM62/rep2/estimated_distances.tsv, results/protein/BLOSUM62/rep3/estimated_distances.tsv, results/protein/BLOSUM62/rep4/estimated_distances.tsv, results/protein/BLOSUM62/rep5/estimated_distances.tsv, results/protein/BLOSUM62/rep6/estimated_distances.tsv, results/protein/BLOSUM62/rep7/estimated_distances.tsv, results/protein/BLOSUM62/rep8/estimated_distances.tsv, results/protein/BLOSUM62/rep9/estimated_distances.tsv
+    output: results/protein/BLOSUM62/all.tsv
+    jobid: 343
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=BLOSUM62
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:44 2026]
+Finished jobid: 343 (Rule: aggregate)
+6 of 17 steps (35%) done
+Execute 1 jobs...
+[Fri May 22 15:32:44 2026]
+localrule aggregate:
+    input: results/protein/Dayhoff/rep0/true_distances.tsv, results/protein/Dayhoff/rep1/true_distances.tsv, results/protein/Dayhoff/rep2/true_distances.tsv, results/protein/Dayhoff/rep3/true_distances.tsv, results/protein/Dayhoff/rep4/true_distances.tsv, results/protein/Dayhoff/rep5/true_distances.tsv, results/protein/Dayhoff/rep6/true_distances.tsv, results/protein/Dayhoff/rep7/true_distances.tsv, results/protein/Dayhoff/rep8/true_distances.tsv, results/protein/Dayhoff/rep9/true_distances.tsv, results/protein/Dayhoff/rep0/estimated_distances.tsv, results/protein/Dayhoff/rep1/estimated_distances.tsv, results/protein/Dayhoff/rep2/estimated_distances.tsv, results/protein/Dayhoff/rep3/estimated_distances.tsv, results/protein/Dayhoff/rep4/estimated_distances.tsv, results/protein/Dayhoff/rep5/estimated_distances.tsv, results/protein/Dayhoff/rep6/estimated_distances.tsv, results/protein/Dayhoff/rep7/estimated_distances.tsv, results/protein/Dayhoff/rep8/estimated_distances.tsv, results/protein/Dayhoff/rep9/estimated_distances.tsv
+    output: results/protein/Dayhoff/all.tsv
+    jobid: 374
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=Dayhoff
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:46 2026]
+Finished jobid: 374 (Rule: aggregate)
+7 of 17 steps (41%) done
+Execute 1 jobs...
+[Fri May 22 15:32:46 2026]
+localrule aggregate:
+    input: results/dna/k2p/rep0/true_distances.tsv, results/dna/k2p/rep1/true_distances.tsv, results/dna/k2p/rep2/true_distances.tsv, results/dna/k2p/rep3/true_distances.tsv, results/dna/k2p/rep4/true_distances.tsv, results/dna/k2p/rep5/true_distances.tsv, results/dna/k2p/rep6/true_distances.tsv, results/dna/k2p/rep7/true_distances.tsv, results/dna/k2p/rep8/true_distances.tsv, results/dna/k2p/rep9/true_distances.tsv, results/dna/k2p/rep0/estimated_distances.tsv, results/dna/k2p/rep1/estimated_distances.tsv, results/dna/k2p/rep2/estimated_distances.tsv, results/dna/k2p/rep3/estimated_distances.tsv, results/dna/k2p/rep4/estimated_distances.tsv, results/dna/k2p/rep5/estimated_distances.tsv, results/dna/k2p/rep6/estimated_distances.tsv, results/dna/k2p/rep7/estimated_distances.tsv, results/dna/k2p/rep8/estimated_distances.tsv, results/dna/k2p/rep9/estimated_distances.tsv
+    output: results/dna/k2p/all.tsv
+    jobid: 33
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=dna, model=k2p
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:48 2026]
+Finished jobid: 33 (Rule: aggregate)
+8 of 17 steps (47%) done
+Execute 1 jobs...
+[Fri May 22 15:32:48 2026]
+localrule aggregate:
+    input: results/protein/PMB/rep0/true_distances.tsv, results/protein/PMB/rep1/true_distances.tsv, results/protein/PMB/rep2/true_distances.tsv, results/protein/PMB/rep3/true_distances.tsv, results/protein/PMB/rep4/true_distances.tsv, results/protein/PMB/rep5/true_distances.tsv, results/protein/PMB/rep6/true_distances.tsv, results/protein/PMB/rep7/true_distances.tsv, results/protein/PMB/rep8/true_distances.tsv, results/protein/PMB/rep9/true_distances.tsv, results/protein/PMB/rep0/estimated_distances.tsv, results/protein/PMB/rep1/estimated_distances.tsv, results/protein/PMB/rep2/estimated_distances.tsv, results/protein/PMB/rep3/estimated_distances.tsv, results/protein/PMB/rep4/estimated_distances.tsv, results/protein/PMB/rep5/estimated_distances.tsv, results/protein/PMB/rep6/estimated_distances.tsv, results/protein/PMB/rep7/estimated_distances.tsv, results/protein/PMB/rep8/estimated_distances.tsv, results/protein/PMB/rep9/estimated_distances.tsv
+    output: results/protein/PMB/all.tsv
+    jobid: 498
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=PMB
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:50 2026]
+Finished jobid: 498 (Rule: aggregate)
+9 of 17 steps (53%) done
+Execute 1 jobs...
+[Fri May 22 15:32:50 2026]
+localrule aggregate:
+    input: results/protein/LG/rep0/true_distances.tsv, results/protein/LG/rep1/true_distances.tsv, results/protein/LG/rep2/true_distances.tsv, results/protein/LG/rep3/true_distances.tsv, results/protein/LG/rep4/true_distances.tsv, results/protein/LG/rep5/true_distances.tsv, results/protein/LG/rep6/true_distances.tsv, results/protein/LG/rep7/true_distances.tsv, results/protein/LG/rep8/true_distances.tsv, results/protein/LG/rep9/true_distances.tsv, results/protein/LG/rep0/estimated_distances.tsv, results/protein/LG/rep1/estimated_distances.tsv, results/protein/LG/rep2/estimated_distances.tsv, results/protein/LG/rep3/estimated_distances.tsv, results/protein/LG/rep4/estimated_distances.tsv, results/protein/LG/rep5/estimated_distances.tsv, results/protein/LG/rep6/estimated_distances.tsv, results/protein/LG/rep7/estimated_distances.tsv, results/protein/LG/rep8/estimated_distances.tsv, results/protein/LG/rep9/estimated_distances.tsv
+    output: results/protein/LG/all.tsv
+    jobid: 126
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=LG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:52 2026]
+Finished jobid: 126 (Rule: aggregate)
+10 of 17 steps (59%) done
+Execute 1 jobs...
+[Fri May 22 15:32:52 2026]
+localrule aggregate:
+    input: results/protein/JTT/rep0/true_distances.tsv, results/protein/JTT/rep1/true_distances.tsv, results/protein/JTT/rep2/true_distances.tsv, results/protein/JTT/rep3/true_distances.tsv, results/protein/JTT/rep4/true_distances.tsv, results/protein/JTT/rep5/true_distances.tsv, results/protein/JTT/rep6/true_distances.tsv, results/protein/JTT/rep7/true_distances.tsv, results/protein/JTT/rep8/true_distances.tsv, results/protein/JTT/rep9/true_distances.tsv, results/protein/JTT/rep0/estimated_distances.tsv, results/protein/JTT/rep1/estimated_distances.tsv, results/protein/JTT/rep2/estimated_distances.tsv, results/protein/JTT/rep3/estimated_distances.tsv, results/protein/JTT/rep4/estimated_distances.tsv, results/protein/JTT/rep5/estimated_distances.tsv, results/protein/JTT/rep6/estimated_distances.tsv, results/protein/JTT/rep7/estimated_distances.tsv, results/protein/JTT/rep8/estimated_distances.tsv, results/protein/JTT/rep9/estimated_distances.tsv
+    output: results/protein/JTT/all.tsv
+    jobid: 157
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=JTT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:54 2026]
+Finished jobid: 157 (Rule: aggregate)
+11 of 17 steps (65%) done
+Execute 1 jobs...
+[Fri May 22 15:32:54 2026]
+localrule aggregate:
+    input: results/protein/VT/rep0/true_distances.tsv, results/protein/VT/rep1/true_distances.tsv, results/protein/VT/rep2/true_distances.tsv, results/protein/VT/rep3/true_distances.tsv, results/protein/VT/rep4/true_distances.tsv, results/protein/VT/rep5/true_distances.tsv, results/protein/VT/rep6/true_distances.tsv, results/protein/VT/rep7/true_distances.tsv, results/protein/VT/rep8/true_distances.tsv, results/protein/VT/rep9/true_distances.tsv, results/protein/VT/rep0/estimated_distances.tsv, results/protein/VT/rep1/estimated_distances.tsv, results/protein/VT/rep2/estimated_distances.tsv, results/protein/VT/rep3/estimated_distances.tsv, results/protein/VT/rep4/estimated_distances.tsv, results/protein/VT/rep5/estimated_distances.tsv, results/protein/VT/rep6/estimated_distances.tsv, results/protein/VT/rep7/estimated_distances.tsv, results/protein/VT/rep8/estimated_distances.tsv, results/protein/VT/rep9/estimated_distances.tsv
+    output: results/protein/VT/all.tsv
+    jobid: 219
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=VT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:56 2026]
+Finished jobid: 219 (Rule: aggregate)
+12 of 17 steps (71%) done
+Execute 1 jobs...
+[Fri May 22 15:32:56 2026]
+localrule aggregate:
+    input: results/protein/HIVb/rep0/true_distances.tsv, results/protein/HIVb/rep1/true_distances.tsv, results/protein/HIVb/rep2/true_distances.tsv, results/protein/HIVb/rep3/true_distances.tsv, results/protein/HIVb/rep4/true_distances.tsv, results/protein/HIVb/rep5/true_distances.tsv, results/protein/HIVb/rep6/true_distances.tsv, results/protein/HIVb/rep7/true_distances.tsv, results/protein/HIVb/rep8/true_distances.tsv, results/protein/HIVb/rep9/true_distances.tsv, results/protein/HIVb/rep0/estimated_distances.tsv, results/protein/HIVb/rep1/estimated_distances.tsv, results/protein/HIVb/rep2/estimated_distances.tsv, results/protein/HIVb/rep3/estimated_distances.tsv, results/protein/HIVb/rep4/estimated_distances.tsv, results/protein/HIVb/rep5/estimated_distances.tsv, results/protein/HIVb/rep6/estimated_distances.tsv, results/protein/HIVb/rep7/estimated_distances.tsv, results/protein/HIVb/rep8/estimated_distances.tsv, results/protein/HIVb/rep9/estimated_distances.tsv
+    output: results/protein/HIVb/all.tsv
+    jobid: 250
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=HIVb
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:32:58 2026]
+Finished jobid: 250 (Rule: aggregate)
+13 of 17 steps (76%) done
+Execute 1 jobs...
+[Fri May 22 15:32:58 2026]
+localrule aggregate:
+    input: results/protein/JTT_DCMut/rep0/true_distances.tsv, results/protein/JTT_DCMut/rep1/true_distances.tsv, results/protein/JTT_DCMut/rep2/true_distances.tsv, results/protein/JTT_DCMut/rep3/true_distances.tsv, results/protein/JTT_DCMut/rep4/true_distances.tsv, results/protein/JTT_DCMut/rep5/true_distances.tsv, results/protein/JTT_DCMut/rep6/true_distances.tsv, results/protein/JTT_DCMut/rep7/true_distances.tsv, results/protein/JTT_DCMut/rep8/true_distances.tsv, results/protein/JTT_DCMut/rep9/true_distances.tsv, results/protein/JTT_DCMut/rep0/estimated_distances.tsv, results/protein/JTT_DCMut/rep1/estimated_distances.tsv, results/protein/JTT_DCMut/rep2/estimated_distances.tsv, results/protein/JTT_DCMut/rep3/estimated_distances.tsv, results/protein/JTT_DCMut/rep4/estimated_distances.tsv, results/protein/JTT_DCMut/rep5/estimated_distances.tsv, results/protein/JTT_DCMut/rep6/estimated_distances.tsv, results/protein/JTT_DCMut/rep7/estimated_distances.tsv, results/protein/JTT_DCMut/rep8/estimated_distances.tsv, results/protein/JTT_DCMut/rep9/estimated_distances.tsv
+    output: results/protein/JTT_DCMut/all.tsv
+    jobid: 188
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=JTT_DCMut
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 15:33:00 2026]
+Finished jobid: 188 (Rule: aggregate)
+14 of 17 steps (82%) done
+Execute 1 jobs...
+[Fri May 22 15:33:00 2026]
+localrule aggregate:
+    input: results/protein/HIVw/rep0/true_distances.tsv, results/protein/HIVw/rep1/true_distances.tsv, results/protein/HIVw/rep2/true_distances.tsv, results/protein/HIVw/rep3/true_distances.tsv, results/protein/HIVw/rep4/true_distances.tsv, results/protein/HIVw/rep5/true_distances.tsv, results/protein/HIVw/rep6/true_distances.tsv, results/protein/HIVw/rep7/true_distances.tsv, results/protein/HIVw/rep8/true_distances.tsv, results/protein/HIVw/rep9/true_distances.tsv, results/protein/HIVw/rep0/estimated_distances.tsv, results/protein/HIVw/rep1/estimated_distances.tsv, results/protein/HIVw/rep2/estimated_distances.tsv, results/protein/HIVw/rep3/estimated_distances.tsv, results/protein/HIVw/rep4/estimated_distances.tsv, results/protein/HIVw/rep5/estimated_distances.tsv, results/protein/HIVw/rep6/estimated_distances.tsv, results/protein/HIVw/rep7/estimated_distances.tsv, results/protein/HIVw/rep8/estimated_distances.tsv, results/protein/HIVw/rep9/estimated_distances.tsv
+    output: results/protein/HIVw/all.tsv
+    jobid: 281
+    reason: Set of input files has changed since last execution
+    wildcards: dtype=protein, model=HIVw
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 15:33:02 2026]
+Finished jobid: 281 (Rule: aggregate)
+15 of 17 steps (88%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 15:33:02 2026]
+localrule summarize:
+    input: results/dna/jc/all.tsv, results/dna/k2p/all.tsv, results/dna/tn93/all.tsv, results/protein/WAG/all.tsv, results/protein/LG/all.tsv, results/protein/JTT/all.tsv, results/protein/JTT_DCMut/all.tsv, results/protein/VT/all.tsv, results/protein/HIVb/all.tsv, results/protein/HIVw/all.tsv, results/protein/cpREV/all.tsv, results/protein/BLOSUM62/all.tsv, results/protein/Dayhoff/all.tsv, results/protein/DCMUT/all.tsv, results/protein/MtREV/all.tsv, results/protein/RtREV/all.tsv, results/protein/PMB/all.tsv
+    output: summary/summary.tsv, summary/summary.md, summary/comparison_dna.pdf, summary/comparison_protein.pdf
+    jobid: 1
+    reason: Input files updated by another job: results/protein/RtREV/all.tsv, results/protein/cpREV/all.tsv, results/protein/PMB/all.tsv, results/protein/HIVw/all.tsv, results/protein/DCMUT/all.tsv, results/protein/HIVb/all.tsv, results/dna/jc/all.tsv, results/protein/VT/all.tsv, results/protein/LG/all.tsv, results/protein/JTT/all.tsv, results/protein/JTT_DCMut/all.tsv, results/protein/Dayhoff/all.tsv, results/protein/MtREV/all.tsv, results/protein/BLOSUM62/all.tsv, results/dna/k2p/all.tsv
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 15:33:05 2026]
+Finished jobid: 1 (Rule: summarize)
+16 of 17 steps (94%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 15:33:05 2026]
+localrule render_summary:
+    input: summary/summary.tsv
+    output: summary/summary.pdf
+    jobid: 0
+    reason: Input files updated by another job: summary/summary.tsv
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 15:33:06 2026]
+Finished jobid: 0 (Rule: render_summary)
+17 of 17 steps (100%) done
+Complete log(s): /Users/arve/src/pysekvenser/validation/.snakemake/log/2026-05-22T153231.147746.snakemake.log

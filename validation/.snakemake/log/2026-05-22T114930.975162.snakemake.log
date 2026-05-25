@@ -1,0 +1,1961 @@
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+host: math148d
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+simulate                 34
+estimate_distances       34
+true_distances           34
+aggregate                17
+plot_error               17
+plot_scatter             17
+summarize                 1
+all                       1
+total                   155
+
+Select jobs to execute...
+Execute 4 jobs...
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/dna/k2p/rep1/alignment.fa, results/dna/k2p/rep1/alignment.treefile
+    jobid: 14
+    reason: Missing output files: results/dna/k2p/rep1/alignment.treefile, results/dna/k2p/rep1/alignment.fa
+    wildcards: dtype=dna, model=k2p, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/BLOSUM62/rep1/alignment.fa, results/protein/BLOSUM62/rep1/alignment.treefile
+    jobid: 97
+    reason: Missing output files: results/protein/BLOSUM62/rep1/alignment.treefile, results/protein/BLOSUM62/rep1/alignment.fa
+    wildcards: dtype=protein, model=BLOSUM62, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/dna/tn93/rep0/alignment.fa, results/dna/tn93/rep0/alignment.treefile
+    jobid: 20
+    reason: Missing output files: results/dna/tn93/rep0/alignment.fa, results/dna/tn93/rep0/alignment.treefile
+    wildcards: dtype=dna, model=tn93, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/Dayhoff/rep0/alignment.fa, results/protein/Dayhoff/rep0/alignment.treefile
+    jobid: 103
+    reason: Missing output files: results/protein/Dayhoff/rep0/alignment.fa, results/protein/Dayhoff/rep0/alignment.treefile
+    wildcards: dtype=protein, model=Dayhoff, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 14 (Rule: simulate)
+1 of 155 steps (1%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/cpREV/rep1/alignment.fa, results/protein/cpREV/rep1/alignment.treefile
+    jobid: 89
+    reason: Missing output files: results/protein/cpREV/rep1/alignment.treefile, results/protein/cpREV/rep1/alignment.fa
+    wildcards: dtype=protein, model=cpREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 97 (Rule: simulate)
+2 of 155 steps (1%) done
+[Fri May 22 11:49:31 2026]
+Finished jobid: 103 (Rule: simulate)
+3 of 155 steps (2%) done
+[Fri May 22 11:49:31 2026]
+Finished jobid: 20 (Rule: simulate)
+4 of 155 steps (3%) done
+Select jobs to execute...
+Execute 3 jobs...
+[Fri May 22 11:49:31 2026]
+localrule estimate_distances:
+    input: results/dna/k2p/rep1/alignment.fa
+    output: results/dna/k2p/rep1/estimated_distances.tsv
+    jobid: 16
+    reason: Missing output files: results/dna/k2p/rep1/estimated_distances.tsv; Input files updated by another job: results/dna/k2p/rep1/alignment.fa
+    wildcards: dtype=dna, model=k2p, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule estimate_distances:
+    input: results/protein/BLOSUM62/rep1/alignment.fa
+    output: results/protein/BLOSUM62/rep1/estimated_distances.tsv
+    jobid: 99
+    reason: Missing output files: results/protein/BLOSUM62/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/BLOSUM62/rep1/alignment.fa
+    wildcards: dtype=protein, model=BLOSUM62, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/Dayhoff/rep1/alignment.fa, results/protein/Dayhoff/rep1/alignment.treefile
+    jobid: 105
+    reason: Missing output files: results/protein/Dayhoff/rep1/alignment.fa, results/protein/Dayhoff/rep1/alignment.treefile
+    wildcards: dtype=protein, model=Dayhoff, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:31 2026]
+Finished jobid: 89 (Rule: simulate)
+5 of 155 steps (3%) done
+Execute 1 jobs...
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/dna/jc/rep1/alignment.fa, results/dna/jc/rep1/alignment.treefile
+    jobid: 6
+    reason: Missing output files: results/dna/jc/rep1/alignment.fa, results/dna/jc/rep1/alignment.treefile
+    wildcards: dtype=dna, model=jc, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 105 (Rule: simulate)
+6 of 155 steps (4%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/LG/rep0/alignment.fa, results/protein/LG/rep0/alignment.treefile
+    jobid: 39
+    reason: Missing output files: results/protein/LG/rep0/alignment.treefile, results/protein/LG/rep0/alignment.fa
+    wildcards: dtype=protein, model=LG, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 16 (Rule: estimate_distances)
+7 of 155 steps (5%) done
+[Fri May 22 11:49:31 2026]
+Finished jobid: 99 (Rule: estimate_distances)
+8 of 155 steps (5%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/JTT_DCMut/rep0/alignment.fa, results/protein/JTT_DCMut/rep0/alignment.treefile
+    jobid: 55
+    reason: Missing output files: results/protein/JTT_DCMut/rep0/alignment.fa, results/protein/JTT_DCMut/rep0/alignment.treefile; Params have changed since last execution: Union of exclusive params before and now across all output: before: 'JTT-DCMUT' now: 'JTTDCMut' 
+    wildcards: dtype=protein, model=JTT_DCMut, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/PMB/rep0/alignment.fa, results/protein/PMB/rep0/alignment.treefile
+    jobid: 135
+    reason: Missing output files: results/protein/PMB/rep0/alignment.treefile, results/protein/PMB/rep0/alignment.fa
+    wildcards: dtype=protein, model=PMB, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:31 2026]
+Finished jobid: 6 (Rule: simulate)
+9 of 155 steps (6%) done
+Execute 1 jobs...
+[Fri May 22 11:49:31 2026]
+localrule estimate_distances:
+    input: results/protein/cpREV/rep1/alignment.fa
+    output: results/protein/cpREV/rep1/estimated_distances.tsv
+    jobid: 91
+    reason: Missing output files: results/protein/cpREV/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/cpREV/rep1/alignment.fa
+    wildcards: dtype=protein, model=cpREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 39 (Rule: simulate)
+10 of 155 steps (6%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:31 2026]
+localrule true_distances:
+    input: results/protein/LG/rep0/alignment.treefile
+    output: results/protein/LG/rep0/true_distances.tsv
+    jobid: 38
+    reason: Missing output files: results/protein/LG/rep0/true_distances.tsv; Input files updated by another job: results/protein/LG/rep0/alignment.treefile
+    wildcards: dtype=protein, model=LG, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 55 (Rule: simulate)
+11 of 155 steps (7%) done
+[Fri May 22 11:49:31 2026]
+Finished jobid: 135 (Rule: simulate)
+12 of 155 steps (8%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:31 2026]
+localrule estimate_distances:
+    input: results/protein/JTT_DCMut/rep0/alignment.fa
+    output: results/protein/JTT_DCMut/rep0/estimated_distances.tsv
+    jobid: 58
+    reason: Missing output files: results/protein/JTT_DCMut/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/JTT_DCMut/rep0/alignment.fa
+    wildcards: dtype=protein, model=JTT_DCMut, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/BLOSUM62/rep0/alignment.fa, results/protein/BLOSUM62/rep0/alignment.treefile
+    jobid: 95
+    reason: Missing output files: results/protein/BLOSUM62/rep0/alignment.fa, results/protein/BLOSUM62/rep0/alignment.treefile
+    wildcards: dtype=protein, model=BLOSUM62, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:31 2026]
+Finished jobid: 38 (Rule: true_distances)
+13 of 155 steps (8%) done
+Execute 1 jobs...
+[Fri May 22 11:49:31 2026]
+localrule simulate:
+    output: results/protein/HIVw/rep0/alignment.fa, results/protein/HIVw/rep0/alignment.treefile
+    jobid: 79
+    reason: Missing output files: results/protein/HIVw/rep0/alignment.fa, results/protein/HIVw/rep0/alignment.treefile
+    wildcards: dtype=protein, model=HIVw, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:31 2026]
+Finished jobid: 91 (Rule: estimate_distances)
+14 of 155 steps (9%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/MtREV/rep0/alignment.fa, results/protein/MtREV/rep0/alignment.treefile
+    jobid: 119
+    reason: Missing output files: results/protein/MtREV/rep0/alignment.fa, results/protein/MtREV/rep0/alignment.treefile
+    wildcards: dtype=protein, model=MtREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 95 (Rule: simulate)
+15 of 155 steps (10%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/MtREV/rep1/alignment.fa, results/protein/MtREV/rep1/alignment.treefile
+    jobid: 121
+    reason: Missing output files: results/protein/MtREV/rep1/alignment.treefile, results/protein/MtREV/rep1/alignment.fa
+    wildcards: dtype=protein, model=MtREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 58 (Rule: estimate_distances)
+16 of 155 steps (10%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/LG/rep0/alignment.fa
+    output: results/protein/LG/rep0/estimated_distances.tsv
+    jobid: 42
+    reason: Missing output files: results/protein/LG/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/LG/rep0/alignment.fa
+    wildcards: dtype=protein, model=LG, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 79 (Rule: simulate)
+17 of 155 steps (11%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/HIVw/rep0/alignment.fa
+    output: results/protein/HIVw/rep0/estimated_distances.tsv
+    jobid: 82
+    reason: Missing output files: results/protein/HIVw/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/HIVw/rep0/alignment.fa
+    wildcards: dtype=protein, model=HIVw, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 119 (Rule: simulate)
+18 of 155 steps (12%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/MtREV/rep0/alignment.treefile
+    output: results/protein/MtREV/rep0/true_distances.tsv
+    jobid: 118
+    reason: Missing output files: results/protein/MtREV/rep0/true_distances.tsv; Input files updated by another job: results/protein/MtREV/rep0/alignment.treefile
+    wildcards: dtype=protein, model=MtREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 121 (Rule: simulate)
+19 of 155 steps (12%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/MtREV/rep0/alignment.fa
+    output: results/protein/MtREV/rep0/estimated_distances.tsv
+    jobid: 122
+    reason: Missing output files: results/protein/MtREV/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/MtREV/rep0/alignment.fa
+    wildcards: dtype=protein, model=MtREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 118 (Rule: true_distances)
+20 of 155 steps (13%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/MtREV/rep1/alignment.treefile
+    output: results/protein/MtREV/rep1/true_distances.tsv
+    jobid: 120
+    reason: Missing output files: results/protein/MtREV/rep1/true_distances.tsv; Input files updated by another job: results/protein/MtREV/rep1/alignment.treefile
+    wildcards: dtype=protein, model=MtREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 42 (Rule: estimate_distances)
+21 of 155 steps (14%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/LG/rep1/alignment.fa, results/protein/LG/rep1/alignment.treefile
+    jobid: 41
+    reason: Missing output files: results/protein/LG/rep1/alignment.treefile, results/protein/LG/rep1/alignment.fa
+    wildcards: dtype=protein, model=LG, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 82 (Rule: estimate_distances)
+22 of 155 steps (14%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/dna/jc/rep1/alignment.fa
+    output: results/dna/jc/rep1/estimated_distances.tsv
+    jobid: 8
+    reason: Missing output files: results/dna/jc/rep1/estimated_distances.tsv; Input files updated by another job: results/dna/jc/rep1/alignment.fa
+    wildcards: dtype=dna, model=jc, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 120 (Rule: true_distances)
+23 of 155 steps (15%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/cpREV/rep1/alignment.treefile
+    output: results/protein/cpREV/rep1/true_distances.tsv
+    jobid: 88
+    reason: Missing output files: results/protein/cpREV/rep1/true_distances.tsv; Input files updated by another job: results/protein/cpREV/rep1/alignment.treefile
+    wildcards: dtype=protein, model=cpREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 122 (Rule: estimate_distances)
+24 of 155 steps (15%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/JTT/rep1/alignment.fa, results/protein/JTT/rep1/alignment.treefile
+    jobid: 49
+    reason: Missing output files: results/protein/JTT/rep1/alignment.treefile, results/protein/JTT/rep1/alignment.fa
+    wildcards: dtype=protein, model=JTT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 41 (Rule: simulate)
+25 of 155 steps (16%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/LG/rep1/alignment.fa
+    output: results/protein/LG/rep1/estimated_distances.tsv
+    jobid: 43
+    reason: Missing output files: results/protein/LG/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/LG/rep1/alignment.fa
+    wildcards: dtype=protein, model=LG, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 88 (Rule: true_distances)
+26 of 155 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/LG/rep1/alignment.treefile
+    output: results/protein/LG/rep1/true_distances.tsv
+    jobid: 40
+    reason: Missing output files: results/protein/LG/rep1/true_distances.tsv; Input files updated by another job: results/protein/LG/rep1/alignment.treefile
+    wildcards: dtype=protein, model=LG, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 8 (Rule: estimate_distances)
+27 of 155 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/HIVw/rep1/alignment.fa, results/protein/HIVw/rep1/alignment.treefile
+    jobid: 81
+    reason: Missing output files: results/protein/HIVw/rep1/alignment.treefile, results/protein/HIVw/rep1/alignment.fa
+    wildcards: dtype=protein, model=HIVw, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 49 (Rule: simulate)
+28 of 155 steps (18%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/RtREV/rep1/alignment.fa, results/protein/RtREV/rep1/alignment.treefile
+    jobid: 129
+    reason: Missing output files: results/protein/RtREV/rep1/alignment.treefile, results/protein/RtREV/rep1/alignment.fa
+    wildcards: dtype=protein, model=RtREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 40 (Rule: true_distances)
+29 of 155 steps (19%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/JTT/rep1/alignment.fa
+    output: results/protein/JTT/rep1/estimated_distances.tsv
+    jobid: 51
+    reason: Missing output files: results/protein/JTT/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/JTT/rep1/alignment.fa
+    wildcards: dtype=protein, model=JTT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 43 (Rule: estimate_distances)
+30 of 155 steps (19%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/MtREV/rep1/alignment.fa
+    output: results/protein/MtREV/rep1/estimated_distances.tsv
+    jobid: 123
+    reason: Missing output files: results/protein/MtREV/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/MtREV/rep1/alignment.fa
+    wildcards: dtype=protein, model=MtREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 81 (Rule: simulate)
+31 of 155 steps (20%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/HIVw/rep1/alignment.treefile
+    output: results/protein/HIVw/rep1/true_distances.tsv
+    jobid: 80
+    reason: Missing output files: results/protein/HIVw/rep1/true_distances.tsv; Input files updated by another job: results/protein/HIVw/rep1/alignment.treefile
+    wildcards: dtype=protein, model=HIVw, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 129 (Rule: simulate)
+32 of 155 steps (21%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/HIVw/rep1/alignment.fa
+    output: results/protein/HIVw/rep1/estimated_distances.tsv
+    jobid: 83
+    reason: Missing output files: results/protein/HIVw/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/HIVw/rep1/alignment.fa
+    wildcards: dtype=protein, model=HIVw, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:32 2026]
+Finished jobid: 80 (Rule: true_distances)
+33 of 155 steps (21%) done
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/RtREV/rep1/alignment.fa
+    output: results/protein/RtREV/rep1/estimated_distances.tsv
+    jobid: 131
+    reason: Missing output files: results/protein/RtREV/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/RtREV/rep1/alignment.fa
+    wildcards: dtype=protein, model=RtREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 51 (Rule: estimate_distances)
+34 of 155 steps (22%) done
+[Fri May 22 11:49:32 2026]
+Finished jobid: 123 (Rule: estimate_distances)
+35 of 155 steps (23%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/PMB/rep0/alignment.fa
+    output: results/protein/PMB/rep0/estimated_distances.tsv
+    jobid: 138
+    reason: Missing output files: results/protein/PMB/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/PMB/rep0/alignment.fa
+    wildcards: dtype=protein, model=PMB, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/dna/k2p/rep0/alignment.fa, results/dna/k2p/rep0/alignment.treefile
+    jobid: 12
+    reason: Missing output files: results/dna/k2p/rep0/alignment.treefile, results/dna/k2p/rep0/alignment.fa
+    wildcards: dtype=dna, model=k2p, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:32 2026]
+Finished jobid: 83 (Rule: estimate_distances)
+36 of 155 steps (23%) done
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/HIVw/rep0/alignment.treefile
+    output: results/protein/HIVw/rep0/true_distances.tsv
+    jobid: 78
+    reason: Missing output files: results/protein/HIVw/rep0/true_distances.tsv; Input files updated by another job: results/protein/HIVw/rep0/alignment.treefile
+    wildcards: dtype=protein, model=HIVw, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:32 2026]
+Finished jobid: 131 (Rule: estimate_distances)
+37 of 155 steps (24%) done
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule simulate:
+    output: results/protein/DCMUT/rep0/alignment.fa, results/protein/DCMUT/rep0/alignment.treefile
+    jobid: 111
+    reason: Missing output files: results/protein/DCMUT/rep0/alignment.fa, results/protein/DCMUT/rep0/alignment.treefile
+    wildcards: dtype=protein, model=DCMUT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 12 (Rule: simulate)
+38 of 155 steps (25%) done
+[Fri May 22 11:49:32 2026]
+Finished jobid: 78 (Rule: true_distances)
+39 of 155 steps (25%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/protein/BLOSUM62/rep0/alignment.fa
+    output: results/protein/BLOSUM62/rep0/estimated_distances.tsv
+    jobid: 98
+    reason: Missing output files: results/protein/BLOSUM62/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/BLOSUM62/rep0/alignment.fa
+    wildcards: dtype=protein, model=BLOSUM62, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+localrule estimate_distances:
+    input: results/dna/k2p/rep0/alignment.fa
+    output: results/dna/k2p/rep0/estimated_distances.tsv
+    jobid: 15
+    reason: Missing output files: results/dna/k2p/rep0/estimated_distances.tsv; Input files updated by another job: results/dna/k2p/rep0/alignment.fa
+    wildcards: dtype=dna, model=k2p, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+Finished jobid: 138 (Rule: estimate_distances)
+40 of 155 steps (26%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule aggregate:
+    input: results/protein/HIVw/rep0/true_distances.tsv, results/protein/HIVw/rep1/true_distances.tsv, results/protein/HIVw/rep0/estimated_distances.tsv, results/protein/HIVw/rep1/estimated_distances.tsv
+    output: results/protein/HIVw/all.tsv
+    jobid: 77
+    reason: Missing output files: results/protein/HIVw/all.tsv; Input files updated by another job: results/protein/HIVw/rep1/estimated_distances.tsv, results/protein/HIVw/rep0/estimated_distances.tsv, results/protein/HIVw/rep0/true_distances.tsv, results/protein/HIVw/rep1/true_distances.tsv
+    wildcards: dtype=protein, model=HIVw
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:32 2026]
+Finished jobid: 111 (Rule: simulate)
+41 of 155 steps (26%) done
+Execute 1 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/DCMUT/rep0/alignment.treefile
+    output: results/protein/DCMUT/rep0/true_distances.tsv
+    jobid: 110
+    reason: Missing output files: results/protein/DCMUT/rep0/true_distances.tsv; Input files updated by another job: results/protein/DCMUT/rep0/alignment.treefile
+    wildcards: dtype=protein, model=DCMUT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:32 2026]
+Finished jobid: 98 (Rule: estimate_distances)
+42 of 155 steps (27%) done
+[Fri May 22 11:49:32 2026]
+Finished jobid: 15 (Rule: estimate_distances)
+43 of 155 steps (28%) done
+Execute 2 jobs...
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/dna/k2p/rep1/alignment.treefile
+    output: results/dna/k2p/rep1/true_distances.tsv
+    jobid: 13
+    reason: Missing output files: results/dna/k2p/rep1/true_distances.tsv; Input files updated by another job: results/dna/k2p/rep1/alignment.treefile
+    wildcards: dtype=dna, model=k2p, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:32 2026]
+localrule true_distances:
+    input: results/protein/BLOSUM62/rep1/alignment.treefile
+    output: results/protein/BLOSUM62/rep1/true_distances.tsv
+    jobid: 96
+    reason: Missing output files: results/protein/BLOSUM62/rep1/true_distances.tsv; Input files updated by another job: results/protein/BLOSUM62/rep1/alignment.treefile
+    wildcards: dtype=protein, model=BLOSUM62, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 110 (Rule: true_distances)
+44 of 155 steps (28%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/protein/JTT_DCMut/rep1/alignment.fa, results/protein/JTT_DCMut/rep1/alignment.treefile
+    jobid: 57
+    reason: Missing output files: results/protein/JTT_DCMut/rep1/alignment.fa, results/protein/JTT_DCMut/rep1/alignment.treefile
+    wildcards: dtype=protein, model=JTT_DCMut, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 13 (Rule: true_distances)
+45 of 155 steps (29%) done
+[Fri May 22 11:49:33 2026]
+Finished jobid: 96 (Rule: true_distances)
+46 of 155 steps (30%) done
+Execute 2 jobs...
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/BLOSUM62/rep0/alignment.treefile
+    output: results/protein/BLOSUM62/rep0/true_distances.tsv
+    jobid: 94
+    reason: Missing output files: results/protein/BLOSUM62/rep0/true_distances.tsv; Input files updated by another job: results/protein/BLOSUM62/rep0/alignment.treefile
+    wildcards: dtype=protein, model=BLOSUM62, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/dna/k2p/rep0/alignment.treefile
+    output: results/dna/k2p/rep0/true_distances.tsv
+    jobid: 11
+    reason: Missing output files: results/dna/k2p/rep0/true_distances.tsv; Input files updated by another job: results/dna/k2p/rep0/alignment.treefile
+    wildcards: dtype=dna, model=k2p, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 57 (Rule: simulate)
+47 of 155 steps (30%) done
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/protein/VT/rep0/alignment.fa, results/protein/VT/rep0/alignment.treefile
+    jobid: 63
+    reason: Missing output files: results/protein/VT/rep0/alignment.treefile, results/protein/VT/rep0/alignment.fa
+    wildcards: dtype=protein, model=VT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 94 (Rule: true_distances)
+48 of 155 steps (31%) done
+[Fri May 22 11:49:33 2026]
+Finished jobid: 11 (Rule: true_distances)
+49 of 155 steps (32%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:33 2026]
+localrule estimate_distances:
+    input: results/protein/JTT_DCMut/rep1/alignment.fa
+    output: results/protein/JTT_DCMut/rep1/estimated_distances.tsv
+    jobid: 59
+    reason: Missing output files: results/protein/JTT_DCMut/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/JTT_DCMut/rep1/alignment.fa
+    wildcards: dtype=protein, model=JTT_DCMut, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/JTT_DCMut/rep1/alignment.treefile
+    output: results/protein/JTT_DCMut/rep1/true_distances.tsv
+    jobid: 56
+    reason: Missing output files: results/protein/JTT_DCMut/rep1/true_distances.tsv; Input files updated by another job: results/protein/JTT_DCMut/rep1/alignment.treefile
+    wildcards: dtype=protein, model=JTT_DCMut, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 63 (Rule: simulate)
+50 of 155 steps (32%) done
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/RtREV/rep1/alignment.treefile
+    output: results/protein/RtREV/rep1/true_distances.tsv
+    jobid: 128
+    reason: Missing output files: results/protein/RtREV/rep1/true_distances.tsv; Input files updated by another job: results/protein/RtREV/rep1/alignment.treefile
+    wildcards: dtype=protein, model=RtREV, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 56 (Rule: true_distances)
+51 of 155 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule estimate_distances:
+    input: results/dna/tn93/rep0/alignment.fa
+    output: results/dna/tn93/rep0/estimated_distances.tsv
+    jobid: 23
+    reason: Missing output files: results/dna/tn93/rep0/estimated_distances.tsv; Input files updated by another job: results/dna/tn93/rep0/alignment.fa
+    wildcards: dtype=dna, model=tn93, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 59 (Rule: estimate_distances)
+52 of 155 steps (34%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/Dayhoff/rep1/alignment.treefile
+    output: results/protein/Dayhoff/rep1/true_distances.tsv
+    jobid: 104
+    reason: Missing output files: results/protein/Dayhoff/rep1/true_distances.tsv; Input files updated by another job: results/protein/Dayhoff/rep1/alignment.treefile
+    wildcards: dtype=protein, model=Dayhoff, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 128 (Rule: true_distances)
+53 of 155 steps (34%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/dna/tn93/rep0/alignment.treefile
+    output: results/dna/tn93/rep0/true_distances.tsv
+    jobid: 19
+    reason: Missing output files: results/dna/tn93/rep0/true_distances.tsv; Input files updated by another job: results/dna/tn93/rep0/alignment.treefile
+    wildcards: dtype=dna, model=tn93, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 23 (Rule: estimate_distances)
+54 of 155 steps (35%) done
+[Fri May 22 11:49:33 2026]
+Finished jobid: 104 (Rule: true_distances)
+55 of 155 steps (35%) done
+Execute 2 jobs...
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/protein/VT/rep1/alignment.fa, results/protein/VT/rep1/alignment.treefile
+    jobid: 65
+    reason: Missing output files: results/protein/VT/rep1/alignment.fa, results/protein/VT/rep1/alignment.treefile
+    wildcards: dtype=protein, model=VT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/PMB/rep0/alignment.treefile
+    output: results/protein/PMB/rep0/true_distances.tsv
+    jobid: 134
+    reason: Missing output files: results/protein/PMB/rep0/true_distances.tsv; Input files updated by another job: results/protein/PMB/rep0/alignment.treefile
+    wildcards: dtype=protein, model=PMB, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 19 (Rule: true_distances)
+56 of 155 steps (36%) done
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/VT/rep0/alignment.treefile
+    output: results/protein/VT/rep0/true_distances.tsv
+    jobid: 62
+    reason: Missing output files: results/protein/VT/rep0/true_distances.tsv; Input files updated by another job: results/protein/VT/rep0/alignment.treefile
+    wildcards: dtype=protein, model=VT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 65 (Rule: simulate)
+57 of 155 steps (37%) done
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/protein/HIVb/rep1/alignment.fa, results/protein/HIVb/rep1/alignment.treefile
+    jobid: 73
+    reason: Missing output files: results/protein/HIVb/rep1/alignment.fa, results/protein/HIVb/rep1/alignment.treefile
+    wildcards: dtype=protein, model=HIVb, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 134 (Rule: true_distances)
+58 of 155 steps (37%) done
+[Fri May 22 11:49:33 2026]
+Finished jobid: 62 (Rule: true_distances)
+59 of 155 steps (38%) done
+Execute 2 jobs...
+[Fri May 22 11:49:33 2026]
+localrule estimate_distances:
+    input: results/protein/VT/rep1/alignment.fa
+    output: results/protein/VT/rep1/estimated_distances.tsv
+    jobid: 67
+    reason: Missing output files: results/protein/VT/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/VT/rep1/alignment.fa
+    wildcards: dtype=protein, model=VT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/dna/tn93/rep1/alignment.fa, results/dna/tn93/rep1/alignment.treefile
+    jobid: 22
+    reason: Missing output files: results/dna/tn93/rep1/alignment.fa, results/dna/tn93/rep1/alignment.treefile
+    wildcards: dtype=dna, model=tn93, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 73 (Rule: simulate)
+60 of 155 steps (39%) done
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/protein/WAG/rep1/alignment.fa, results/protein/WAG/rep1/alignment.treefile
+    jobid: 33
+    reason: Missing output files: results/protein/WAG/rep1/alignment.treefile, results/protein/WAG/rep1/alignment.fa
+    wildcards: dtype=protein, model=WAG, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:33 2026]
+Finished jobid: 22 (Rule: simulate)
+61 of 155 steps (39%) done
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule true_distances:
+    input: results/protein/Dayhoff/rep0/alignment.treefile
+    output: results/protein/Dayhoff/rep0/true_distances.tsv
+    jobid: 102
+    reason: Missing output files: results/protein/Dayhoff/rep0/true_distances.tsv; Input files updated by another job: results/protein/Dayhoff/rep0/alignment.treefile
+    wildcards: dtype=protein, model=Dayhoff, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 67 (Rule: estimate_distances)
+62 of 155 steps (40%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule estimate_distances:
+    input: results/protein/HIVb/rep1/alignment.fa
+    output: results/protein/HIVb/rep1/estimated_distances.tsv
+    jobid: 75
+    reason: Missing output files: results/protein/HIVb/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/HIVb/rep1/alignment.fa
+    wildcards: dtype=protein, model=HIVb, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:33 2026]
+Finished jobid: 33 (Rule: simulate)
+63 of 155 steps (41%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:33 2026]
+localrule simulate:
+    output: results/protein/DCMUT/rep1/alignment.fa, results/protein/DCMUT/rep1/alignment.treefile
+    jobid: 113
+    reason: Missing output files: results/protein/DCMUT/rep1/alignment.treefile, results/protein/DCMUT/rep1/alignment.fa
+    wildcards: dtype=protein, model=DCMUT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+Finished jobid: 102 (Rule: true_distances)
+64 of 155 steps (41%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule estimate_distances:
+    input: results/protein/WAG/rep1/alignment.fa
+    output: results/protein/WAG/rep1/estimated_distances.tsv
+    jobid: 35
+    reason: Missing output files: results/protein/WAG/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/WAG/rep1/alignment.fa
+    wildcards: dtype=protein, model=WAG, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 113 (Rule: simulate)
+65 of 155 steps (42%) done
+[Fri May 22 11:49:34 2026]
+Finished jobid: 75 (Rule: estimate_distances)
+66 of 155 steps (43%) done
+Execute 2 jobs...
+[Fri May 22 11:49:34 2026]
+localrule true_distances:
+    input: results/protein/JTT_DCMut/rep0/alignment.treefile
+    output: results/protein/JTT_DCMut/rep0/true_distances.tsv
+    jobid: 54
+    reason: Missing output files: results/protein/JTT_DCMut/rep0/true_distances.tsv; Input files updated by another job: results/protein/JTT_DCMut/rep0/alignment.treefile
+    wildcards: dtype=protein, model=JTT_DCMut, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+localrule estimate_distances:
+    input: results/dna/tn93/rep1/alignment.fa
+    output: results/dna/tn93/rep1/estimated_distances.tsv
+    jobid: 24
+    reason: Missing output files: results/dna/tn93/rep1/estimated_distances.tsv; Input files updated by another job: results/dna/tn93/rep1/alignment.fa
+    wildcards: dtype=dna, model=tn93, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 35 (Rule: estimate_distances)
+67 of 155 steps (43%) done
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule simulate:
+    output: results/protein/HIVb/rep0/alignment.fa, results/protein/HIVb/rep0/alignment.treefile
+    jobid: 71
+    reason: Missing output files: results/protein/HIVb/rep0/alignment.treefile, results/protein/HIVb/rep0/alignment.fa
+    wildcards: dtype=protein, model=HIVb, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+Finished jobid: 54 (Rule: true_distances)
+68 of 155 steps (44%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule simulate:
+    output: results/protein/WAG/rep0/alignment.fa, results/protein/WAG/rep0/alignment.treefile
+    jobid: 31
+    reason: Missing output files: results/protein/WAG/rep0/alignment.fa, results/protein/WAG/rep0/alignment.treefile
+    wildcards: dtype=protein, model=WAG, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 24 (Rule: estimate_distances)
+69 of 155 steps (45%) done
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule true_distances:
+    input: results/protein/WAG/rep1/alignment.treefile
+    output: results/protein/WAG/rep1/true_distances.tsv
+    jobid: 32
+    reason: Missing output files: results/protein/WAG/rep1/true_distances.tsv; Input files updated by another job: results/protein/WAG/rep1/alignment.treefile
+    wildcards: dtype=protein, model=WAG, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+Finished jobid: 71 (Rule: simulate)
+70 of 155 steps (45%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule estimate_distances:
+    input: results/protein/HIVb/rep0/alignment.fa
+    output: results/protein/HIVb/rep0/estimated_distances.tsv
+    jobid: 74
+    reason: Missing output files: results/protein/HIVb/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/HIVb/rep0/alignment.fa
+    wildcards: dtype=protein, model=HIVb, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+Finished jobid: 31 (Rule: simulate)
+71 of 155 steps (46%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule estimate_distances:
+    input: results/protein/WAG/rep0/alignment.fa
+    output: results/protein/WAG/rep0/estimated_distances.tsv
+    jobid: 34
+    reason: Missing output files: results/protein/WAG/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/WAG/rep0/alignment.fa
+    wildcards: dtype=protein, model=WAG, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+Finished jobid: 32 (Rule: true_distances)
+72 of 155 steps (46%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule true_distances:
+    input: results/protein/DCMUT/rep1/alignment.treefile
+    output: results/protein/DCMUT/rep1/true_distances.tsv
+    jobid: 112
+    reason: Missing output files: results/protein/DCMUT/rep1/true_distances.tsv; Input files updated by another job: results/protein/DCMUT/rep1/alignment.treefile
+    wildcards: dtype=protein, model=DCMUT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 112 (Rule: true_distances)
+73 of 155 steps (47%) done
+[Fri May 22 11:49:34 2026]
+Finished jobid: 74 (Rule: estimate_distances)
+74 of 155 steps (48%) done
+Execute 2 jobs...
+[Fri May 22 11:49:34 2026]
+localrule aggregate:
+    input: results/protein/MtREV/rep0/true_distances.tsv, results/protein/MtREV/rep1/true_distances.tsv, results/protein/MtREV/rep0/estimated_distances.tsv, results/protein/MtREV/rep1/estimated_distances.tsv
+    output: results/protein/MtREV/all.tsv
+    jobid: 117
+    reason: Missing output files: results/protein/MtREV/all.tsv; Input files updated by another job: results/protein/MtREV/rep1/estimated_distances.tsv, results/protein/MtREV/rep1/true_distances.tsv, results/protein/MtREV/rep0/true_distances.tsv, results/protein/MtREV/rep0/estimated_distances.tsv
+    wildcards: dtype=protein, model=MtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+localrule estimate_distances:
+    input: results/protein/Dayhoff/rep1/alignment.fa
+    output: results/protein/Dayhoff/rep1/estimated_distances.tsv
+    jobid: 107
+    reason: Missing output files: results/protein/Dayhoff/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/Dayhoff/rep1/alignment.fa
+    wildcards: dtype=protein, model=Dayhoff, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:34 2026]
+Finished jobid: 34 (Rule: estimate_distances)
+75 of 155 steps (48%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule aggregate:
+    input: results/dna/k2p/rep0/true_distances.tsv, results/dna/k2p/rep1/true_distances.tsv, results/dna/k2p/rep0/estimated_distances.tsv, results/dna/k2p/rep1/estimated_distances.tsv
+    output: results/dna/k2p/all.tsv
+    jobid: 10
+    reason: Missing output files: results/dna/k2p/all.tsv; Input files updated by another job: results/dna/k2p/rep0/true_distances.tsv, results/dna/k2p/rep1/estimated_distances.tsv, results/dna/k2p/rep0/estimated_distances.tsv, results/dna/k2p/rep1/true_distances.tsv
+    wildcards: dtype=dna, model=k2p
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 107 (Rule: estimate_distances)
+76 of 155 steps (49%) done
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule true_distances:
+    input: results/protein/WAG/rep0/alignment.treefile
+    output: results/protein/WAG/rep0/true_distances.tsv
+    jobid: 30
+    reason: Missing output files: results/protein/WAG/rep0/true_distances.tsv; Input files updated by another job: results/protein/WAG/rep0/alignment.treefile
+    wildcards: dtype=protein, model=WAG, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 30 (Rule: true_distances)
+77 of 155 steps (50%) done
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule aggregate:
+    input: results/protein/BLOSUM62/rep0/true_distances.tsv, results/protein/BLOSUM62/rep1/true_distances.tsv, results/protein/BLOSUM62/rep0/estimated_distances.tsv, results/protein/BLOSUM62/rep1/estimated_distances.tsv
+    output: results/protein/BLOSUM62/all.tsv
+    jobid: 93
+    reason: Missing output files: results/protein/BLOSUM62/all.tsv; Input files updated by another job: results/protein/BLOSUM62/rep1/true_distances.tsv, results/protein/BLOSUM62/rep1/estimated_distances.tsv, results/protein/BLOSUM62/rep0/estimated_distances.tsv, results/protein/BLOSUM62/rep0/true_distances.tsv
+    wildcards: dtype=protein, model=BLOSUM62
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:34 2026]
+Finished jobid: 77 (Rule: aggregate)
+78 of 155 steps (50%) done
+Execute 1 jobs...
+[Fri May 22 11:49:34 2026]
+localrule estimate_distances:
+    input: results/protein/DCMUT/rep0/alignment.fa
+    output: results/protein/DCMUT/rep0/estimated_distances.tsv
+    jobid: 114
+    reason: Missing output files: results/protein/DCMUT/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/DCMUT/rep0/alignment.fa
+    wildcards: dtype=protein, model=DCMUT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:35 2026]
+Finished jobid: 114 (Rule: estimate_distances)
+79 of 155 steps (51%) done
+Execute 1 jobs...
+[Fri May 22 11:49:35 2026]
+localrule true_distances:
+    input: results/protein/HIVb/rep1/alignment.treefile
+    output: results/protein/HIVb/rep1/true_distances.tsv
+    jobid: 72
+    reason: Missing output files: results/protein/HIVb/rep1/true_distances.tsv; Input files updated by another job: results/protein/HIVb/rep1/alignment.treefile
+    wildcards: dtype=protein, model=HIVb, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:35 2026]
+Finished jobid: 72 (Rule: true_distances)
+80 of 155 steps (52%) done
+Execute 1 jobs...
+[Fri May 22 11:49:35 2026]
+localrule simulate:
+    output: results/dna/jc/rep0/alignment.fa, results/dna/jc/rep0/alignment.treefile
+    jobid: 4
+    reason: Missing output files: results/dna/jc/rep0/alignment.treefile, results/dna/jc/rep0/alignment.fa
+    wildcards: dtype=dna, model=jc, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:35 2026]
+Finished jobid: 4 (Rule: simulate)
+81 of 155 steps (52%) done
+Execute 1 jobs...
+[Fri May 22 11:49:35 2026]
+localrule estimate_distances:
+    input: results/protein/DCMUT/rep1/alignment.fa
+    output: results/protein/DCMUT/rep1/estimated_distances.tsv
+    jobid: 115
+    reason: Missing output files: results/protein/DCMUT/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/DCMUT/rep1/alignment.fa
+    wildcards: dtype=protein, model=DCMUT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:35 2026]
+Finished jobid: 115 (Rule: estimate_distances)
+82 of 155 steps (53%) done
+Execute 1 jobs...
+[Fri May 22 11:49:36 2026]
+localrule true_distances:
+    input: results/protein/VT/rep1/alignment.treefile
+    output: results/protein/VT/rep1/true_distances.tsv
+    jobid: 64
+    reason: Missing output files: results/protein/VT/rep1/true_distances.tsv; Input files updated by another job: results/protein/VT/rep1/alignment.treefile
+    wildcards: dtype=protein, model=VT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:36 2026]
+Finished jobid: 64 (Rule: true_distances)
+83 of 155 steps (54%) done
+Execute 1 jobs...
+[Fri May 22 11:49:36 2026]
+localrule plot_scatter:
+    input: results/protein/HIVw/all.tsv
+    output: plots/protein/HIVw/scatter.pdf
+    jobid: 76
+    reason: Missing output files: plots/protein/HIVw/scatter.pdf; Input files updated by another job: results/protein/HIVw/all.tsv
+    wildcards: dtype=protein, model=HIVw
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:36 2026]
+Finished jobid: 117 (Rule: aggregate)
+84 of 155 steps (54%) done
+Execute 1 jobs...
+[Fri May 22 11:49:36 2026]
+localrule true_distances:
+    input: results/protein/HIVb/rep0/alignment.treefile
+    output: results/protein/HIVb/rep0/true_distances.tsv
+    jobid: 70
+    reason: Missing output files: results/protein/HIVb/rep0/true_distances.tsv; Input files updated by another job: results/protein/HIVb/rep0/alignment.treefile
+    wildcards: dtype=protein, model=HIVb, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:36 2026]
+Finished jobid: 10 (Rule: aggregate)
+85 of 155 steps (55%) done
+Execute 1 jobs...
+[Fri May 22 11:49:36 2026]
+localrule plot_error:
+    input: results/dna/k2p/all.tsv
+    output: plots/dna/k2p/error.pdf
+    jobid: 26
+    reason: Missing output files: plots/dna/k2p/error.pdf; Input files updated by another job: results/dna/k2p/all.tsv
+    wildcards: dtype=dna, model=k2p
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:36 2026]
+Finished jobid: 70 (Rule: true_distances)
+86 of 155 steps (55%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:36 2026]
+localrule aggregate:
+    input: results/protein/JTT_DCMut/rep0/true_distances.tsv, results/protein/JTT_DCMut/rep1/true_distances.tsv, results/protein/JTT_DCMut/rep0/estimated_distances.tsv, results/protein/JTT_DCMut/rep1/estimated_distances.tsv
+    output: results/protein/JTT_DCMut/all.tsv
+    jobid: 53
+    reason: Missing output files: results/protein/JTT_DCMut/all.tsv; Input files updated by another job: results/protein/JTT_DCMut/rep0/true_distances.tsv, results/protein/JTT_DCMut/rep1/true_distances.tsv, results/protein/JTT_DCMut/rep0/estimated_distances.tsv, results/protein/JTT_DCMut/rep1/estimated_distances.tsv
+    wildcards: dtype=protein, model=JTT_DCMut
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:37 2026]
+Finished jobid: 93 (Rule: aggregate)
+87 of 155 steps (56%) done
+Execute 1 jobs...
+[Fri May 22 11:49:37 2026]
+localrule estimate_distances:
+    input: results/protein/Dayhoff/rep0/alignment.fa
+    output: results/protein/Dayhoff/rep0/estimated_distances.tsv
+    jobid: 106
+    reason: Missing output files: results/protein/Dayhoff/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/Dayhoff/rep0/alignment.fa
+    wildcards: dtype=protein, model=Dayhoff, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:37 2026]
+Finished jobid: 106 (Rule: estimate_distances)
+88 of 155 steps (57%) done
+Execute 1 jobs...
+[Fri May 22 11:49:37 2026]
+localrule true_distances:
+    input: results/dna/tn93/rep1/alignment.treefile
+    output: results/dna/tn93/rep1/true_distances.tsv
+    jobid: 21
+    reason: Missing output files: results/dna/tn93/rep1/true_distances.tsv; Input files updated by another job: results/dna/tn93/rep1/alignment.treefile
+    wildcards: dtype=dna, model=tn93, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:37 2026]
+Finished jobid: 76 (Rule: plot_scatter)
+89 of 155 steps (57%) done
+Execute 1 jobs...
+[Fri May 22 11:49:37 2026]
+localrule aggregate:
+    input: results/protein/Dayhoff/rep0/true_distances.tsv, results/protein/Dayhoff/rep1/true_distances.tsv, results/protein/Dayhoff/rep0/estimated_distances.tsv, results/protein/Dayhoff/rep1/estimated_distances.tsv
+    output: results/protein/Dayhoff/all.tsv
+    jobid: 101
+    reason: Missing output files: results/protein/Dayhoff/all.tsv; Input files updated by another job: results/protein/Dayhoff/rep1/true_distances.tsv, results/protein/Dayhoff/rep1/estimated_distances.tsv, results/protein/Dayhoff/rep0/true_distances.tsv, results/protein/Dayhoff/rep0/estimated_distances.tsv
+    wildcards: dtype=protein, model=Dayhoff
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:37 2026]
+Finished jobid: 21 (Rule: true_distances)
+90 of 155 steps (58%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:37 2026]
+localrule aggregate:
+    input: results/dna/tn93/rep0/true_distances.tsv, results/dna/tn93/rep1/true_distances.tsv, results/dna/tn93/rep0/estimated_distances.tsv, results/dna/tn93/rep1/estimated_distances.tsv
+    output: results/dna/tn93/all.tsv
+    jobid: 18
+    reason: Missing output files: results/dna/tn93/all.tsv; Input files updated by another job: results/dna/tn93/rep1/true_distances.tsv, results/dna/tn93/rep1/estimated_distances.tsv, results/dna/tn93/rep0/true_distances.tsv, results/dna/tn93/rep0/estimated_distances.tsv
+    wildcards: dtype=dna, model=tn93
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:37 2026]
+Finished jobid: 26 (Rule: plot_error)
+91 of 155 steps (59%) done
+Execute 1 jobs...
+[Fri May 22 11:49:37 2026]
+localrule plot_scatter:
+    input: results/protein/MtREV/all.tsv
+    output: plots/protein/MtREV/scatter.pdf
+    jobid: 116
+    reason: Missing output files: plots/protein/MtREV/scatter.pdf; Input files updated by another job: results/protein/MtREV/all.tsv
+    wildcards: dtype=protein, model=MtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:38 2026]
+Finished jobid: 53 (Rule: aggregate)
+92 of 155 steps (59%) done
+Execute 1 jobs...
+[Fri May 22 11:49:38 2026]
+localrule plot_scatter:
+    input: results/protein/JTT_DCMut/all.tsv
+    output: plots/protein/JTT_DCMut/scatter.pdf
+    jobid: 52
+    reason: Missing output files: plots/protein/JTT_DCMut/scatter.pdf; Input files updated by another job: results/protein/JTT_DCMut/all.tsv
+    wildcards: dtype=protein, model=JTT_DCMut
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:39 2026]
+Finished jobid: 116 (Rule: plot_scatter)
+93 of 155 steps (60%) done
+Execute 1 jobs...
+[Fri May 22 11:49:39 2026]
+localrule plot_error:
+    input: results/protein/JTT_DCMut/all.tsv
+    output: plots/protein/JTT_DCMut/error.pdf
+    jobid: 143
+    reason: Missing output files: plots/protein/JTT_DCMut/error.pdf; Input files updated by another job: results/protein/JTT_DCMut/all.tsv
+    wildcards: dtype=protein, model=JTT_DCMut
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:39 2026]
+Finished jobid: 101 (Rule: aggregate)
+94 of 155 steps (61%) done
+Execute 1 jobs...
+[Fri May 22 11:49:39 2026]
+localrule estimate_distances:
+    input: results/protein/VT/rep0/alignment.fa
+    output: results/protein/VT/rep0/estimated_distances.tsv
+    jobid: 66
+    reason: Missing output files: results/protein/VT/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/VT/rep0/alignment.fa
+    wildcards: dtype=protein, model=VT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:39 2026]
+Finished jobid: 18 (Rule: aggregate)
+95 of 155 steps (61%) done
+[Fri May 22 11:49:39 2026]
+Finished jobid: 52 (Rule: plot_scatter)
+96 of 155 steps (62%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:39 2026]
+localrule plot_error:
+    input: results/protein/Dayhoff/all.tsv
+    output: plots/protein/Dayhoff/error.pdf
+    jobid: 149
+    reason: Missing output files: plots/protein/Dayhoff/error.pdf; Input files updated by another job: results/protein/Dayhoff/all.tsv
+    wildcards: dtype=protein, model=Dayhoff
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:39 2026]
+localrule aggregate:
+    input: results/protein/DCMUT/rep0/true_distances.tsv, results/protein/DCMUT/rep1/true_distances.tsv, results/protein/DCMUT/rep0/estimated_distances.tsv, results/protein/DCMUT/rep1/estimated_distances.tsv
+    output: results/protein/DCMUT/all.tsv
+    jobid: 109
+    reason: Missing output files: results/protein/DCMUT/all.tsv; Input files updated by another job: results/protein/DCMUT/rep0/estimated_distances.tsv, results/protein/DCMUT/rep1/true_distances.tsv, results/protein/DCMUT/rep0/true_distances.tsv, results/protein/DCMUT/rep1/estimated_distances.tsv
+    wildcards: dtype=protein, model=DCMUT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:40 2026]
+Finished jobid: 66 (Rule: estimate_distances)
+97 of 155 steps (63%) done
+Execute 1 jobs...
+[Fri May 22 11:49:40 2026]
+localrule plot_scatter:
+    input: results/dna/tn93/all.tsv
+    output: plots/dna/tn93/scatter.pdf
+    jobid: 17
+    reason: Missing output files: plots/dna/tn93/scatter.pdf; Input files updated by another job: results/dna/tn93/all.tsv
+    wildcards: dtype=dna, model=tn93
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:40 2026]
+Finished jobid: 143 (Rule: plot_error)
+98 of 155 steps (63%) done
+Execute 1 jobs...
+[Fri May 22 11:49:40 2026]
+localrule aggregate:
+    input: results/protein/VT/rep0/true_distances.tsv, results/protein/VT/rep1/true_distances.tsv, results/protein/VT/rep0/estimated_distances.tsv, results/protein/VT/rep1/estimated_distances.tsv
+    output: results/protein/VT/all.tsv
+    jobid: 61
+    reason: Missing output files: results/protein/VT/all.tsv; Input files updated by another job: results/protein/VT/rep1/estimated_distances.tsv, results/protein/VT/rep0/true_distances.tsv, results/protein/VT/rep1/true_distances.tsv, results/protein/VT/rep0/estimated_distances.tsv
+    wildcards: dtype=protein, model=VT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:41 2026]
+Finished jobid: 149 (Rule: plot_error)
+99 of 155 steps (64%) done
+Execute 1 jobs...
+[Fri May 22 11:49:41 2026]
+localrule simulate:
+    output: results/protein/PMB/rep1/alignment.fa, results/protein/PMB/rep1/alignment.treefile
+    jobid: 137
+    reason: Missing output files: results/protein/PMB/rep1/alignment.fa, results/protein/PMB/rep1/alignment.treefile
+    wildcards: dtype=protein, model=PMB, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:41 2026]
+Finished jobid: 17 (Rule: plot_scatter)
+100 of 155 steps (65%) done
+Execute 1 jobs...
+[Fri May 22 11:49:41 2026]
+localrule estimate_distances:
+    input: results/dna/jc/rep0/alignment.fa
+    output: results/dna/jc/rep0/estimated_distances.tsv
+    jobid: 7
+    reason: Missing output files: results/dna/jc/rep0/estimated_distances.tsv; Input files updated by another job: results/dna/jc/rep0/alignment.fa
+    wildcards: dtype=dna, model=jc, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:41 2026]
+Finished jobid: 137 (Rule: simulate)
+101 of 155 steps (65%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:41 2026]
+localrule simulate:
+    output: results/protein/cpREV/rep0/alignment.fa, results/protein/cpREV/rep0/alignment.treefile
+    jobid: 87
+    reason: Missing output files: results/protein/cpREV/rep0/alignment.fa, results/protein/cpREV/rep0/alignment.treefile
+    wildcards: dtype=protein, model=cpREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:41 2026]
+Finished jobid: 87 (Rule: simulate)
+102 of 155 steps (66%) done
+Execute 1 jobs...
+[Fri May 22 11:49:41 2026]
+localrule plot_error:
+    input: results/protein/HIVw/all.tsv
+    output: plots/protein/HIVw/error.pdf
+    jobid: 146
+    reason: Missing output files: plots/protein/HIVw/error.pdf; Input files updated by another job: results/protein/HIVw/all.tsv
+    wildcards: dtype=protein, model=HIVw
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:41 2026]
+Finished jobid: 7 (Rule: estimate_distances)
+103 of 155 steps (66%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:41 2026]
+localrule simulate:
+    output: results/protein/RtREV/rep0/alignment.fa, results/protein/RtREV/rep0/alignment.treefile
+    jobid: 127
+    reason: Missing output files: results/protein/RtREV/rep0/alignment.treefile, results/protein/RtREV/rep0/alignment.fa
+    wildcards: dtype=protein, model=RtREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:41 2026]
+Finished jobid: 127 (Rule: simulate)
+104 of 155 steps (67%) done
+Execute 1 jobs...
+[Fri May 22 11:49:41 2026]
+localrule aggregate:
+    input: results/protein/LG/rep0/true_distances.tsv, results/protein/LG/rep1/true_distances.tsv, results/protein/LG/rep0/estimated_distances.tsv, results/protein/LG/rep1/estimated_distances.tsv
+    output: results/protein/LG/all.tsv
+    jobid: 37
+    reason: Missing output files: results/protein/LG/all.tsv; Input files updated by another job: results/protein/LG/rep1/true_distances.tsv, results/protein/LG/rep0/true_distances.tsv, results/protein/LG/rep1/estimated_distances.tsv, results/protein/LG/rep0/estimated_distances.tsv
+    wildcards: dtype=protein, model=LG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:42 2026]
+Finished jobid: 109 (Rule: aggregate)
+105 of 155 steps (68%) done
+Execute 1 jobs...
+[Fri May 22 11:49:42 2026]
+localrule true_distances:
+    input: results/dna/jc/rep1/alignment.treefile
+    output: results/dna/jc/rep1/true_distances.tsv
+    jobid: 5
+    reason: Missing output files: results/dna/jc/rep1/true_distances.tsv; Input files updated by another job: results/dna/jc/rep1/alignment.treefile
+    wildcards: dtype=dna, model=jc, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:42 2026]
+Finished jobid: 5 (Rule: true_distances)
+106 of 155 steps (68%) done
+Execute 1 jobs...
+[Fri May 22 11:49:42 2026]
+localrule plot_error:
+    input: results/dna/tn93/all.tsv
+    output: plots/dna/tn93/error.pdf
+    jobid: 27
+    reason: Missing output files: plots/dna/tn93/error.pdf; Input files updated by another job: results/dna/tn93/all.tsv
+    wildcards: dtype=dna, model=tn93
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:42 2026]
+Finished jobid: 61 (Rule: aggregate)
+107 of 155 steps (69%) done
+Execute 1 jobs...
+[Fri May 22 11:49:42 2026]
+localrule plot_scatter:
+    input: results/protein/VT/all.tsv
+    output: plots/protein/VT/scatter.pdf
+    jobid: 60
+    reason: Missing output files: plots/protein/VT/scatter.pdf; Input files updated by another job: results/protein/VT/all.tsv
+    wildcards: dtype=protein, model=VT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:42 2026]
+Finished jobid: 146 (Rule: plot_error)
+108 of 155 steps (70%) done
+Execute 1 jobs...
+[Fri May 22 11:49:42 2026]
+localrule plot_error:
+    input: results/protein/VT/all.tsv
+    output: plots/protein/VT/error.pdf
+    jobid: 144
+    reason: Missing output files: plots/protein/VT/error.pdf; Input files updated by another job: results/protein/VT/all.tsv
+    wildcards: dtype=protein, model=VT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:43 2026]
+Finished jobid: 27 (Rule: plot_error)
+109 of 155 steps (70%) done
+Execute 1 jobs...
+[Fri May 22 11:49:43 2026]
+localrule estimate_distances:
+    input: results/protein/RtREV/rep0/alignment.fa
+    output: results/protein/RtREV/rep0/estimated_distances.tsv
+    jobid: 130
+    reason: Missing output files: results/protein/RtREV/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/RtREV/rep0/alignment.fa
+    wildcards: dtype=protein, model=RtREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:43 2026]
+Finished jobid: 130 (Rule: estimate_distances)
+110 of 155 steps (71%) done
+Execute 1 jobs...
+[Fri May 22 11:49:43 2026]
+localrule plot_error:
+    input: results/protein/MtREV/all.tsv
+    output: plots/protein/MtREV/error.pdf
+    jobid: 151
+    reason: Missing output files: plots/protein/MtREV/error.pdf; Input files updated by another job: results/protein/MtREV/all.tsv
+    wildcards: dtype=protein, model=MtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:43 2026]
+Finished jobid: 60 (Rule: plot_scatter)
+111 of 155 steps (72%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:43 2026]
+localrule plot_scatter:
+    input: results/dna/k2p/all.tsv
+    output: plots/dna/k2p/scatter.pdf
+    jobid: 9
+    reason: Missing output files: plots/dna/k2p/scatter.pdf; Input files updated by another job: results/dna/k2p/all.tsv
+    wildcards: dtype=dna, model=k2p
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:43 2026]
+Finished jobid: 144 (Rule: plot_error)
+112 of 155 steps (72%) done
+Execute 1 jobs...
+[Fri May 22 11:49:43 2026]
+localrule estimate_distances:
+    input: results/protein/cpREV/rep0/alignment.fa
+    output: results/protein/cpREV/rep0/estimated_distances.tsv
+    jobid: 90
+    reason: Missing output files: results/protein/cpREV/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/cpREV/rep0/alignment.fa
+    wildcards: dtype=protein, model=cpREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:43 2026]
+Finished jobid: 37 (Rule: aggregate)
+113 of 155 steps (73%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:43 2026]
+localrule plot_error:
+    input: results/protein/BLOSUM62/all.tsv
+    output: plots/protein/BLOSUM62/error.pdf
+    jobid: 148
+    reason: Missing output files: plots/protein/BLOSUM62/error.pdf; Input files updated by another job: results/protein/BLOSUM62/all.tsv
+    wildcards: dtype=protein, model=BLOSUM62
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:43 2026]
+Finished jobid: 90 (Rule: estimate_distances)
+114 of 155 steps (74%) done
+Execute 1 jobs...
+[Fri May 22 11:49:43 2026]
+localrule simulate:
+    output: results/protein/JTT/rep0/alignment.fa, results/protein/JTT/rep0/alignment.treefile
+    jobid: 47
+    reason: Missing output files: results/protein/JTT/rep0/alignment.fa, results/protein/JTT/rep0/alignment.treefile
+    wildcards: dtype=protein, model=JTT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:44 2026]
+Finished jobid: 47 (Rule: simulate)
+115 of 155 steps (74%) done
+Execute 1 jobs...
+[Fri May 22 11:49:44 2026]
+localrule plot_error:
+    input: results/protein/LG/all.tsv
+    output: plots/protein/LG/error.pdf
+    jobid: 141
+    reason: Missing output files: plots/protein/LG/error.pdf; Input files updated by another job: results/protein/LG/all.tsv
+    wildcards: dtype=protein, model=LG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:44 2026]
+Finished jobid: 151 (Rule: plot_error)
+116 of 155 steps (75%) done
+Execute 1 jobs...
+[Fri May 22 11:49:44 2026]
+localrule estimate_distances:
+    input: results/protein/JTT/rep0/alignment.fa
+    output: results/protein/JTT/rep0/estimated_distances.tsv
+    jobid: 50
+    reason: Missing output files: results/protein/JTT/rep0/estimated_distances.tsv; Input files updated by another job: results/protein/JTT/rep0/alignment.fa
+    wildcards: dtype=protein, model=JTT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:44 2026]
+Finished jobid: 9 (Rule: plot_scatter)
+117 of 155 steps (75%) done
+Execute 1 jobs...
+[Fri May 22 11:49:44 2026]
+localrule plot_scatter:
+    input: results/protein/DCMUT/all.tsv
+    output: plots/protein/DCMUT/scatter.pdf
+    jobid: 108
+    reason: Missing output files: plots/protein/DCMUT/scatter.pdf; Input files updated by another job: results/protein/DCMUT/all.tsv
+    wildcards: dtype=protein, model=DCMUT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:44 2026]
+Finished jobid: 50 (Rule: estimate_distances)
+118 of 155 steps (76%) done
+[Fri May 22 11:49:44 2026]
+Finished jobid: 148 (Rule: plot_error)
+119 of 155 steps (77%) done
+Execute 2 jobs...
+[Fri May 22 11:49:44 2026]
+localrule plot_scatter:
+    input: results/protein/LG/all.tsv
+    output: plots/protein/LG/scatter.pdf
+    jobid: 36
+    reason: Missing output files: plots/protein/LG/scatter.pdf; Input files updated by another job: results/protein/LG/all.tsv
+    wildcards: dtype=protein, model=LG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:44 2026]
+localrule estimate_distances:
+    input: results/protein/PMB/rep1/alignment.fa
+    output: results/protein/PMB/rep1/estimated_distances.tsv
+    jobid: 139
+    reason: Missing output files: results/protein/PMB/rep1/estimated_distances.tsv; Input files updated by another job: results/protein/PMB/rep1/alignment.fa
+    wildcards: dtype=protein, model=PMB, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:45 2026]
+Finished jobid: 139 (Rule: estimate_distances)
+120 of 155 steps (77%) done
+Execute 1 jobs...
+[Fri May 22 11:49:45 2026]
+localrule true_distances:
+    input: results/protein/JTT/rep1/alignment.treefile
+    output: results/protein/JTT/rep1/true_distances.tsv
+    jobid: 48
+    reason: Missing output files: results/protein/JTT/rep1/true_distances.tsv; Input files updated by another job: results/protein/JTT/rep1/alignment.treefile
+    wildcards: dtype=protein, model=JTT, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:45 2026]
+Finished jobid: 141 (Rule: plot_error)
+121 of 155 steps (78%) done
+Execute 1 jobs...
+[Fri May 22 11:49:45 2026]
+localrule plot_scatter:
+    input: results/protein/Dayhoff/all.tsv
+    output: plots/protein/Dayhoff/scatter.pdf
+    jobid: 100
+    reason: Missing output files: plots/protein/Dayhoff/scatter.pdf; Input files updated by another job: results/protein/Dayhoff/all.tsv
+    wildcards: dtype=protein, model=Dayhoff
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:45 2026]
+Finished jobid: 48 (Rule: true_distances)
+122 of 155 steps (79%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:45 2026]
+localrule plot_error:
+    input: results/protein/DCMUT/all.tsv
+    output: plots/protein/DCMUT/error.pdf
+    jobid: 150
+    reason: Missing output files: plots/protein/DCMUT/error.pdf; Input files updated by another job: results/protein/DCMUT/all.tsv
+    wildcards: dtype=protein, model=DCMUT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:45 2026]
+Finished jobid: 108 (Rule: plot_scatter)
+123 of 155 steps (79%) done
+Execute 1 jobs...
+[Fri May 22 11:49:45 2026]
+localrule true_distances:
+    input: results/protein/PMB/rep1/alignment.treefile
+    output: results/protein/PMB/rep1/true_distances.tsv
+    jobid: 136
+    reason: Missing output files: results/protein/PMB/rep1/true_distances.tsv; Input files updated by another job: results/protein/PMB/rep1/alignment.treefile
+    wildcards: dtype=protein, model=PMB, rep=1
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:45 2026]
+Finished jobid: 136 (Rule: true_distances)
+124 of 155 steps (80%) done
+Execute 1 jobs...
+[Fri May 22 11:49:45 2026]
+localrule aggregate:
+    input: results/protein/PMB/rep0/true_distances.tsv, results/protein/PMB/rep1/true_distances.tsv, results/protein/PMB/rep0/estimated_distances.tsv, results/protein/PMB/rep1/estimated_distances.tsv
+    output: results/protein/PMB/all.tsv
+    jobid: 133
+    reason: Missing output files: results/protein/PMB/all.tsv; Input files updated by another job: results/protein/PMB/rep0/true_distances.tsv, results/protein/PMB/rep1/estimated_distances.tsv, results/protein/PMB/rep1/true_distances.tsv, results/protein/PMB/rep0/estimated_distances.tsv
+    wildcards: dtype=protein, model=PMB
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:45 2026]
+Finished jobid: 36 (Rule: plot_scatter)
+125 of 155 steps (81%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:45 2026]
+localrule true_distances:
+    input: results/protein/JTT/rep0/alignment.treefile
+    output: results/protein/JTT/rep0/true_distances.tsv
+    jobid: 46
+    reason: Missing output files: results/protein/JTT/rep0/true_distances.tsv; Input files updated by another job: results/protein/JTT/rep0/alignment.treefile
+    wildcards: dtype=protein, model=JTT, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:46 2026]
+Finished jobid: 46 (Rule: true_distances)
+126 of 155 steps (81%) done
+Execute 1 jobs...
+[Fri May 22 11:49:46 2026]
+localrule aggregate:
+    input: results/protein/JTT/rep0/true_distances.tsv, results/protein/JTT/rep1/true_distances.tsv, results/protein/JTT/rep0/estimated_distances.tsv, results/protein/JTT/rep1/estimated_distances.tsv
+    output: results/protein/JTT/all.tsv
+    jobid: 45
+    reason: Missing output files: results/protein/JTT/all.tsv; Input files updated by another job: results/protein/JTT/rep0/true_distances.tsv, results/protein/JTT/rep0/estimated_distances.tsv, results/protein/JTT/rep1/estimated_distances.tsv, results/protein/JTT/rep1/true_distances.tsv
+    wildcards: dtype=protein, model=JTT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:46 2026]
+Finished jobid: 100 (Rule: plot_scatter)
+127 of 155 steps (82%) done
+Execute 1 jobs...
+[Fri May 22 11:49:46 2026]
+localrule true_distances:
+    input: results/protein/cpREV/rep0/alignment.treefile
+    output: results/protein/cpREV/rep0/true_distances.tsv
+    jobid: 86
+    reason: Missing output files: results/protein/cpREV/rep0/true_distances.tsv; Input files updated by another job: results/protein/cpREV/rep0/alignment.treefile
+    wildcards: dtype=protein, model=cpREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:46 2026]
+Finished jobid: 150 (Rule: plot_error)
+128 of 155 steps (83%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:46 2026]
+localrule plot_scatter:
+    input: results/protein/BLOSUM62/all.tsv
+    output: plots/protein/BLOSUM62/scatter.pdf
+    jobid: 92
+    reason: Missing output files: plots/protein/BLOSUM62/scatter.pdf; Input files updated by another job: results/protein/BLOSUM62/all.tsv
+    wildcards: dtype=protein, model=BLOSUM62
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:46 2026]
+Finished jobid: 86 (Rule: true_distances)
+129 of 155 steps (83%) done
+Execute 1 jobs...
+[Fri May 22 11:49:46 2026]
+localrule aggregate:
+    input: results/protein/cpREV/rep0/true_distances.tsv, results/protein/cpREV/rep1/true_distances.tsv, results/protein/cpREV/rep0/estimated_distances.tsv, results/protein/cpREV/rep1/estimated_distances.tsv
+    output: results/protein/cpREV/all.tsv
+    jobid: 85
+    reason: Missing output files: results/protein/cpREV/all.tsv; Input files updated by another job: results/protein/cpREV/rep0/estimated_distances.tsv, results/protein/cpREV/rep1/true_distances.tsv, results/protein/cpREV/rep1/estimated_distances.tsv, results/protein/cpREV/rep0/true_distances.tsv
+    wildcards: dtype=protein, model=cpREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:47 2026]
+Finished jobid: 92 (Rule: plot_scatter)
+130 of 155 steps (84%) done
+Execute 1 jobs...
+[Fri May 22 11:49:47 2026]
+localrule true_distances:
+    input: results/dna/jc/rep0/alignment.treefile
+    output: results/dna/jc/rep0/true_distances.tsv
+    jobid: 3
+    reason: Missing output files: results/dna/jc/rep0/true_distances.tsv; Input files updated by another job: results/dna/jc/rep0/alignment.treefile
+    wildcards: dtype=dna, model=jc, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:47 2026]
+Finished jobid: 3 (Rule: true_distances)
+131 of 155 steps (85%) done
+Execute 1 jobs...
+[Fri May 22 11:49:47 2026]
+localrule aggregate:
+    input: results/dna/jc/rep0/true_distances.tsv, results/dna/jc/rep1/true_distances.tsv, results/dna/jc/rep0/estimated_distances.tsv, results/dna/jc/rep1/estimated_distances.tsv
+    output: results/dna/jc/all.tsv
+    jobid: 2
+    reason: Missing output files: results/dna/jc/all.tsv; Input files updated by another job: results/dna/jc/rep1/true_distances.tsv, results/dna/jc/rep0/true_distances.tsv, results/dna/jc/rep1/estimated_distances.tsv, results/dna/jc/rep0/estimated_distances.tsv
+    wildcards: dtype=dna, model=jc
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:48 2026]
+Finished jobid: 133 (Rule: aggregate)
+132 of 155 steps (85%) done
+Execute 1 jobs...
+[Fri May 22 11:49:48 2026]
+localrule plot_scatter:
+    input: results/protein/PMB/all.tsv
+    output: plots/protein/PMB/scatter.pdf
+    jobid: 132
+    reason: Missing output files: plots/protein/PMB/scatter.pdf; Input files updated by another job: results/protein/PMB/all.tsv
+    wildcards: dtype=protein, model=PMB
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:48 2026]
+Finished jobid: 45 (Rule: aggregate)
+133 of 155 steps (86%) done
+Execute 1 jobs...
+[Fri May 22 11:49:48 2026]
+localrule plot_error:
+    input: results/protein/JTT/all.tsv
+    output: plots/protein/JTT/error.pdf
+    jobid: 142
+    reason: Missing output files: plots/protein/JTT/error.pdf; Input files updated by another job: results/protein/JTT/all.tsv
+    wildcards: dtype=protein, model=JTT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:48 2026]
+Finished jobid: 85 (Rule: aggregate)
+134 of 155 steps (86%) done
+Execute 1 jobs...
+[Fri May 22 11:49:49 2026]
+localrule plot_scatter:
+    input: results/protein/JTT/all.tsv
+    output: plots/protein/JTT/scatter.pdf
+    jobid: 44
+    reason: Missing output files: plots/protein/JTT/scatter.pdf; Input files updated by another job: results/protein/JTT/all.tsv
+    wildcards: dtype=protein, model=JTT
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:49 2026]
+Finished jobid: 132 (Rule: plot_scatter)
+135 of 155 steps (87%) done
+Execute 1 jobs...
+[Fri May 22 11:49:49 2026]
+localrule plot_error:
+    input: results/protein/cpREV/all.tsv
+    output: plots/protein/cpREV/error.pdf
+    jobid: 147
+    reason: Missing output files: plots/protein/cpREV/error.pdf; Input files updated by another job: results/protein/cpREV/all.tsv
+    wildcards: dtype=protein, model=cpREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:49 2026]
+Finished jobid: 142 (Rule: plot_error)
+136 of 155 steps (88%) done
+Execute 1 jobs...
+[Fri May 22 11:49:49 2026]
+localrule plot_scatter:
+    input: results/protein/cpREV/all.tsv
+    output: plots/protein/cpREV/scatter.pdf
+    jobid: 84
+    reason: Missing output files: plots/protein/cpREV/scatter.pdf; Input files updated by another job: results/protein/cpREV/all.tsv
+    wildcards: dtype=protein, model=cpREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:49 2026]
+Finished jobid: 44 (Rule: plot_scatter)
+137 of 155 steps (88%) done
+Execute 1 jobs...
+[Fri May 22 11:49:50 2026]
+localrule aggregate:
+    input: results/protein/HIVb/rep0/true_distances.tsv, results/protein/HIVb/rep1/true_distances.tsv, results/protein/HIVb/rep0/estimated_distances.tsv, results/protein/HIVb/rep1/estimated_distances.tsv
+    output: results/protein/HIVb/all.tsv
+    jobid: 69
+    reason: Missing output files: results/protein/HIVb/all.tsv; Input files updated by another job: results/protein/HIVb/rep1/estimated_distances.tsv, results/protein/HIVb/rep0/estimated_distances.tsv, results/protein/HIVb/rep0/true_distances.tsv, results/protein/HIVb/rep1/true_distances.tsv
+    wildcards: dtype=protein, model=HIVb
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:50 2026]
+Finished jobid: 2 (Rule: aggregate)
+138 of 155 steps (89%) done
+Execute 1 jobs...
+[Fri May 22 11:49:50 2026]
+localrule plot_scatter:
+    input: results/dna/jc/all.tsv
+    output: plots/dna/jc/scatter.pdf
+    jobid: 1
+    reason: Missing output files: plots/dna/jc/scatter.pdf; Input files updated by another job: results/dna/jc/all.tsv
+    wildcards: dtype=dna, model=jc
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:50 2026]
+Finished jobid: 147 (Rule: plot_error)
+139 of 155 steps (90%) done
+Execute 1 jobs...
+[Fri May 22 11:49:50 2026]
+localrule plot_error:
+    input: results/dna/jc/all.tsv
+    output: plots/dna/jc/error.pdf
+    jobid: 25
+    reason: Missing output files: plots/dna/jc/error.pdf; Input files updated by another job: results/dna/jc/all.tsv
+    wildcards: dtype=dna, model=jc
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:50 2026]
+Finished jobid: 84 (Rule: plot_scatter)
+140 of 155 steps (90%) done
+Execute 1 jobs...
+[Fri May 22 11:49:50 2026]
+localrule aggregate:
+    input: results/protein/WAG/rep0/true_distances.tsv, results/protein/WAG/rep1/true_distances.tsv, results/protein/WAG/rep0/estimated_distances.tsv, results/protein/WAG/rep1/estimated_distances.tsv
+    output: results/protein/WAG/all.tsv
+    jobid: 29
+    reason: Missing output files: results/protein/WAG/all.tsv; Input files updated by another job: results/protein/WAG/rep1/estimated_distances.tsv, results/protein/WAG/rep1/true_distances.tsv, results/protein/WAG/rep0/estimated_distances.tsv, results/protein/WAG/rep0/true_distances.tsv
+    wildcards: dtype=protein, model=WAG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:51 2026]
+Finished jobid: 1 (Rule: plot_scatter)
+141 of 155 steps (91%) done
+Execute 1 jobs...
+[Fri May 22 11:49:51 2026]
+localrule plot_error:
+    input: results/protein/PMB/all.tsv
+    output: plots/protein/PMB/error.pdf
+    jobid: 153
+    reason: Missing output files: plots/protein/PMB/error.pdf; Input files updated by another job: results/protein/PMB/all.tsv
+    wildcards: dtype=protein, model=PMB
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:51 2026]
+Finished jobid: 25 (Rule: plot_error)
+142 of 155 steps (92%) done
+Execute 1 jobs...
+[Fri May 22 11:49:51 2026]
+localrule true_distances:
+    input: results/protein/RtREV/rep0/alignment.treefile
+    output: results/protein/RtREV/rep0/true_distances.tsv
+    jobid: 126
+    reason: Missing output files: results/protein/RtREV/rep0/true_distances.tsv; Input files updated by another job: results/protein/RtREV/rep0/alignment.treefile
+    wildcards: dtype=protein, model=RtREV, rep=0
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:51 2026]
+Finished jobid: 126 (Rule: true_distances)
+143 of 155 steps (92%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:51 2026]
+localrule aggregate:
+    input: results/protein/RtREV/rep0/true_distances.tsv, results/protein/RtREV/rep1/true_distances.tsv, results/protein/RtREV/rep0/estimated_distances.tsv, results/protein/RtREV/rep1/estimated_distances.tsv
+    output: results/protein/RtREV/all.tsv
+    jobid: 125
+    reason: Missing output files: results/protein/RtREV/all.tsv; Input files updated by another job: results/protein/RtREV/rep0/estimated_distances.tsv, results/protein/RtREV/rep1/true_distances.tsv, results/protein/RtREV/rep1/estimated_distances.tsv, results/protein/RtREV/rep0/true_distances.tsv
+    wildcards: dtype=protein, model=RtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:52 2026]
+Finished jobid: 69 (Rule: aggregate)
+144 of 155 steps (93%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:52 2026]
+localrule plot_scatter:
+    input: results/protein/HIVb/all.tsv
+    output: plots/protein/HIVb/scatter.pdf
+    jobid: 68
+    reason: Missing output files: plots/protein/HIVb/scatter.pdf; Input files updated by another job: results/protein/HIVb/all.tsv
+    wildcards: dtype=protein, model=HIVb
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:52 2026]
+Finished jobid: 153 (Rule: plot_error)
+145 of 155 steps (94%) done
+Execute 1 jobs...
+[Fri May 22 11:49:52 2026]
+localrule plot_error:
+    input: results/protein/HIVb/all.tsv
+    output: plots/protein/HIVb/error.pdf
+    jobid: 145
+    reason: Missing output files: plots/protein/HIVb/error.pdf; Input files updated by another job: results/protein/HIVb/all.tsv
+    wildcards: dtype=protein, model=HIVb
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:52 2026]
+Finished jobid: 29 (Rule: aggregate)
+146 of 155 steps (94%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:53 2026]
+localrule plot_scatter:
+    input: results/protein/WAG/all.tsv
+    output: plots/protein/WAG/scatter.pdf
+    jobid: 28
+    reason: Missing output files: plots/protein/WAG/scatter.pdf; Input files updated by another job: results/protein/WAG/all.tsv
+    wildcards: dtype=protein, model=WAG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+Select jobs to execute...
+[Fri May 22 11:49:53 2026]
+Finished jobid: 68 (Rule: plot_scatter)
+147 of 155 steps (95%) done
+Execute 1 jobs...
+[Fri May 22 11:49:53 2026]
+localrule plot_error:
+    input: results/protein/WAG/all.tsv
+    output: plots/protein/WAG/error.pdf
+    jobid: 140
+    reason: Missing output files: plots/protein/WAG/error.pdf; Input files updated by another job: results/protein/WAG/all.tsv
+    wildcards: dtype=protein, model=WAG
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:53 2026]
+Finished jobid: 145 (Rule: plot_error)
+148 of 155 steps (95%) done
+[Fri May 22 11:49:53 2026]
+Finished jobid: 125 (Rule: aggregate)
+149 of 155 steps (96%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri May 22 11:49:53 2026]
+localrule summarize:
+    input: results/dna/jc/all.tsv, results/dna/k2p/all.tsv, results/dna/tn93/all.tsv, results/protein/WAG/all.tsv, results/protein/LG/all.tsv, results/protein/JTT/all.tsv, results/protein/JTT_DCMut/all.tsv, results/protein/VT/all.tsv, results/protein/HIVb/all.tsv, results/protein/HIVw/all.tsv, results/protein/cpREV/all.tsv, results/protein/BLOSUM62/all.tsv, results/protein/Dayhoff/all.tsv, results/protein/DCMUT/all.tsv, results/protein/MtREV/all.tsv, results/protein/RtREV/all.tsv, results/protein/PMB/all.tsv
+    output: summary/summary.tsv, summary/summary.md, summary/comparison_dna.pdf, summary/comparison_protein.pdf
+    jobid: 154
+    reason: Missing output files: summary/comparison_dna.pdf, summary/summary.tsv, summary/comparison_protein.pdf, summary/summary.md; Input files updated by another job: results/dna/k2p/all.tsv, results/protein/HIVb/all.tsv, results/protein/JTT_DCMut/all.tsv, results/protein/DCMUT/all.tsv, results/protein/RtREV/all.tsv, results/dna/jc/all.tsv, results/protein/Dayhoff/all.tsv, results/protein/PMB/all.tsv, results/protein/LG/all.tsv, results/protein/JTT/all.tsv, results/protein/VT/all.tsv, results/protein/WAG/all.tsv, results/protein/BLOSUM62/all.tsv, results/protein/MtREV/all.tsv, results/dna/tn93/all.tsv, results/protein/HIVw/all.tsv, results/protein/cpREV/all.tsv
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:53 2026]
+localrule plot_error:
+    input: results/protein/RtREV/all.tsv
+    output: plots/protein/RtREV/error.pdf
+    jobid: 152
+    reason: Missing output files: plots/protein/RtREV/error.pdf; Input files updated by another job: results/protein/RtREV/all.tsv
+    wildcards: dtype=protein, model=RtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:53 2026]
+Finished jobid: 28 (Rule: plot_scatter)
+150 of 155 steps (97%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:53 2026]
+localrule plot_scatter:
+    input: results/protein/RtREV/all.tsv
+    output: plots/protein/RtREV/scatter.pdf
+    jobid: 124
+    reason: Missing output files: plots/protein/RtREV/scatter.pdf; Input files updated by another job: results/protein/RtREV/all.tsv
+    wildcards: dtype=protein, model=RtREV
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:54 2026]
+Finished jobid: 140 (Rule: plot_error)
+151 of 155 steps (97%) done
+[Fri May 22 11:49:54 2026]
+Finished jobid: 152 (Rule: plot_error)
+152 of 155 steps (98%) done
+[Fri May 22 11:49:55 2026]
+Finished jobid: 124 (Rule: plot_scatter)
+153 of 155 steps (99%) done
+[Fri May 22 11:49:55 2026]
+Finished jobid: 154 (Rule: summarize)
+154 of 155 steps (99%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri May 22 11:49:55 2026]
+localrule all:
+    input: plots/dna/jc/scatter.pdf, plots/dna/k2p/scatter.pdf, plots/dna/tn93/scatter.pdf, plots/dna/jc/error.pdf, plots/dna/k2p/error.pdf, plots/dna/tn93/error.pdf, plots/protein/WAG/scatter.pdf, plots/protein/LG/scatter.pdf, plots/protein/JTT/scatter.pdf, plots/protein/JTT_DCMut/scatter.pdf, plots/protein/VT/scatter.pdf, plots/protein/HIVb/scatter.pdf, plots/protein/HIVw/scatter.pdf, plots/protein/cpREV/scatter.pdf, plots/protein/BLOSUM62/scatter.pdf, plots/protein/Dayhoff/scatter.pdf, plots/protein/DCMUT/scatter.pdf, plots/protein/MtREV/scatter.pdf, plots/protein/RtREV/scatter.pdf, plots/protein/PMB/scatter.pdf, plots/protein/WAG/error.pdf, plots/protein/LG/error.pdf, plots/protein/JTT/error.pdf, plots/protein/JTT_DCMut/error.pdf, plots/protein/VT/error.pdf, plots/protein/HIVb/error.pdf, plots/protein/HIVw/error.pdf, plots/protein/cpREV/error.pdf, plots/protein/BLOSUM62/error.pdf, plots/protein/Dayhoff/error.pdf, plots/protein/DCMUT/error.pdf, plots/protein/MtREV/error.pdf, plots/protein/RtREV/error.pdf, plots/protein/PMB/error.pdf, summary/summary.tsv, summary/summary.md, summary/comparison_dna.pdf, summary/comparison_protein.pdf
+    jobid: 0
+    reason: Input files updated by another job: plots/protein/Dayhoff/scatter.pdf, plots/dna/tn93/error.pdf, plots/protein/JTT_DCMut/scatter.pdf, plots/protein/BLOSUM62/scatter.pdf, plots/protein/WAG/scatter.pdf, plots/protein/WAG/error.pdf, plots/protein/VT/scatter.pdf, summary/comparison_dna.pdf, plots/protein/RtREV/scatter.pdf, plots/protein/MtREV/error.pdf, plots/protein/DCMUT/error.pdf, plots/protein/JTT/scatter.pdf, plots/protein/HIVw/scatter.pdf, plots/dna/k2p/error.pdf, summary/comparison_protein.pdf, summary/summary.tsv, plots/protein/PMB/error.pdf, plots/dna/tn93/scatter.pdf, plots/protein/JTT/error.pdf, plots/protein/Dayhoff/error.pdf, plots/protein/cpREV/scatter.pdf, plots/protein/DCMUT/scatter.pdf, plots/protein/HIVb/error.pdf, plots/dna/jc/error.pdf, plots/protein/HIVb/scatter.pdf, plots/protein/VT/error.pdf, summary/summary.md, plots/protein/HIVw/error.pdf, plots/dna/k2p/scatter.pdf, plots/protein/MtREV/scatter.pdf, plots/protein/RtREV/error.pdf, plots/protein/LG/scatter.pdf, plots/protein/LG/error.pdf, plots/dna/jc/scatter.pdf, plots/protein/cpREV/error.pdf, plots/protein/JTT_DCMut/error.pdf, plots/protein/PMB/scatter.pdf, plots/protein/BLOSUM62/error.pdf
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 11:49:55 2026]
+Finished jobid: 0 (Rule: all)
+155 of 155 steps (100%) done
+Complete log(s): /Users/arve/src/pysekvenser/validation/.snakemake/log/2026-05-22T114930.975162.snakemake.log

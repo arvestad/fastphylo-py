@@ -1,0 +1,6 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: math148d
+Building DAG of jobs...
+MissingRuleException:
+No rule to produce replicates=100 (if you use input functions make sure that they don't raise unexpected exceptions).

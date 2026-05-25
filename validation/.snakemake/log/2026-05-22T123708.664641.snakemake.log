@@ -1,0 +1,176 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: math148d
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+aggregate                17
+all                       1
+estimate_distances      136
+plot_error               17
+plot_scatter             17
+simulate                101
+summarize                 1
+true_distances          130
+total                   420
+
+Select jobs to execute...
+Execute 8 jobs...
+[Fri May 22 12:37:09 2026]
+localrule simulate:
+    output: results/protein/HIVb/rep8/alignment.fa, results/protein/HIVb/rep8/alignment.treefile
+    jobid: 279
+    reason: Missing output files: results/protein/HIVb/rep8/alignment.fa, results/protein/HIVb/rep8/alignment.treefile
+    wildcards: dtype=protein, model=HIVb, rep=8
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule estimate_distances:
+    input: results/dna/tn93/rep9/alignment.fa
+    output: results/dna/tn93/rep9/estimated_distances.tsv
+    jobid: 96
+    reason: Missing output files: results/dna/tn93/rep9/estimated_distances.tsv; Updated input files: results/dna/tn93/rep9/alignment.fa
+    wildcards: dtype=dna, model=tn93, rep=9
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule estimate_distances:
+    input: results/protein/DCMUT/rep4/alignment.fa
+    output: results/protein/DCMUT/rep4/estimated_distances.tsv
+    jobid: 446
+    reason: Missing output files: results/protein/DCMUT/rep4/estimated_distances.tsv; Updated input files: results/protein/DCMUT/rep4/alignment.fa
+    wildcards: dtype=protein, model=DCMUT, rep=4
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule simulate:
+    output: results/dna/jc/rep5/alignment.fa, results/dna/jc/rep5/alignment.treefile
+    jobid: 14
+    reason: Missing output files: results/dna/jc/rep5/alignment.treefile, results/dna/jc/rep5/alignment.fa
+    wildcards: dtype=dna, model=jc, rep=5
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule simulate:
+    output: results/protein/LG/rep9/alignment.fa, results/protein/LG/rep9/alignment.treefile
+    jobid: 153
+    reason: Missing output files: results/protein/LG/rep9/alignment.treefile, results/protein/LG/rep9/alignment.fa
+    wildcards: dtype=protein, model=LG, rep=9
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule simulate:
+    output: results/protein/DCMUT/rep6/alignment.fa, results/protein/DCMUT/rep6/alignment.treefile
+    jobid: 435
+    reason: Missing output files: results/protein/DCMUT/rep6/alignment.treefile, results/protein/DCMUT/rep6/alignment.fa
+    wildcards: dtype=protein, model=DCMUT, rep=6
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule estimate_distances:
+    input: results/protein/MtREV/rep2/alignment.fa
+    output: results/protein/MtREV/rep2/estimated_distances.tsv
+    jobid: 476
+    reason: Missing output files: results/protein/MtREV/rep2/estimated_distances.tsv; Updated input files: results/protein/MtREV/rep2/alignment.fa
+    wildcards: dtype=protein, model=MtREV, rep=2
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+localrule simulate:
+    output: results/protein/DCMUT/rep8/alignment.fa, results/protein/DCMUT/rep8/alignment.treefile
+    jobid: 439
+    reason: Missing output files: results/protein/DCMUT/rep8/alignment.treefile, results/protein/DCMUT/rep8/alignment.fa
+    wildcards: dtype=protein, model=DCMUT, rep=8
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+Finished jobid: 279 (Rule: simulate)
+1 of 420 steps (0.2%) done
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/arve/src/pysekvenser/validation/Snakefile", line 82:
+Command 'set -euo pipefail;  python scripts/estimate_distances.py results/protein/DCMUT/rep4/alignment.fa results/protein/DCMUT/rep4/estimated_distances.tsv DCMUT' returned non-zero exit status 1.
+[Fri May 22 12:37:09 2026]
+Error in rule estimate_distances:
+    message: None
+    jobid: 446
+    input: results/protein/DCMUT/rep4/alignment.fa
+    output: results/protein/DCMUT/rep4/estimated_distances.tsv
+    shell:
+        python scripts/estimate_distances.py results/protein/DCMUT/rep4/alignment.fa results/protein/DCMUT/rep4/estimated_distances.tsv DCMUT
+        (command exited with non-zero exit code)
+RuleException:
+CalledProcessError in file "/Users/arve/src/pysekvenser/validation/Snakefile", line 82:
+Command 'set -euo pipefail;  python scripts/estimate_distances.py results/dna/tn93/rep9/alignment.fa results/dna/tn93/rep9/estimated_distances.tsv tn93' returned non-zero exit status 1.
+[Fri May 22 12:37:09 2026]
+Error in rule estimate_distances:
+    message: None
+    jobid: 96
+    input: results/dna/tn93/rep9/alignment.fa
+    output: results/dna/tn93/rep9/estimated_distances.tsv
+    shell:
+        python scripts/estimate_distances.py results/dna/tn93/rep9/alignment.fa results/dna/tn93/rep9/estimated_distances.tsv tn93
+        (command exited with non-zero exit code)
+Execute 1 jobs...
+[Fri May 22 12:37:09 2026]
+localrule simulate:
+    output: results/protein/RtREV/rep6/alignment.fa, results/protein/RtREV/rep6/alignment.treefile
+    jobid: 499
+    reason: Missing output files: results/protein/RtREV/rep6/alignment.treefile, results/protein/RtREV/rep6/alignment.fa
+    wildcards: dtype=protein, model=RtREV, rep=6
+    resources: tmpdir=/var/folders/59/p2bwblnn5l548z9g93893nwrlt1b1g/T
+[Fri May 22 12:37:09 2026]
+Finished jobid: 14 (Rule: simulate)
+2 of 420 steps (0.5%) done
+[Fri May 22 12:37:09 2026]
+Finished jobid: 435 (Rule: simulate)
+3 of 420 steps (1%) done
+[Fri May 22 12:37:09 2026]
+Finished jobid: 153 (Rule: simulate)
+4 of 420 steps (1%) done
+[Fri May 22 12:37:09 2026]
+Finished jobid: 439 (Rule: simulate)
+5 of 420 steps (1%) done
+RuleException:
+CalledProcessError in file "/Users/arve/src/pysekvenser/validation/Snakefile", line 82:
+Command 'set -euo pipefail;  python scripts/estimate_distances.py results/protein/MtREV/rep2/alignment.fa results/protein/MtREV/rep2/estimated_distances.tsv MtREV' returned non-zero exit status 1.
+[Fri May 22 12:37:09 2026]
+Error in rule estimate_distances:
+    message: None
+    jobid: 476
+    input: results/protein/MtREV/rep2/alignment.fa
+    output: results/protein/MtREV/rep2/estimated_distances.tsv
+    shell:
+        python scripts/estimate_distances.py results/protein/MtREV/rep2/alignment.fa results/protein/MtREV/rep2/estimated_distances.tsv MtREV
+        (command exited with non-zero exit code)
+[Fri May 22 12:37:09 2026]
+Finished jobid: 499 (Rule: simulate)
+6 of 420 steps (1%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Fri May 22 12:37:09 2026]
+Error in rule estimate_distances:
+    message: None
+    jobid: 96
+    input: results/dna/tn93/rep9/alignment.fa
+    output: results/dna/tn93/rep9/estimated_distances.tsv
+    shell:
+        python scripts/estimate_distances.py results/dna/tn93/rep9/alignment.fa results/dna/tn93/rep9/estimated_distances.tsv tn93
+        (command exited with non-zero exit code)
+[Fri May 22 12:37:09 2026]
+Error in rule estimate_distances:
+    message: None
+    jobid: 446
+    input: results/protein/DCMUT/rep4/alignment.fa
+    output: results/protein/DCMUT/rep4/estimated_distances.tsv
+    shell:
+        python scripts/estimate_distances.py results/protein/DCMUT/rep4/alignment.fa results/protein/DCMUT/rep4/estimated_distances.tsv DCMUT
+        (command exited with non-zero exit code)
+[Fri May 22 12:37:09 2026]
+Error in rule estimate_distances:
+    message: None
+    jobid: 476
+    input: results/protein/MtREV/rep2/alignment.fa
+    output: results/protein/MtREV/rep2/estimated_distances.tsv
+    shell:
+        python scripts/estimate_distances.py results/protein/MtREV/rep2/alignment.fa results/protein/MtREV/rep2/estimated_distances.tsv MtREV
+        (command exited with non-zero exit code)
+Complete log(s): /Users/arve/src/pysekvenser/validation/.snakemake/log/2026-05-22T123708.664641.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

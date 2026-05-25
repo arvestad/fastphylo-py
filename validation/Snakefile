@@ -1,0 +1,247 @@
+import os
+
+configfile: "config.yaml"
+
+N_SEQ       = config["n_sequences"]
+REPLICATES  = list(range(config["replicates"]))
+DNA_MODELS  = config["dna_models"]   # list of {name, iqtree}
+PROT_MODELS = config["protein_models"]  # list of {name, iqtree}
+
+DNA_NAMES  = [m["name"] for m in DNA_MODELS]
+PROT_NAMES = [m["name"] for m in PROT_MODELS]
+
+# Build lookup: fastphylo_name → iqtree_name
+IQTREE_NAME = {}
+for m in DNA_MODELS + PROT_MODELS:
+    IQTREE_NAME[m["name"]] = m["iqtree"]
+
+SEQ_LENGTH = {"dna": config["seq_length_dna"], "protein": config["seq_length_protein"]}
+
+
+# ---------------------------------------------------------------------------
+# Default target
+# ---------------------------------------------------------------------------
+rule all:
+    input:
+        # per-model scatter and error plots
+        expand("plots/dna/{model}/scatter.pdf",    model=DNA_NAMES),
+        expand("plots/dna/{model}/error.pdf",      model=DNA_NAMES),
+        expand("plots/protein/{model}/scatter.pdf", model=PROT_NAMES),
+        expand("plots/protein/{model}/error.pdf",   model=PROT_NAMES),
+        # summary table and combined comparison plots
+        "summary/summary.tsv",
+        "summary/summary.md",
+        "summary/summary.pdf",
+        "summary/comparison_dna.pdf",
+        "summary/comparison_protein.pdf",
+        # likelihood-validity check
+        "summary/ll_check.tsv",
+
+
+# ---------------------------------------------------------------------------
+# Simulate one replicate
+# ---------------------------------------------------------------------------
+rule simulate:
+    output:
+        fa       = "results/{dtype}/{model}/rep{rep}/alignment.fa",
+        treefile = "results/{dtype}/{model}/rep{rep}/alignment.treefile",
+    params:
+        prefix   = "results/{dtype}/{model}/rep{rep}/alignment",
+        iqtree   = lambda wc: IQTREE_NAME[wc.model],
+        length   = lambda wc: SEQ_LENGTH[wc.dtype],
+        n_seq    = N_SEQ,
+    shell:
+        """
+        python scripts/simulate.py \
+            --prefix {params.prefix} \
+            --model {params.iqtree} \
+            --dtype {wildcards.dtype} \
+            --length {params.length} \
+            --n-sequences {params.n_seq}
+        """
+
+
+# ---------------------------------------------------------------------------
+# True pairwise distances from the simulated tree
+# ---------------------------------------------------------------------------
+rule true_distances:
+    input:
+        treefile = "results/{dtype}/{model}/rep{rep}/alignment.treefile",
+    output:
+        tsv = "results/{dtype}/{model}/rep{rep}/true_distances.tsv",
+    shell:
+        "python scripts/true_distances.py {input.treefile} {output.tsv}"
+
+
+# ---------------------------------------------------------------------------
+# Estimated distances from the simulated alignment
+# ---------------------------------------------------------------------------
+rule estimate_distances:
+    input:
+        fa = "results/{dtype}/{model}/rep{rep}/alignment.fa",
+    output:
+        tsv = "results/{dtype}/{model}/rep{rep}/estimated_distances.tsv",
+    shell:
+        "python scripts/estimate_distances.py {input.fa} {output.tsv} {wildcards.model}"
+
+
+# ---------------------------------------------------------------------------
+# Aggregate all replicates for one (dtype, model) pair
+# ---------------------------------------------------------------------------
+rule aggregate:
+    input:
+        true_tsvs = expand(
+            "results/{{dtype}}/{{model}}/rep{rep}/true_distances.tsv",
+            rep=REPLICATES,
+        ),
+        est_tsvs = expand(
+            "results/{{dtype}}/{{model}}/rep{rep}/estimated_distances.tsv",
+            rep=REPLICATES,
+        ),
+    output:
+        tsv = "results/{dtype}/{model}/all.tsv",
+    run:
+        import pandas as pd
+        frames = []
+        for rep, t_path, e_path in zip(
+            REPLICATES, input.true_tsvs, input.est_tsvs
+        ):
+            true_df = pd.read_csv(t_path, sep="\t")
+            est_df  = pd.read_csv(e_path, sep="\t")
+            merged  = true_df.merge(est_df, on=["taxon_i", "taxon_j"])
+            merged["replicate"] = rep
+            frames.append(merged)
+        result = pd.concat(frames, ignore_index=True)
+        result.to_csv(output.tsv, sep="\t", index=False)
+
+
+# ---------------------------------------------------------------------------
+# Scatter plot: true vs estimated
+# ---------------------------------------------------------------------------
+rule plot_scatter:
+    input:
+        tsv = "results/{dtype}/{model}/all.tsv",
+    output:
+        pdf = "plots/{dtype}/{model}/scatter.pdf",
+    shell:
+        "python scripts/plot.py scatter {input.tsv} {output.pdf} {wildcards.model}"
+
+
+# ---------------------------------------------------------------------------
+# Error plot: (estimated − true) vs true
+# ---------------------------------------------------------------------------
+rule plot_error:
+    input:
+        tsv = "results/{dtype}/{model}/all.tsv",
+    output:
+        pdf = "plots/{dtype}/{model}/error.pdf",
+    shell:
+        "python scripts/plot.py error {input.tsv} {output.pdf} {wildcards.model}"
+
+
+# ---------------------------------------------------------------------------
+# Render summary table as PDF
+# ---------------------------------------------------------------------------
+rule render_summary:
+    input:
+        tsv = "summary/summary.tsv",
+    output:
+        pdf = "summary/summary.pdf",
+    shell:
+        "python scripts/render_summary.py {input.tsv} {output.pdf}"
+
+
+# ---------------------------------------------------------------------------
+# Summary table + combined comparison plots
+# ---------------------------------------------------------------------------
+rule summarize:
+    input:
+        dna_tsvs  = expand("results/dna/{model}/all.tsv",     model=DNA_NAMES),
+        prot_tsvs = expand("results/protein/{model}/all.tsv", model=PROT_NAMES),
+    output:
+        summary_tsv = "summary/summary.tsv",
+        summary_md  = "summary/summary.md",
+        comp_dna    = "summary/comparison_dna.pdf",
+        comp_prot   = "summary/comparison_protein.pdf",
+    run:
+        import subprocess, sys
+        dna_args  = " ".join(
+            f"dna:{m}:results/dna/{m}/all.tsv" for m in DNA_NAMES
+        )
+        prot_args = " ".join(
+            f"protein:{m}:results/protein/{m}/all.tsv" for m in PROT_NAMES
+        )
+        subprocess.run(
+            [
+                sys.executable, "scripts/summarize.py",
+                "--output-tsv",  output.summary_tsv,
+                "--output-md",   output.summary_md,
+                "--comp-dna",    output.comp_dna,
+                "--comp-prot",   output.comp_prot,
+            ]
+            + [f"dna:{m}:results/dna/{m}/all.tsv" for m in DNA_NAMES]
+            + [f"protein:{m}:results/protein/{m}/all.tsv" for m in PROT_NAMES],
+            check=True,
+        )
+
+
+# ---------------------------------------------------------------------------
+# Likelihood check: LL(t_estimated) vs LL(t_true)
+# ---------------------------------------------------------------------------
+rule check_likelihood:
+    input:
+        fa      = "results/{dtype}/{model}/rep{rep}/alignment.fa",
+        est_tsv = "results/{dtype}/{model}/rep{rep}/estimated_distances.tsv",
+        true_tsv = "results/{dtype}/{model}/rep{rep}/true_distances.tsv",
+    output:
+        tsv = "results/{dtype}/{model}/rep{rep}/ll_check.tsv",
+    shell:
+        """
+        python scripts/check_likelihood.py \
+            {input.fa} {input.est_tsv} {input.true_tsv} \
+            {wildcards.model} {output.tsv}
+        """
+
+
+rule aggregate_ll_check:
+    input:
+        tsvs = expand(
+            "results/{{dtype}}/{{model}}/rep{rep}/ll_check.tsv",
+            rep=REPLICATES,
+        ),
+    output:
+        tsv = "results/{dtype}/{model}/ll_check_all.tsv",
+    run:
+        import pandas as pd
+        frames = []
+        for rep, path in zip(REPLICATES, input.tsvs):
+            df = pd.read_csv(path, sep="\t")
+            df["replicate"] = rep
+            frames.append(df)
+        pd.concat(frames, ignore_index=True).to_csv(output.tsv, sep="\t", index=False)
+
+
+rule summarize_ll_check:
+    input:
+        dna_tsvs  = expand("results/dna/{model}/ll_check_all.tsv",     model=DNA_NAMES),
+        prot_tsvs = expand("results/protein/{model}/ll_check_all.tsv", model=PROT_NAMES),
+    output:
+        tsv = "summary/ll_check.tsv",
+    run:
+        import pandas as pd
+        rows = []
+        entries = (
+            [("dna",     m, p) for m, p in zip(DNA_NAMES,  input.dna_tsvs)]
+          + [("protein", m, p) for m, p in zip(PROT_NAMES, input.prot_tsvs)]
+        )
+        for dtype, model, path in entries:
+            df = pd.read_csv(path, sep="\t")
+            n_total     = len(df)
+            n_violation = int(df["violation"].sum())
+            rows.append(dict(dtype=dtype, model=model,
+                             n_pairs=n_total,
+                             n_violations=n_violation,
+                             frac_violations=n_violation/n_total if n_total else float("nan")))
+        result = pd.DataFrame(rows)
+        result.to_csv(output.tsv, sep="\t", index=False, float_format="%.6f")
+        print(result.to_string(index=False))
