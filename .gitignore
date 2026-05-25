@@ -32,3 +32,4 @@ venv/
 validation/results/
 validation/plots/
 validation/summary/
+validation/.snakemake/
