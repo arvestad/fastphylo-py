@@ -380,3 +380,39 @@ def test_to_phylip(dna_aln):
             row_i = lines[1 + i].split()
             row_j = lines[1 + j].split()
             assert float(row_i[1 + j]) == pytest.approx(float(row_j[1 + i]), rel=1e-6)
+
+
+# ---------------------------------------------------------------------------
+# Expected-distance estimator
+# ---------------------------------------------------------------------------
+
+def test_expected_distance_wag(protein_aln):
+    dm = distance_matrix(protein_aln, model="WAG", method="expected")
+    assert isinstance(dm, DistanceMatrix)
+    assert len(dm) == 4
+    assert dm.names() == ["prot1", "prot2", "prot3", "prot4"]
+    for i in range(4):
+        assert dm[i, i] == pytest.approx(0.0)
+    # symmetry
+    for i in range(4):
+        for j in range(4):
+            assert dm[i, j] == pytest.approx(dm[j, i], rel=1e-6)
+
+
+def test_expected_differs_from_ml(protein_aln):
+    dm_ml  = distance_matrix(protein_aln, model="WAG", method="ml")
+    dm_exp = distance_matrix(protein_aln, model="WAG", method="expected")
+    n = len(protein_aln)
+    # Expected and ML should give distinct estimates for at least some pairs.
+    diffs = [abs(dm_exp[i, j] - dm_ml[i, j])
+             for i in range(n) for j in range(i + 1, n)]
+    assert max(diffs) > 1e-4
+
+
+def test_expected_n_points(protein_aln):
+    dm_15 = distance_matrix(protein_aln, model="WAG", method="expected", n_points=15)
+    dm_30 = distance_matrix(protein_aln, model="WAG", method="expected", n_points=30)
+    # More grid points give similar results; tolerance is larger for saturated pairs.
+    for i in range(4):
+        for j in range(i + 1, 4):
+            assert abs(dm_30[i, j] - dm_15[i, j]) < 0.15

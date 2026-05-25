@@ -23,3 +23,6 @@ protein_models:
   - {name: MtREV,     iqtree: mtREV}
   - {name: RtREV,     iqtree: rtREV}
   - {name: PMB,       iqtree: PMB}
+
+expected_n_points_default: 15
+expected_n_points_list: [5, 10, 15, 20, 30]

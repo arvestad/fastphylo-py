@@ -7,6 +7,9 @@ REPLICATES  = list(range(config["replicates"]))
 DNA_MODELS  = config["dna_models"]   # list of {name, iqtree}
 PROT_MODELS = config["protein_models"]  # list of {name, iqtree}
 
+EXP_N_PTS_DEFAULT = config["expected_n_points_default"]
+EXP_N_PTS_LIST    = config["expected_n_points_list"]
+
 DNA_NAMES  = [m["name"] for m in DNA_MODELS]
 PROT_NAMES = [m["name"] for m in PROT_MODELS]
 
@@ -36,6 +39,15 @@ rule all:
         "summary/comparison_protein.pdf",
         # likelihood-validity check
         "summary/ll_check.tsv",
+        # ML vs expected comparison plots (all protein models)
+        expand("plots/protein/{model}/ml_vs_expected.pdf", model=PROT_NAMES),
+        # grid-size sensitivity (WAG only)
+        "plots/protein/WAG/npts_sensitivity.pdf",
+        # ML nfev count summary (WAG, representative model)
+        "summary/nfev_summary.tsv",
+        # quantitative ML vs expected comparison (all protein models)
+        "summary/ml_vs_expected.tsv",
+        "summary/ml_vs_expected.pdf",
 
 
 # ---------------------------------------------------------------------------
@@ -245,3 +257,235 @@ rule summarize_ll_check:
         result = pd.DataFrame(rows)
         result.to_csv(output.tsv, sep="\t", index=False, float_format="%.6f")
         print(result.to_string(index=False))
+
+
+# ---------------------------------------------------------------------------
+# Expected distances (protein, default n_points)
+# ---------------------------------------------------------------------------
+rule estimate_expected:
+    input:
+        fa = "results/protein/{model}/rep{rep}/alignment.fa",
+    output:
+        tsv = "results/protein/{model}/rep{rep}/expected_distances.tsv",
+    params:
+        n_pts = EXP_N_PTS_DEFAULT,
+    shell:
+        """
+        python scripts/estimate_distances.py \
+            {input.fa} {output.tsv} {wildcards.model} \
+            --method expected --n-points {params.n_pts}
+        """
+
+
+rule aggregate_expected:
+    input:
+        true_tsvs = expand(
+            "results/protein/{{model}}/rep{rep}/true_distances.tsv",
+            rep=REPLICATES,
+        ),
+        est_tsvs = expand(
+            "results/protein/{{model}}/rep{rep}/expected_distances.tsv",
+            rep=REPLICATES,
+        ),
+    output:
+        tsv = "results/protein/{model}/expected_all.tsv",
+    run:
+        import pandas as pd
+        frames = []
+        for rep, t_path, e_path in zip(
+            REPLICATES, input.true_tsvs, input.est_tsvs
+        ):
+            true_df = pd.read_csv(t_path, sep="\t")
+            est_df  = pd.read_csv(e_path, sep="\t")
+            merged  = true_df.merge(est_df, on=["taxon_i", "taxon_j"])
+            merged["replicate"] = rep
+            frames.append(merged)
+        pd.concat(frames, ignore_index=True).to_csv(output.tsv, sep="\t", index=False)
+
+
+rule plot_ml_vs_expected:
+    input:
+        ml_tsv  = "results/protein/{model}/all.tsv",
+        exp_tsv = "results/protein/{model}/expected_all.tsv",
+    output:
+        pdf = "plots/protein/{model}/ml_vs_expected.pdf",
+    shell:
+        """
+        python scripts/plot_comparison.py \
+            {input.ml_tsv} {input.exp_tsv} {output.pdf} {wildcards.model}
+        """
+
+
+# ---------------------------------------------------------------------------
+# Expected distances — grid-size sensitivity (WAG only)
+# ---------------------------------------------------------------------------
+rule estimate_expected_npts:
+    input:
+        fa = "results/protein/WAG/rep{rep}/alignment.fa",
+    output:
+        tsv = "results/protein/WAG/rep{rep}/expected_npts{n}.tsv",
+    shell:
+        """
+        python scripts/estimate_distances.py \
+            {input.fa} {output.tsv} WAG \
+            --method expected --n-points {wildcards.n}
+        """
+
+
+rule aggregate_expected_npts:
+    input:
+        true_tsvs = expand(
+            "results/protein/WAG/rep{rep}/true_distances.tsv",
+            rep=REPLICATES,
+        ),
+        est_tsvs = lambda wc: expand(
+            "results/protein/WAG/rep{rep}/expected_npts" + wc.n + ".tsv",
+            rep=REPLICATES,
+        ),
+    output:
+        tsv = "results/protein/WAG/expected_npts{n}_all.tsv",
+    run:
+        import pandas as pd
+        frames = []
+        for rep, t_path, e_path in zip(
+            REPLICATES, input.true_tsvs, input.est_tsvs
+        ):
+            true_df = pd.read_csv(t_path, sep="\t")
+            est_df  = pd.read_csv(e_path, sep="\t")
+            merged  = true_df.merge(est_df, on=["taxon_i", "taxon_j"])
+            merged["replicate"] = rep
+            frames.append(merged)
+        pd.concat(frames, ignore_index=True).to_csv(output.tsv, sep="\t", index=False)
+
+
+rule plot_npts_sensitivity:
+    input:
+        tsvs = expand(
+            "results/protein/WAG/expected_npts{n}_all.tsv",
+            n=EXP_N_PTS_LIST,
+        ),
+    output:
+        pdf = "plots/protein/WAG/npts_sensitivity.pdf",
+    shell:
+        "python scripts/plot_npts_sensitivity.py {input.tsvs} {output.pdf}"
+
+
+# ---------------------------------------------------------------------------
+# ML likelihood-evaluation count  (WAG, all replicates)
+# ---------------------------------------------------------------------------
+rule count_nfev:
+    input:
+        fa = "results/protein/WAG/rep{rep}/alignment.fa",
+    output:
+        tsv = "results/protein/WAG/rep{rep}/nfev.tsv",
+    shell:
+        "python scripts/count_nfev.py {input.fa} WAG {output.tsv}"
+
+
+rule summarize_nfev:
+    input:
+        tsvs = expand(
+            "results/protein/WAG/rep{rep}/nfev.tsv",
+            rep=REPLICATES,
+        ),
+    output:
+        tsv = "summary/nfev_summary.tsv",
+    run:
+        import pandas as pd
+        import numpy as np
+        frames = []
+        for rep, path in zip(REPLICATES, input.tsvs):
+            df = pd.read_csv(path, sep="\t")
+            df["replicate"] = rep
+            frames.append(df)
+        all_df = pd.concat(frames, ignore_index=True)
+        nfev = all_df["nfev"].values
+        summary = pd.DataFrame([{
+            "n_pairs":     len(nfev),
+            "mean_nfev":   float(np.mean(nfev)),
+            "median_nfev": float(np.median(nfev)),
+            "p05_nfev":    float(np.percentile(nfev, 5)),
+            "p95_nfev":    float(np.percentile(nfev, 95)),
+            "max_nfev":    int(np.max(nfev)),
+        }])
+        summary.to_csv(output.tsv, sep="\t", index=False, float_format="%.2f")
+        print(summary.to_string(index=False))
+
+
+# ---------------------------------------------------------------------------
+# Expected distances without prior (WAG only — prior-effect experiment)
+# ---------------------------------------------------------------------------
+rule estimate_expected_noprior:
+    input:
+        fa = "results/protein/WAG/rep{rep}/alignment.fa",
+    output:
+        tsv = "results/protein/WAG/rep{rep}/expected_noprior_distances.tsv",
+    params:
+        n_pts = EXP_N_PTS_DEFAULT,
+    shell:
+        """
+        python scripts/estimate_distances.py \
+            {input.fa} {output.tsv} WAG \
+            --method expected_noprior --n-points {params.n_pts}
+        """
+
+
+rule aggregate_expected_noprior:
+    input:
+        true_tsvs = expand(
+            "results/protein/WAG/rep{rep}/true_distances.tsv",
+            rep=REPLICATES,
+        ),
+        est_tsvs = expand(
+            "results/protein/WAG/rep{rep}/expected_noprior_distances.tsv",
+            rep=REPLICATES,
+        ),
+    output:
+        tsv = "results/protein/WAG/expected_noprior_all.tsv",
+    run:
+        import pandas as pd
+        frames = []
+        for rep, t_path, e_path in zip(
+            REPLICATES, input.true_tsvs, input.est_tsvs
+        ):
+            true_df = pd.read_csv(t_path, sep="\t")
+            est_df  = pd.read_csv(e_path, sep="\t")
+            merged  = true_df.merge(est_df, on=["taxon_i", "taxon_j"])
+            merged["replicate"] = rep
+            frames.append(merged)
+        pd.concat(frames, ignore_index=True).to_csv(output.tsv, sep="\t", index=False)
+
+
+# ---------------------------------------------------------------------------
+# Quantitative ML vs expected comparison (all protein models)
+# ---------------------------------------------------------------------------
+rule render_ml_vs_expected:
+    input:
+        tsv = "summary/ml_vs_expected.tsv",
+    output:
+        pdf = "summary/ml_vs_expected.pdf",
+    shell:
+        "python scripts/render_ml_vs_expected.py {input.tsv} {output.pdf}"
+
+
+rule summarize_ml_vs_expected:
+    input:
+        ml_tsvs  = expand("results/protein/{model}/all.tsv",          model=PROT_NAMES),
+        exp_tsvs = expand("results/protein/{model}/expected_all.tsv",  model=PROT_NAMES),
+        wag_noprior = "results/protein/WAG/expected_noprior_all.tsv",
+    output:
+        tsv = "summary/ml_vs_expected.tsv",
+    run:
+        import subprocess, sys
+        triples = [
+            f"{m}:results/protein/{m}/all.tsv:results/protein/{m}/expected_all.tsv"
+            for m in PROT_NAMES
+        ]
+        subprocess.run(
+            [
+                sys.executable, "scripts/summarize_comparison.py",
+                "--output-tsv", output.tsv,
+                "--wag-noprior", input.wag_noprior,
+            ] + triples,
+            check=True,
+        )

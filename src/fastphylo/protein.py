@@ -219,3 +219,126 @@ def compute_protein_distances(
         np.ascontiguousarray(model.left_eigenvectors,  dtype=np.float64),
         np.ascontiguousarray(model.q_eigenvals,        dtype=np.float64),
     )
+
+
+# ---------------------------------------------------------------------------
+# Expected-distance estimation
+# ---------------------------------------------------------------------------
+
+_AA_IDX: dict[str, int] = {aa: i for i, aa in enumerate(AA_ORDER)}
+_AA_IDX.update({aa.lower(): i for i, aa in enumerate(AA_ORDER)})
+
+_DELTA    = 1e-4
+_MAX_DIST = 3.0
+
+
+def _aa_count_matrix(seq1: str, seq2: str) -> np.ndarray:
+    """Return the 20×20 amino acid replacement count matrix for a sequence pair."""
+    N = np.zeros((20, 20))
+    for a, b in zip(seq1, seq2):
+        i = _AA_IDX.get(a, -1)
+        j = _AA_IDX.get(b, -1)
+        if i >= 0 and j >= 0:
+            N[i, j] += 1.0
+    return N
+
+
+def kimura_protein_distance(seq1: str, seq2: str) -> float:
+    """Kimura (1983) protein distance: −ln(1 − p − p²/5).
+
+    Returns the clamped value _MAX_DIST if the formula saturates.
+    """
+    n_valid = n_diff = 0
+    for a, b in zip(seq1, seq2):
+        if _AA_IDX.get(a, -1) >= 0 and _AA_IDX.get(b, -1) >= 0:
+            n_valid += 1
+            if a != b:
+                n_diff += 1
+    if n_valid == 0:
+        return float("nan")
+    p = n_diff / n_valid
+    arg = 1.0 - p - p * p / 5.0
+    if arg <= 0.0:
+        return _MAX_DIST
+    import math
+    return -math.log(arg)
+
+
+_N_COARSE = 5   # fixed coarse-pass points for peak location
+
+
+def compute_protein_expected_distances(
+    names: list[str],
+    seqs: list[str],
+    model_name: str,
+    n_points: int = 15,
+    use_prior: bool = True,
+) -> _fastphylo.DistMatrix:
+    """Compute pairwise expected protein distances E[d | alignment].
+
+    Two-pass adaptive grid:
+      1. Coarse pass (_N_COARSE points, d_k/10 → d_k*10) locates the LL peak d_mode.
+      2. Fine pass (n_points, d_mode/3 → d_mode*3) concentrates integration mass
+         near the peak, eliminating the quantisation artefact seen with a wide grid.
+
+    use_prior=False omits the FastPhylo prior P(d) ∝ Σπ_i P_ii(d), giving a flat
+    prior over the grid.  Useful for isolating the effect of the prior on bias.
+    """
+    import math
+
+    model = RateMatrix.instantiate(model_name)
+    n = len(names)
+    dm = _fastphylo.DistMatrix(n)
+    for idx, name in enumerate(names):
+        dm.set_name(idx, name)
+
+    for i in range(n):
+        dm.set(i, i, 0.0)
+        for j in range(i + 1, n):
+            N = _aa_count_matrix(seqs[i], seqs[j])
+
+            d_k = kimura_protein_distance(seqs[i], seqs[j])
+            if not math.isfinite(d_k) or d_k <= 0:
+                d_k = 0.5
+
+            # Pass 1: coarse grid to locate the likelihood peak
+            c_low  = max(_DELTA,    d_k / 10.0)
+            c_high = min(_MAX_DIST, d_k * 10.0)
+            coarse = np.exp(
+                np.linspace(math.log(c_low), math.log(c_high), _N_COARSE)
+            )
+            coarse_ll = np.empty(_N_COARSE)
+            for k, d in enumerate(coarse):
+                P = model.get_replacement_probs(d)
+                P_safe = np.where(P > 0, P, 1e-300)
+                coarse_ll[k] = float(np.sum(N * np.log(P_safe)))
+            d_mode = float(coarse[int(np.argmax(coarse_ll))])
+
+            # Pass 2: fine grid ±3× around d_mode (9× total range)
+            f_low  = max(_DELTA,    d_mode / 3.0)
+            f_high = min(_MAX_DIST, d_mode * 3.0)
+            grid   = np.exp(
+                np.linspace(math.log(f_low), math.log(f_high), n_points)
+            )
+
+            # log-posterior = log-likelihood + log-prior (optional)
+            # Prior: P(d) ∝ Σ_i π_i P_ii(d)  (FastPhylo / Agarwal-States prior)
+            log_liks = np.empty(n_points)
+            for k, d in enumerate(grid):
+                P = model.get_replacement_probs(d)
+                P_safe = np.where(P > 0, P, 1e-300)
+                log_lik = float(np.sum(N * np.log(P_safe)))
+                if use_prior:
+                    log_lik += math.log(max(float(np.dot(model.freq, np.diag(P))), 1e-300))
+                log_liks[k] = log_lik
+
+            # log-sum-exp normalisation → weighted mean
+            log_liks -= log_liks.max()
+            w = np.exp(log_liks)
+            w /= w.sum()
+            d_exp = float(np.dot(grid, w))
+
+            dm.set(i, j, d_exp)
+            dm.set(j, i, d_exp)
+
+    return dm

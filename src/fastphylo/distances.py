@@ -106,12 +106,19 @@ class DistanceMatrix:
 def distance_matrix(
     alignment: Alignment,
     model: str | None = None,
+    method: str = "ml",
+    n_points: int = 15,
 ) -> DistanceMatrix:
     """Compute pairwise distances from an Alignment.
 
     For DNA/RNA: model ∈ {'hamming', 'jc', 'k2p', 'tn93'} (default: 'k2p').
     For Protein: model ∈ {'WAG', 'LG', 'JTT', ...} (default: 'WAG').
     Pass model=None to auto-select based on sequence type.
+
+    method='ml' (default): maximum-likelihood estimate via Brent minimisation.
+    method='expected': posterior mean E[d|alignment] with FastPhylo prior.
+    method='expected_noprior': same but with a flat prior (for comparison).
+    Both expected methods use a log-spaced grid of *n_points* distances (protein only).
     """
     if not alignment:
         raise ValueError("alignment is empty")
@@ -133,6 +140,10 @@ def distance_matrix(
         return DistanceMatrix(cpp_dm)
 
     # Protein distance
+    if method == "expected":
+        return _protein_expected_distance_matrix(names, seqs, model, n_points, use_prior=True)
+    if method == "expected_noprior":
+        return _protein_expected_distance_matrix(names, seqs, model, n_points, use_prior=False)
     return _protein_distance_matrix(names, seqs, model)
 
 
@@ -144,4 +155,17 @@ def _protein_distance_matrix(
     """Compute protein pairwise distances using a substitution model."""
     from .protein import compute_protein_distances
     cpp_dm = compute_protein_distances(names, seqs, model)
+    return DistanceMatrix(cpp_dm)
+
+
+def _protein_expected_distance_matrix(
+    names: list[str],
+    seqs: list[str],
+    model: str,
+    n_points: int,
+    use_prior: bool = True,
+) -> DistanceMatrix:
+    """Compute expected protein distances E[d|alignment]."""
+    from .protein import compute_protein_expected_distances
+    cpp_dm = compute_protein_expected_distances(names, seqs, model, n_points, use_prior=use_prior)
     return DistanceMatrix(cpp_dm)
