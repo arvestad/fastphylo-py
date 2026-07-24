@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "fastphylo"
-version = "0.2.0"
+version = "0.2.1"
 description = "Molecular sequence analysis with fast C++ backends"
 requires-python = ">=3.12"
 license = {text = "GNU General Public License v3 (GPLv3)"}
@@ -15,7 +15,7 @@ classifiers = [
         "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 readme = "README.md"
-dependencies = ["numpy>=1.24"]
+dependencies = ["numpy>=1.24,<2.3"]  # numpy 2.3.0+ dropped manylinux2014/manylinux_2_17 wheels
 
 [project.optional-dependencies]
 align = ["pyfamsa>=0.6.0"]
