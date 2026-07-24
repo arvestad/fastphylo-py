@@ -6,7 +6,7 @@ from .distances import DistanceMatrix, distance_matrix
 from .trees import Tree, DistanceProtocol, nj, fnj, bionj, fit_branch_lengths
 from .alignment import align
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "Alignment",
