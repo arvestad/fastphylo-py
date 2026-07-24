@@ -21,6 +21,8 @@ AA_ORDER = "ARNDCQEGHILKMFPSTWYV"
 class RateMatrix:
     """Protein substitution rate matrix with Q-matrix and eigen decomposition."""
 
+    _instance_cache: dict[str, "RateMatrix"] = {}
+
     def __init__(self, name: str) -> None:
         self.name = name
         self.R: np.ndarray | None = None
@@ -32,26 +34,71 @@ class RateMatrix:
 
     @classmethod
     def instantiate(cls, modelname: str) -> "RateMatrix":
+        """Return the shared, cached RateMatrix for the named model.
+
+        Instances are cached by the requested name: building one from
+        scratch runs an eigendecomposition of its 20x20 rate matrix, which
+        is comparatively expensive and never changes once loaded, so
+        repeated calls for the same model reuse the same instance rather
+        than redoing that work.
+
+        This returned instance's arrays are read-only, so accidental
+        in-place edits (e.g. `model.freq[0] = 0.5`) fail immediately instead
+        of silently corrupting the shared instance for every other caller.
+        To customize a model (e.g. with empirical frequencies), call
+        copy() first and modify the copy - see RateMatrix.copy().
+        """
+        cached = cls._instance_cache.get(modelname)
+        if cached is not None:
+            return cached
+
         registry = {c.__name__: c for c in cls.__subclasses__()}
-        # Also index by the name attribute (for models with non-class names)
-        for c in cls.__subclasses__():
-            inst = c.__new__(c)
-            inst.name = ""
         if modelname in registry:
-            return registry[modelname]()
-        # Try case-insensitive match
-        lower = {k.lower(): v for k, v in registry.items()}
-        if modelname.lower() in lower:
-            return lower[modelname.lower()]()
-        available = sorted(registry)
-        raise ValueError(
-            f"Unknown protein model {modelname!r}. "
-            f"Available: {', '.join(available)}"
-        )
+            instance = registry[modelname]()
+        else:
+            # Try case-insensitive match
+            lower = {k.lower(): v for k, v in registry.items()}
+            if modelname.lower() in lower:
+                instance = lower[modelname.lower()]()
+            else:
+                available = sorted(registry)
+                raise ValueError(
+                    f"Unknown protein model {modelname!r}. "
+                    f"Available: {', '.join(available)}"
+                )
+
+        for attr in ("R", "Q", "freq", "right_eigenvectors", "left_eigenvectors", "q_eigenvals"):
+            getattr(instance, attr).setflags(write=False)
+
+        cls._instance_cache[modelname] = instance
+        return instance
 
     @classmethod
     def all_models(cls) -> list[str]:
         return sorted(c.__name__ for c in cls.__subclasses__())
+
+    def copy(self) -> "RateMatrix":
+        """Return an independent copy of this model.
+
+        instantiate() returns a shared, cached instance - safe to read from,
+        but calling update_freq() on it directly (e.g. to build a "+F"
+        empirical-frequency variant) would silently reconfigure that shared
+        instance for every other caller who asks for this model by name,
+        including ones earlier in the same call stack. Call copy() first to
+        get an instance that's yours alone to customize:
+
+            model = RateMatrix.instantiate("WAG").copy()
+            model.update_freq(empirical_freqs)  # only affects `model`
+
+        Skips re-running the eigendecomposition - it just duplicates the
+        already-computed arrays, which is cheap.
+        """
+        new = self.__class__.__new__(self.__class__)
+        new.name = self.name
+        for attr in ("R", "Q", "freq", "right_eigenvectors", "left_eigenvectors", "q_eigenvals"):
+            value = getattr(self, attr)
+            setattr(new, attr, value.copy() if value is not None else None)
+        return new
 
     def set_r_and_freq(self, r_elems: list[float], freq: list[float]) -> None:
         R = np.zeros((20, 20))
