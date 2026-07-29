@@ -376,13 +376,13 @@ PYBIND11_MODULE(_fastphylo, m) {
     // Each function takes a DistMatrix and returns
     //   (edges: list[(u,v,w)], leaf_names: list[str])
     // The input matrix is copied; the original is not modified.
-    // NJ and FNJ: branch lengths are -1 (not computed by FastPhylo).
-    // BioNJ: branch lengths are computed.
+    // NJ and BioNJ: branch lengths are computed.
+    // FNJ: branch lengths are -1 (not computed by FastPhylo).
     // ------------------------------------------------------------------
     m.def("nj_tree",
         [](const StrDblMatrix &dm) { return run_nj(dm, NJ); },
         py::arg("dm"),
-        "NJ tree. Returns (edges, leaf_names). Branch lengths are -1.");
+        "NJ tree. Returns (edges, leaf_names) with real branch lengths.");
 
     m.def("fnj_tree",
         [](const StrDblMatrix &dm) { return run_nj(dm, FNJ); },

@@ -72,6 +72,90 @@ def test_tree_to_newick_bionj(dm):
     assert ":" in nwk
 
 
+def test_tree_to_newick_nj(dm):
+    t = nj(dm)
+    nwk = t.to_newick()
+    assert nwk.endswith(";")
+    for name in dm.names():
+        assert name in nwk
+    # NJ includes branch lengths → colons present
+    assert ":" in nwk
+
+
+@pytest.mark.parametrize("method", [nj, bionj])
+def test_three_taxon_branch_lengths_exact(method):
+    """On a perfectly additive 3-taxon distance matrix, NJ/BioNJ must
+    recover the exact true branch lengths via the standard three-point
+    formula e_i = 0.5*(d_ij + d_ik - d_jk)."""
+    a, b, c = 0.1, 0.2, 0.15
+    names = ["A", "B", "C"]
+    dm3 = DistanceMatrix.zeros(names)
+    dm3["A", "B"] = dm3["B", "A"] = a + b
+    dm3["A", "C"] = dm3["C", "A"] = a + c
+    dm3["B", "C"] = dm3["C", "B"] = b + c
+
+    t = method(dm3)
+    lengths = {t.leaves[u]: w for u, v, w in t.edges}
+    assert lengths["A"] == pytest.approx(a, abs=1e-9)
+    assert lengths["B"] == pytest.approx(b, abs=1e-9)
+    assert lengths["C"] == pytest.approx(c, abs=1e-9)
+
+
+def _path_dist(edges, src, dst):
+    from collections import deque
+
+    adj = {}
+    for u, v, w in edges:
+        adj.setdefault(u, []).append((v, w))
+        adj.setdefault(v, []).append((u, w))
+    queue = deque([(src, 0.0)])
+    visited = {src}
+    while queue:
+        node, dist = queue.popleft()
+        if node == dst:
+            return dist
+        for nb, w in adj.get(node, []):
+            if nb not in visited:
+                visited.add(nb)
+                queue.append((nb, dist + w))
+    raise AssertionError(f"no path from {src} to {dst}")
+
+
+@pytest.mark.parametrize("method", [nj, bionj])
+def test_larger_tree_branch_lengths_exact_recovery(method):
+    """On a perfectly additive 6-taxon tree (multiple join iterations,
+    unlike the trivial 3-taxon star), NJ/BioNJ must recover the exact
+    leaf-to-leaf path distances -- guards against the NJ distance-update
+    formula regressing to the version missing the "-d(a,b)" correction
+    term, which silently corrupts branch lengths while leaving topology
+    unaffected."""
+    # Caterpillar topology: leaves 0..5, internal nodes 6..9.
+    true_edges = [
+        (0, 6, 0.05), (1, 6, 0.07),
+        (6, 7, 0.03), (2, 7, 0.04),
+        (7, 8, 0.06), (3, 8, 0.02),
+        (4, 9, 0.08), (5, 9, 0.09),
+        (8, 9, 0.05),
+    ]
+    names = [f"L{i}" for i in range(6)]
+
+    dm6 = DistanceMatrix.zeros(names)
+    for i in range(6):
+        for j in range(i + 1, 6):
+            d = _path_dist(true_edges, i, j)
+            dm6[i, j] = d
+            dm6[j, i] = d
+
+    t = method(dm6)
+    name_to_vid = {name: vid for vid, name in t.leaves.items()}
+
+    for i in range(6):
+        for j in range(i + 1, 6):
+            true_d  = _path_dist(true_edges, i, j)
+            recon_d = _path_dist(t.edges, name_to_vid[names[i]], name_to_vid[names[j]])
+            assert recon_d == pytest.approx(true_d, abs=1e-9)
+
+
 def test_tree_to_newick():
     # Hand-build a known tree and verify the Newick string
     # Two-leaf star: leaf 0 and leaf 1 both connected to internal node 2

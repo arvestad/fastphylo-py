@@ -125,23 +125,32 @@ computeNeighborJoiningTree( DistanceMatrix< TreeNode_type *, double,
       }
     }
 
+    double D_a2b = dm.getDistance(mini,minj);
+    TreeNode_type *a = dm.getIdentifier(mini);
+    TreeNode_type *b = dm.getIdentifier(minj);
+
     TreeNode_type *newparent = dm.getIdentifier(mini)->getTree()->
       detachFromParentAndAddAsSiblings(dm.getIdentifier(mini),dm.getIdentifier(minj), defaultNodeData);
     dm.setIdentifier(mini, newparent);
-    
+
+    double D_a2parent = 0.5*(D_a2b+(rowSums[mini]-rowSums[minj])/(numNodes-2));
+    double D_b2parent = 0.5*(D_a2b+(rowSums[minj]-rowSums[mini])/(numNodes-2));
+    EDGE(a) = D_a2parent;
+    EDGE(b) = D_b2parent;
+
     // UPDATE DISTANCES
     for ( size_t i = 0 ; i < numNodes-1 ; i++ ){//skip last row
       double dist2iandj = dm.getDistance(mini,i) + dm.getDistance(minj,i);
-      // regular nj update function:
-      dm.setDistance(mini,i, dist2iandj * 0.5); 
-    
+      // standard NJ reduction formula: d(new,i) = 0.5*(d(a,i)+d(b,i)-d(a,b))
+      dm.setDistance(mini,i, 0.5*(dist2iandj - D_a2b));
+
       //update rowsums
       rowSums[i] = rowSums[i] - dist2iandj + dm.getDistance(mini,i);
     }
 
     //remove the last row of the matrix
     dm.removeLastRow();
-    numNodes--;    
+    numNodes--;
 
     //recompute the row sum for the parent
     dm.setDistance(mini,mini,0);
@@ -153,6 +162,14 @@ computeNeighborJoiningTree( DistanceMatrix< TreeNode_type *, double,
   }
   // END ITERATION
   //--------------
+
+  // Resolve the final 3-taxon star with the standard three-point formula.
+  EDGE(dm.getIdentifier(0)) = 0.5*(dm.getDistance(0,1) + dm.getDistance(0,2)
+    - dm.getDistance(1,2));
+  EDGE(dm.getIdentifier(1)) = 0.5*(dm.getDistance(0,1) + dm.getDistance(1,2)
+    - dm.getDistance(0,2));
+  EDGE(dm.getIdentifier(2)) = 0.5*(dm.getDistance(0,2) + dm.getDistance(1,2)
+    - dm.getDistance(0,1));
 }
 
 // NJ for float DM start ----------------------------------
@@ -412,12 +429,13 @@ computeBioNJTree( DistanceMatrix< TreeNode_type *, double,
   // END ITERATION
   //--------------
 
-  EDGE(dm.getIdentifier(0)) = dm.getDistance(0,1) + dm.getDistance(0,2)
-    - 2 * dm.getDistance(1,2);
-  EDGE(dm.getIdentifier(1)) = dm.getDistance(0,1) + dm.getDistance(1,2)
-    - 2 * dm.getDistance(0,2);
-  EDGE(dm.getIdentifier(2)) = dm.getDistance(0,2) + dm.getDistance(1,2)
-    - 2 * dm.getDistance(0,1);
+  // Resolve the final 3-taxon star with the standard three-point formula.
+  EDGE(dm.getIdentifier(0)) = 0.5*(dm.getDistance(0,1) + dm.getDistance(0,2)
+    - dm.getDistance(1,2));
+  EDGE(dm.getIdentifier(1)) = 0.5*(dm.getDistance(0,1) + dm.getDistance(1,2)
+    - dm.getDistance(0,2));
+  EDGE(dm.getIdentifier(2)) = 0.5*(dm.getDistance(0,2) + dm.getDistance(1,2)
+    - dm.getDistance(0,1));
 }
 //mehmood's addition here
 //----------------------- BIO NJ for float DM start---------------------------------
@@ -704,7 +722,7 @@ computeFNJTree( DistanceMatrix< TreeNode_type *, double,
 	  visible_set[vi] = mini;//those that point to minj
     }
     
-    //join the tree nodes    
+    //join the tree nodes
     TreeNode_type *newparent = dm.getIdentifier(mini)->getTree()->
       detachFromParentAndAddAsSiblings(dm.getIdentifier(mini),dm.getIdentifier(minj), defaultNodeData);
     dm.setIdentifier(mini, newparent);
@@ -714,8 +732,8 @@ computeFNJTree( DistanceMatrix< TreeNode_type *, double,
     for ( size_t i = 0 ; i < numNodes-1 ; i++ ){//skip last row
       double dist2iandj = dm.getDistance(mini,i) + dm.getDistance(minj,i);
       // regular nj update function:
-      dm.setDistance(mini,i, dist2iandj * 0.5); 
-    
+      dm.setDistance(mini,i, dist2iandj * 0.5);
+
       //update rowsums
       rowSums[i] = rowSums[i] - dist2iandj + dm.getDistance(mini,i);
     }

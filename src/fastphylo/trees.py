@@ -27,8 +27,8 @@ class Tree:
 
     Leaf vertex IDs 0…N-1 match the distance matrix row order.
     Internal node IDs start at N.
-    Branch lengths are -1.0 for NJ/FNJ (not computed by FastPhylo);
-    BioNJ sets real values (possibly negative for short branches).
+    Branch lengths are -1.0 for FNJ (not computed by FastPhylo);
+    NJ and BioNJ set real values (possibly negative for short branches).
     """
 
     def __init__(
@@ -45,7 +45,8 @@ class Tree:
         """Serialize to Newick format.
 
         Branch lengths are omitted when all edges carry the sentinel -1.0
-        (NJ/FNJ). BioNJ branch lengths are always included, even if negative.
+        (FNJ). NJ and BioNJ branch lengths are always included, even if
+        negative.
         """
         if not self.edges:
             if self.leaves:
@@ -153,7 +154,7 @@ def _build_tree(
 # ---------------------------------------------------------------------------
 
 def nj(dm: DistanceProtocol) -> Tree:
-    """Reconstruct a Neighbour-Joining tree. Branch lengths are not computed (-1.0)."""
+    """Reconstruct a Neighbour-Joining tree with real branch lengths."""
     return _build_tree(_fastphylo.nj_tree, dm)
 
 
