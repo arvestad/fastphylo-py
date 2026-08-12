@@ -1,4 +1,4 @@
-# evolution
+# FastPhylo-py
 
 Molecular sequence analysis for Python — fast pairwise distances and
 neighbour-joining trees for DNA, RNA, and protein sequences.
