@@ -23,6 +23,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   Eigen/BLAS/LAPACK - see 1.1.0's own sdist fix below - just not the
   smooth wheel-install experience 3.12 users got).
 
+### Added
+
+- `release.yml` now fails loudly, before spending time on the actual
+  build, if `cibuildwheel --print-build-identifiers` doesn't include
+  every Python version `CIBW_BUILD` expects (`cp312`, `cp313`) -
+  confirmed this catches the exact cp313 bug above: reproduced the
+  check failing under the old `v2.19` pin, passing under `v2.23`. This
+  is the durable fix - it catches any future silent gap (a new CPython
+  release, a typo, anything) regardless of whether anyone remembers to
+  keep the cibuildwheel pin current.
+- `.github/dependabot.yml`: watches every pinned GitHub Action version
+  across `.github/workflows/` (including `cibuildwheel`) and opens a PR
+  when a newer release is available, so a stale pin like the one above
+  gets surfaced for review instead of silently going stale for months.
+  Doesn't replace the assertion step above - that one is the actual
+  safety net; this is what makes needing it less likely in the first
+  place.
+
 ## [1.1.0] - 2026-08-12
 
 ### Changed - backend replaced with libfastphylo

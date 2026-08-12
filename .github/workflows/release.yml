@@ -15,12 +15,27 @@ jobs:
           - ubuntu-latest      # Linux x86_64 (manylinux)
           - macos-14           # macOS arm64 runner — builds universal2 wheel
 
+    # Shared with the "Verify expected wheels" step below, not just the
+    # actual cibuildwheel step - both need to agree on which Python
+    # versions we expect, or the check can't do its job.
+    env:
+      CIBW_BUILD: "cp312-* cp313-*"
+      CIBW_SKIP: "*-musllinux_*"        # skip musl (Alpine); glibc only
+      CIBW_ARCHS_LINUX: x86_64
+      CIBW_ARCHS_MACOS: universal2      # single wheel covers x86_64 + arm64
+      CIBW_BEFORE_ALL_LINUX: "yum install -y epel-release && yum install -y blas-devel lapack-devel eigen3-devel"
+      CIBW_TEST_COMMAND: "python -c \"import fastphylo; print(fastphylo.__version__)\""
+
     steps:
       - uses: actions/checkout@v6
         with:
           # extern/fastphylo (the libfastphylo submodule) - see
           # tests.yml's identical fix for why this is required now.
           submodules: recursive
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
 
       # libfastphylo needs BLAS/LAPACK/Eigen3 available *inside*
       # cibuildwheel's own build environment, not just on this job's
@@ -36,22 +51,29 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install eigen simde
 
-      # v2.19 (the pin the 1.1.0 release actually shipped with) predates
-      # Python 3.13's real release (Oct 2024) and simply doesn't know
-      # cp313 is a valid build target - CIBW_BUILD's "cp313-*" silently
-      # matched nothing, no error, no skip message. Confirmed directly
-      # (2026-08-12): a local run under 2.19.2 planned only
-      # "cp312-manylinux_x86_64"; the same run under 2.23.4 planned
-      # "cp312-manylinux_x86_64, cp313-manylinux_x86_64" - both actually
-      # attempted. This is why 1.1.0 on PyPI only has cp312 wheels.
+      # 2026-08-12: cibuildwheel v2.19 (the pin 1.1.0 actually shipped
+      # with) predates Python 3.13's real release (Oct 2024) and simply
+      # doesn't know cp313 is a valid build target - CIBW_BUILD's
+      # "cp313-*" silently matched nothing, no error, no skip message
+      # anywhere in the log. That's why 1.1.0 on PyPI only has cp312
+      # wheels. Bumping the pin (below) fixes it for now, but the same
+      # silent gap will recur for every future CPython release unless
+      # something actually checks for it - this step is that check,
+      # independent of whether anyone remembers to keep the pin current.
+      - name: Verify cibuildwheel will actually build every Python version we expect
+        run: |
+          python3 -m pip install --quiet "cibuildwheel==2.23.*"
+          python3 -m cibuildwheel --print-build-identifiers --platform auto | tee /tmp/cibw-identifiers.txt
+          missing=0
+          for py in cp312 cp313; do
+            if ! grep -q "^${py}-" /tmp/cibw-identifiers.txt; then
+              echo "::error::cibuildwheel will NOT build '${py}-*', even though CIBW_BUILD says it should - it silently doesn't recognize this Python version as a build target (this is exactly how 1.1.0 shipped without cp313 wheels, see CHANGELOG.md). Bump the pypa/cibuildwheel version pin below to one that supports ${py}."
+              missing=1
+            fi
+          done
+          exit $missing
+
       - uses: pypa/cibuildwheel@v2.23
-        env:
-          CIBW_BUILD: "cp312-* cp313-*"
-          CIBW_SKIP: "*-musllinux_*"        # skip musl (Alpine); glibc only
-          CIBW_ARCHS_LINUX: x86_64
-          CIBW_ARCHS_MACOS: universal2      # single wheel covers x86_64 + arm64
-          CIBW_BEFORE_ALL_LINUX: "yum install -y epel-release && yum install -y blas-devel lapack-devel eigen3-devel"
-          CIBW_TEST_COMMAND: "python -c \"import fastphylo; print(fastphylo.__version__)\""
 
       - uses: actions/upload-artifact@v7
         with:

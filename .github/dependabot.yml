@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Covers every `uses:` reference across .github/workflows/*.yml
+  # automatically (actions/checkout, setup-python, cibuildwheel,
+  # upload-artifact, download-artifact, gh-action-pypi-publish) - no
+  # per-action listing needed. Opens a PR when a pinned version has a
+  # newer release, so an outdated pin (like cibuildwheel v2.19 missing
+  # Python 3.13 support entirely - see CHANGELOG.md, 2026-08-12) gets
+  # surfaced for review instead of silently going stale for months.
+  # Doesn't replace release.yml's own build-identifier assertion step
+  # (that one catches the gap even if a PR here goes unmerged/unnoticed)
+  # - the two are complementary, not redundant.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
