@@ -15,10 +15,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          # extern/fastphylo (the libfastphylo submodule): a plain
+          # checkout leaves this an empty directory, which fails
+          # CMakeLists.txt's add_subdirectory() immediately - this was
+          # the actual cause of every "Build and install" failure since
+          # the backend swap, not a real test failure.
+          submodules: recursive
 
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
+
+      # libfastphylo (the submodule) needs BLAS/LAPACK/Eigen3 - fastphylo-py
+      # never needed these itself before it linked the real fastphylo
+      # library. Package names/mechanism mirror FastPhylo's own CI
+      # (.github/workflows/build-and-test.yml in that repo). simde is
+      # macOS-only: macos-14 runners are arm64, and DNA_b128's SSE2
+      # code needs it there the same way FastPhylo's own arm64 CI leg
+      # does (not needed on Linux x86_64).
+      - name: Install libfastphylo's build dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y liblapack-dev libblas-dev libeigen3-dev
+
+      - name: Install libfastphylo's build dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install eigen simde
 
       - name: Install build dependencies
         run: pip install scikit-build-core pybind11 numpy pytest

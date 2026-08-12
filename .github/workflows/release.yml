@@ -17,7 +17,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          # extern/fastphylo (the libfastphylo submodule) - see
+          # tests.yml's identical fix for why this is required now.
+          submodules: recursive
 
+      # NOT yet fixed/verified here: libfastphylo also needs BLAS/
+      # LAPACK/Eigen3 available *inside* cibuildwheel's own build
+      # environment, not just on this job's host runner - on Linux
+      # that's a manylinux container (needs CIBW_BEFORE_ALL_LINUX
+      # installing via the container's own package manager, not
+      # apt-get on the host), unverified here since it needs a real
+      # cibuildwheel run to confirm package names/availability. macOS
+      # (Accelerate.framework covers BLAS/LAPACK; Eigen3/simde are
+      # header-only, likely fine for the universal2 cross-build) is
+      # probably closer to working but also untested end-to-end.
       - uses: pypa/cibuildwheel@v2.19
         env:
           CIBW_BUILD: "cp312-* cp313-*"
@@ -36,6 +50,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      # Still unverified: whether scikit-build-core's sdist step
+      # actually includes extern/fastphylo's checked-out files in the
+      # resulting tarball, or only tracks them as the submodule gitlink
+      # (which a later `pip install` from the sdist alone couldn't
+      # resolve, having no .git history to fetch from) - the
+      # fastphylo_py_integration_plan.md open question about `git
+      # archive --recurse-submodules` vs. this build backend's own
+      # mechanism, not resolved here.
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
