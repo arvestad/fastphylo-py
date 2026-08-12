@@ -33,7 +33,7 @@ jobs:
           # tests.yml's identical fix for why this is required now.
           submodules: recursive
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -95,7 +95,7 @@ jobs:
       # fastphylo_py_integration_plan.md open question about `git
       # archive --recurse-submodules` vs. this build backend's own
       # mechanism, not resolved here.
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install build && python -m build --sdist
