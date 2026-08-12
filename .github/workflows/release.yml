@@ -22,22 +22,27 @@ jobs:
           # tests.yml's identical fix for why this is required now.
           submodules: recursive
 
-      # NOT yet fixed/verified here: libfastphylo also needs BLAS/
-      # LAPACK/Eigen3 available *inside* cibuildwheel's own build
-      # environment, not just on this job's host runner - on Linux
-      # that's a manylinux container (needs CIBW_BEFORE_ALL_LINUX
-      # installing via the container's own package manager, not
-      # apt-get on the host), unverified here since it needs a real
-      # cibuildwheel run to confirm package names/availability. macOS
-      # (Accelerate.framework covers BLAS/LAPACK; Eigen3/simde are
-      # header-only, likely fine for the universal2 cross-build) is
-      # probably closer to working but also untested end-to-end.
+      # libfastphylo needs BLAS/LAPACK/Eigen3 available *inside*
+      # cibuildwheel's own build environment, not just on this job's
+      # host runner. Linux builds happen inside a manylinux2014
+      # (CentOS 7 / yum) container - verified for real with a local
+      # Colima+cibuildwheel run (2026-08-12): plain `yum install
+      # eigen3-devel` 404s (not in the base repos), needs epel-release
+      # first. macOS builds run directly on the host runner (no
+      # container), so a plain `brew install` step beforehand is
+      # enough - also verified locally, including the universal2
+      # (x86_64+arm64) cross-build specifically.
+      - name: Install libfastphylo's build dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install eigen simde
+
       - uses: pypa/cibuildwheel@v2.19
         env:
           CIBW_BUILD: "cp312-* cp313-*"
           CIBW_SKIP: "*-musllinux_*"        # skip musl (Alpine); glibc only
           CIBW_ARCHS_LINUX: x86_64
           CIBW_ARCHS_MACOS: universal2      # single wheel covers x86_64 + arm64
+          CIBW_BEFORE_ALL_LINUX: "yum install -y epel-release && yum install -y blas-devel lapack-devel eigen3-devel"
           CIBW_TEST_COMMAND: "python -c \"import fastphylo; print(fastphylo.__version__)\""
 
       - uses: actions/upload-artifact@v7
