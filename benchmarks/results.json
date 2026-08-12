@@ -1,0 +1,72 @@
+{
+  "dna:k2p:dna_n10.fasta": {
+    "old_min": 1.645804150030017e-05,
+    "old_median": 1.6874982975423336e-05,
+    "new_min": 1.5790981706231833e-05,
+    "new_median": 1.633400097489357e-05,
+    "speedup_min": 1.0422430857357705,
+    "speedup_median": 1.0331199931579098,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  },
+  "dna:k2p:dna_n30.fasta": {
+    "old_min": 5.820801015943289e-05,
+    "old_median": 6.0582999140024185e-05,
+    "new_min": 5.77080063521862e-05,
+    "new_median": 5.954195512458682e-05,
+    "speedup_min": 1.0086643749949566,
+    "speedup_median": 1.0174842094664016,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  },
+  "dna:k2p:dna_n60.fasta": {
+    "old_min": 0.0001456249738112092,
+    "old_median": 0.00015208299737423658,
+    "new_min": 0.00014954200014472008,
+    "new_median": 0.00015458301641047,
+    "speedup_min": 0.9738065136903334,
+    "speedup_median": 0.9838273369592231,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  },
+  "dna:k2p:dna_n200.fasta": {
+    "old_min": 0.002163333003409207,
+    "old_median": 0.0022544169914908707,
+    "new_min": 0.00220641604391858,
+    "new_median": 0.0023031250457279384,
+    "speedup_min": 0.9804737458159261,
+    "speedup_median": 0.9788513201541461,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  },
+  "protein:WAG:protein_n10.fasta": {
+    "old_min": 0.0004570829914882779,
+    "old_median": 0.00047504197573289275,
+    "new_min": 0.00021362496772781014,
+    "new_median": 0.00021758396178483963,
+    "speedup_min": 2.139651541437185,
+    "speedup_median": 2.183258232068793,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  },
+  "protein:WAG:protein_n30.fasta": {
+    "old_min": 0.004327417002059519,
+    "old_median": 0.004452958004549146,
+    "new_min": 0.0018452079966664314,
+    "new_median": 0.0018957090214826167,
+    "speedup_min": 2.3452190809260895,
+    "speedup_median": 2.3489670377084177,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  },
+  "protein:WAG:protein_n60.fasta": {
+    "old_min": 0.01785079197725281,
+    "old_median": 0.01816300000064075,
+    "new_min": 0.0074646249995566905,
+    "new_median": 0.007611791021190584,
+    "speedup_min": 2.391384962849833,
+    "speedup_median": 2.386166402897359,
+    "n_old_samples": 75,
+    "n_new_samples": 75
+  }
+}
