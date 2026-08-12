@@ -1,47 +1,31 @@
-cmake_minimum_required(VERSION 3.15)
+# 3.18, not pybind11's own 3.15 floor: matches FastPhylo's own
+# cmake_minimum_required (src/c++/CMakeLists.txt's find_package(BLAS/
+# LAPACK) needs the BLAS::BLAS/LAPACK::LAPACK imported targets, only
+# reliable from CMake 3.18 on) - the submodule below re-declares 3.18
+# itself regardless, but stating it here too makes the real floor
+# obvious without having to open extern/fastphylo to find it.
+cmake_minimum_required(VERSION 3.18)
 project(fastphylo LANGUAGES CXX C)
 
 find_package(pybind11 REQUIRED)
 
-set(FASTPHYLO_DIR src/cpp/fastphylo)
+# fastphylo-py integration plan, Phase 2: FastPhylo is now a git
+# submodule (pinned to a tag once one exists past this integration
+# work - see the submodule's own detached-HEAD commit in the meantime)
+# instead of a vendored, independently-drifting copy of its source
+# (the old src/cpp/fastphylo/ - deleted once bindings.cpp is ported,
+# see Phase 3/5). OFF/OFF: this extension only needs the fastphylo
+# library target, not FastPhylo's own CLI apps or test executables.
+set(FASTPHYLO_BUILD_APPS OFF CACHE BOOL "" FORCE)
+set(FASTPHYLO_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+add_subdirectory(extern/fastphylo)
 
-set(FASTPHYLO_SOURCES
-    ${FASTPHYLO_DIR}/BitVector.cpp
-    ${FASTPHYLO_DIR}/DistanceMatrix.cpp
-    ${FASTPHYLO_DIR}/DistanceRow.cpp
-    ${FASTPHYLO_DIR}/DNA_b128_String.cpp
-    ${FASTPHYLO_DIR}/computeDistance_DNA_b128_String.cpp
-    ${FASTPHYLO_DIR}/computeTAMURANEIDistance_DNA_b128_String.cpp
-    ${FASTPHYLO_DIR}/Exception.cpp
-    ${FASTPHYLO_DIR}/file_utils.cpp
-    ${FASTPHYLO_DIR}/FloatDistanceMatrix.cpp
-    ${FASTPHYLO_DIR}/InitAndPrintOn_utils.cpp
-    ${FASTPHYLO_DIR}/Kimura2parameter.cpp
-    ${FASTPHYLO_DIR}/NeighborJoining.cpp
-    ${FASTPHYLO_DIR}/Object.cpp
-    ${FASTPHYLO_DIR}/Sequence.cpp
-    ${FASTPHYLO_DIR}/Sequences2DistanceMatrix.cpp
-    ${FASTPHYLO_DIR}/SequenceTree.cpp
-    ${FASTPHYLO_DIR}/ambiguity_nucleotide.cpp
-    ${FASTPHYLO_DIR}/dna_pairwise_sequence_likelihood.cpp
-    ${FASTPHYLO_DIR}/stl_utils.cpp
-    ${FASTPHYLO_DIR}/string_compare.cpp
-    ${FASTPHYLO_DIR}/TamuraNei.cpp
-    ${FASTPHYLO_DIR}/sse2_wrapper.c
-    ${FASTPHYLO_DIR}/xml_output_global.cpp
-)
-
-pybind11_add_module(_fastphylo
-    src/cpp/bindings.cpp
-    ${FASTPHYLO_SOURCES}
-)
+pybind11_add_module(_fastphylo src/cpp/bindings.cpp)
 
 target_compile_features(_fastphylo PRIVATE cxx_std_17)
-target_include_directories(_fastphylo PRIVATE ${FASTPHYLO_DIR})
-
-# SSE2 for DNA_b128 on x86 (not needed/available on arm64)
-if(NOT CMAKE_OSX_ARCHITECTURES MATCHES "arm64" AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|i[3-6]86")
-    target_compile_options(_fastphylo PRIVATE -msse2)
-endif()
+# fastphylo's PUBLIC target_include_directories (its own include/ root,
+# plus Eigen/BLAS/LAPACK's) propagate automatically - no manual include
+# path needed here the way the vendored FASTPHYLO_DIR used to require.
+target_link_libraries(_fastphylo PRIVATE fastphylo)
 
 install(TARGETS _fastphylo DESTINATION fastphylo)

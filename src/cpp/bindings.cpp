@@ -1,17 +1,17 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
-#include <array>
-#include <cmath>
-#include <functional>
 #include <sstream>
 #include <unordered_map>
 
-#include "DistanceMatrix.hpp"
-#include "DNA_b128_String.hpp"
-#include "Sequences2DistanceMatrix.hpp"
-#include "NeighborJoining.hpp"
-#include "SequenceTree.hpp"
+#include "fastphylo/core/DistanceMatrix.hpp"
+#include "fastphylo/core/SequenceTree.hpp"
+#include "fastphylo/dna/DNA_b128_String.hpp"
+#include "fastphylo/dna/Sequences2DistanceMatrix.hpp"
+#include "fastphylo/dna/NeighborJoining.hpp"
+#include "fastphylo/protein/ModelMatrix.hpp"
+#include "fastphylo/protein/Matrix.hpp"
+#include "fastphylo/protein/ProtDistCalc.hpp"
 
 namespace py = pybind11;
 
@@ -78,8 +78,8 @@ static StrDblMatrix make_matrix(const std::vector<std::string> &names) {
 //
 // Leaf vertex IDs 0…N-1 match the original distance-matrix row order.
 // Internal node IDs start at N.
-// Branch lengths are -1.0 for NJ and FNJ (not computed by FastPhylo).
-// BioNJ computes real branch lengths.
+// Branch lengths are -1.0 for FNJ (not computed by FastPhylo). NJ and
+// BioNJ compute real branch lengths.
 // ────────────────────────────────────────────────────────────────────────────
 
 static py::tuple
@@ -102,7 +102,7 @@ extract_tree(SequenceTree &tree, const std::vector<std::string> &orig_names) {
     int next_internal = (int)n;
     for (auto *nd : nodes) {
         if (nd->isLeaf()) {
-            auto it = name_to_id.find(NAME(nd));
+            auto it = name_to_id.find(nodeName(nd));
             node_id[nd] = (it != name_to_id.end()) ? it->second : next_internal++;
         } else {
             node_id[nd] = next_internal++;
@@ -114,7 +114,7 @@ extract_tree(SequenceTree &tree, const std::vector<std::string> &orig_names) {
     for (auto *nd : nodes) {
         const auto *par = nd->getParent();
         if (!par) continue;
-        edges.append(py::make_tuple(node_id.at(nd), node_id.at(par), EDGE(nd)));
+        edges.append(py::make_tuple(node_id.at(nd), node_id.at(par), nodeEdge(nd)));
     }
 
     return py::make_tuple(edges, orig_names);
@@ -132,169 +132,57 @@ static py::tuple run_nj(StrDblMatrix dm, NJ_method method) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Protein ML distance  (Brent bounded minimizer, no scipy)
+// Protein ML distance
+//
+// fastphylo_py_integration_plan.md, Phase 3: every model fastphylo-py
+// supports is now native in FastPhylo's C++ (ModelMatrix.cpp, Phase 0),
+// so this routes through the same build_ml_decomposition()/
+// calculate_ml_dists() pair fastprot/main.cpp itself uses - FastPhylo's
+// safeguarded Newton-Raphson solver, not the from-scratch Brent's-method
+// optimizer this replaces (deleted here; kept, differently, in
+// protein.py's pure-Python fallback path - see Phase 4).
+//
+// Model-name strings match protein.py's RateMatrix subclass __name__s
+// exactly (the names distance_matrix()'s model= argument already
+// passes through unchanged) - not FastPhylo's own fastprot -D flag
+// spelling (e.g. "JTT-DCMUT"), which differs in a few places
+// (underscore vs hyphen, case). Keeping fastphylo-py's own spelling
+// here is what makes this a zero-Python-API-change swap.
 // ────────────────────────────────────────────────────────────────────────────
 
-// Map amino acid characters to indices 0-19 (ARNDCQEGHILKMFPSTWYV convention).
-// Returns -1 for gaps or unknown characters.
-static const int AA_IDX[256] = {
-    -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, // 0-15
-    -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, // 16-31
-    -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, // 32-47 (space-/)
-    -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, // 48-63 (0-?)
-    -1, 0,-1, 4, 3, 6,13, 7, 8, 9,-1,11,10,12, 2,-1, // 64-79  (A-O)
-    14, 5, 1,15,16,-1,19,17,-1,18,-1,-1,-1,-1,-1,-1, // 80-95  (P-_)
-    -1, 0,-1, 4, 3, 6,13, 7, 8, 9,-1,11,10,12, 2,-1, // 96-111 (a-o)
-    14, 5, 1,15,16,-1,19,17,-1,18,-1,-1,-1,-1,-1,-1, // 112-127 (p-DEL)
-    // 128-255: all -1 (default-initialised)
+static const std::unordered_map<std::string, model_type> PROTEIN_MODEL_NAMES = {
+    {"WAG", wag},       {"JTT", jtt},         {"JTT_DCMut", jtt_dcmut},
+    {"LG", lg},         {"VT", vt},           {"HIVb", hivb},
+    {"HIVw", hivw},     {"cpREV", cprev},     {"BLOSUM62", blosum62},
+    {"Dayhoff", day},   {"DCMUT", dcmut},     {"MtREV", mtrev},
+    {"RtREV", rtrev},   {"PMB", pmb},
 };
 
-// 20×20 amino acid replacement count matrix from two aligned sequences.
-static std::array<std::array<double,20>,20>
-protein_count_matrix(const std::string &s1, const std::string &s2) {
-    std::array<std::array<double,20>,20> N{};
-    size_t len = std::min(s1.size(), s2.size());
-    for (size_t k = 0; k < len; ++k) {
-        int i = AA_IDX[(unsigned char)s1[k]];
-        int j = AA_IDX[(unsigned char)s2[k]];
-        if (i >= 0 && j >= 0) N[i][j] += 1.0;
-    }
-    return N;
-}
-
-// Negative log-likelihood of observed counts N under P(t).
-// right_e[i][k], left_e[k][j], evals[k] define the model eigen decomposition.
-// P(t)[i][j] = sum_k right_e[i][k] * exp(evals[k]*t) * left_e[k][j]
-static double neg_log_likelihood(
-    const double *right_e,  // 20×20 row-major
-    const double *left_e,   // 20×20 row-major
-    const double *evals,    // 20
-    const std::array<std::array<double,20>,20> &N,
-    double t
-) {
-    // exp(evals * t)
-    double exp_ev[20];
-    for (int k = 0; k < 20; ++k) exp_ev[k] = std::exp(evals[k] * t);
-
-    double ll = 0.0;
-    for (int i = 0; i < 20; ++i) {
-        for (int j = 0; j < 20; ++j) {
-            double nij = N[i][j];
-            if (nij == 0.0) continue;
-            // P[i][j] = sum_k right_e[i*20+k] * exp_ev[k] * left_e[k*20+j]
-            double p = 0.0;
-            const double *ri = right_e + i * 20;
-            for (int k = 0; k < 20; ++k)
-                p += ri[k] * exp_ev[k] * left_e[k * 20 + j];
-            if (p < 1e-300) p = 1e-300;
-            ll += nij * std::log(p);
-        }
-    }
-    return -ll;
-}
-
-// Brent's bounded minimizer (mirrors scipy.optimize.minimize_scalar method="bounded").
-static double brent_minimize(
-    std::function<double(double)> f,
-    double xa, double xb,
-    double xtol = 0.02,
-    int maxiter = 20
-) {
-    const double mintol = 1.0e-11;
-    const double cg = 0.3819660112501051;  // (3 - sqrt(5)) / 2
-
-    double fulc = xa + cg * (xb - xa);
-    double nfc = fulc, xf = fulc;
-    double rat = 0.0, e = 0.0;
-    double x = xf, fx = f(x);
-    double ffulc = fx, fnfc = fx;
-    double xm = 0.5 * (xa + xb);
-    double tol1 = xtol * std::abs(x) + mintol;
-    double tol2 = 2.0 * tol1;
-
-    for (int iter = 0; iter < maxiter && std::abs(x - xm) > tol2 - 0.5 * (xb - xa); ++iter) {
-        bool golden = true;
-        double p = 0.0, q = 0.0, r_val = 0.0;
-
-        if (std::abs(e) > tol1) {
-            r_val = (x - nfc) * (fx - ffulc);
-            q     = (x - fulc) * (fx - fnfc);
-            p     = (x - fulc) * q - (x - nfc) * r_val;
-            q     = 2.0 * (q - r_val);
-            if (q > 0.0) p = -p; else q = -q;
-            r_val = e;
-            e     = rat;
-            if (std::abs(p) < std::abs(0.5 * q * r_val) &&
-                p > q * (xa - x) && p < q * (xb - x)) {
-                rat = p / q;
-                double xnew = x + rat;
-                if ((xnew - xa) < tol2 || (xb - xnew) < tol2)
-                    rat = (xm > x) ? tol1 : -tol1;
-                golden = false;
-            }
-        }
-        if (golden) {
-            e   = (x >= xm) ? xa - x : xb - x;
-            rat = cg * e;
-        }
-
-        double u = (std::abs(rat) >= tol1) ? x + rat : x + (rat > 0 ? tol1 : -tol1);
-        double fu = f(u);
-
-        if (fu <= fx) {
-            if (u < x) xb = x; else xa = x;
-            fulc = nfc; ffulc = fnfc;
-            nfc  = x;   fnfc  = fx;
-            x    = u;   fx    = fu;
-        } else {
-            if (u < x) xa = u; else xb = u;
-            if (fu <= fnfc || nfc == x) {
-                fulc = nfc; ffulc = fnfc;
-                nfc  = u;   fnfc  = fu;
-            } else if (fu <= ffulc || fulc == x || fulc == nfc) {
-                fulc = u; ffulc = fu;
-            }
-        }
-        xm   = 0.5 * (xa + xb);
-        tol1 = xtol * std::abs(x) + mintol;
-        tol2 = 2.0 * tol1;
-    }
-    return x;
-}
-
-// Compute all pairwise protein ML distances.
-// right_e, left_e: (20,20) C-contiguous double arrays.
-// evals: (20,) C-contiguous double array.
 static StrDblMatrix compute_protein_distances_cpp(
     const std::vector<std::string> &names,
     const std::vector<std::string> &seqs,
-    py::array_t<double, py::array::c_style | py::array::forcecast> right_e,
-    py::array_t<double, py::array::c_style | py::array::forcecast> left_e,
-    py::array_t<double, py::array::c_style | py::array::forcecast> evals
+    const std::string &model_name
 ) {
-    const double *re  = right_e.data();
-    const double *le  = left_e.data();
-    const double *ev  = evals.data();
-    const double DELTA    = 0.0001;
-    const double MAX_DIST = 3.0;
-    const double XTOL     = 0.02;
-    const int    MAXITER  = 20;
+    if (names.size() != seqs.size())
+        throw std::invalid_argument("names and seqs must have the same length");
+    auto it = PROTEIN_MODEL_NAMES.find(model_name);
+    if (it == PROTEIN_MODEL_NAMES.end())
+        // Wording matches RateMatrix.instantiate()'s own ValueError
+        // (protein.py) - the compiled path no longer routes through
+        // that Python lookup at all (every model is native in C++ now,
+        // Phase 0), but callers/tests should see one consistent error
+        // message regardless of which path actually raised it.
+        throw std::invalid_argument("Unknown protein model '" + model_name + "'");
 
-    size_t n = names.size();
-    auto dm = make_matrix(names);
+    SeqVec sv;
+    sv.reserve(names.size());
+    for (size_t i = 0; i < names.size(); ++i)
+        sv.emplace_back(names[i], seqs[i]);
 
-    for (size_t i = 0; i < n; ++i) {
-        dm.setDistance((int)i, (int)i, 0.0);
-        for (size_t j = i + 1; j < n; ++j) {
-            auto N = protein_count_matrix(seqs[i], seqs[j]);
-            double d = brent_minimize(
-                [&](double t){ return neg_log_likelihood(re, le, ev, N, t); },
-                DELTA, MAX_DIST, XTOL, MAXITER
-            );
-            dm.setDistance((int)i, (int)j, d);
-            dm.setDistance((int)j, (int)i, d);
-        }
-    }
+    MatrixExpm decomp = build_ml_decomposition(it->second);
+    StrDblMatrix dm;
+    calculate_ml_dists(sv, dm, decomp);
+    dm.setIdentifiers(names);
     return dm;
 }
 
@@ -303,7 +191,7 @@ static StrDblMatrix compute_protein_distances_cpp(
 // ────────────────────────────────────────────────────────────────────────────
 
 PYBIND11_MODULE(_fastphylo, m) {
-    m.doc() = "fastphylo C++ extension — DNA distances and NJ tree reconstruction";
+    m.doc() = "fastphylo C++ extension — DNA/protein distances and NJ tree reconstruction, backed by libfastphylo";
 
     // ------------------------------------------------------------------
     // DistMatrix — thin Python wrapper around StrDblMatrix
@@ -396,15 +284,15 @@ PYBIND11_MODULE(_fastphylo, m) {
 
     // ------------------------------------------------------------------
     // Protein ML distance computation
-    // compute_protein_distances_cpp(names, seqs, right_e, left_e, evals) -> DistMatrix
+    // compute_protein_distances_cpp(names, seqs, model) -> DistMatrix
     // ------------------------------------------------------------------
     m.def("compute_protein_distances_cpp",
         &compute_protein_distances_cpp,
-        py::arg("names"), py::arg("seqs"),
-        py::arg("right_e"), py::arg("left_e"), py::arg("evals"),
-        "Compute pairwise protein ML distances using a pre-computed eigen decomposition.\n\n"
-        "right_e and left_e are (20,20) float64 arrays; evals is a (20,) float64 array.\n"
-        "Returns a DistMatrix.");
+        py::arg("names"), py::arg("seqs"), py::arg("model"),
+        "Compute pairwise protein ML distances via libfastphylo's safeguarded "
+        "Newton-Raphson solver.\n\n"
+        "model is one of the RateMatrix subclass names in protein.py "
+        "(e.g. 'WAG', 'JTT_DCMut'). Returns a DistMatrix.");
 
     // ------------------------------------------------------------------
     // Newick string convenience function
@@ -421,7 +309,7 @@ PYBIND11_MODULE(_fastphylo, m) {
             SequenceTree tree;
             computeNJTree(copy, tree, m);
             std::ostringstream ss;
-            tree.printOn(ss);
+            ss << tree;
             return ss.str();
         },
         py::arg("dm"), py::arg("method") = "fnj",

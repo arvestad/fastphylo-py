@@ -1,0 +1,3 @@
+[submodule "extern/fastphylo"]
+	path = extern/fastphylo
+	url = git@github.com:arvestad/FastPhylo.git

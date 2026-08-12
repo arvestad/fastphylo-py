@@ -6,6 +6,8 @@ Models ported from the modelmatcher package.
 
 from __future__ import annotations
 
+import os
+
 import numpy as np
 
 from . import _fastphylo
@@ -253,19 +255,75 @@ class PMB(RateMatrix):
 # Distance computation
 # ---------------------------------------------------------------------------
 
+# fastphylo_py_integration_plan.md, Phase 4: forces the pure-Python
+# fallback path even though the compiled extension is present, so the
+# fallback stays exercised by CI (this env var, not the extension's
+# actual availability, is what "HAS_CPP=False" means here - the
+# compiled _fastphylo.DistMatrix/nj_tree/etc. paths have no fallback
+# and stay required regardless; only the protein ML *solver* does).
+_FORCE_PYTHON_ML = os.environ.get("FASTPHYLO_FORCE_PYTHON_ML") == "1"
+
+_ML_DELTA    = 1e-4
+_ML_MAX_DIST = 3.0
+_ML_XTOL     = 0.02
+_ML_MAXITER  = 20
+
+
 def compute_protein_distances(
     names: list[str],
     seqs: list[str],
     model_name: str,
 ) -> _fastphylo.DistMatrix:
-    """Compute pairwise ML protein distances. Returns a C++ DistMatrix."""
+    """Compute pairwise ML protein distances. Returns a C++ DistMatrix.
+
+    Routes through libfastphylo's safeguarded Newton-Raphson solver
+    (fastphylo_py_integration_plan.md, Phase 3) unless
+    FASTPHYLO_FORCE_PYTHON_ML=1, in which case a pure-Python
+    scipy.optimize.minimize_scalar(method="bounded") fallback is used
+    instead (Phase 4) - known, disclosed tradeoff: Brent's method, not
+    the compiled path's Newton-Raphson, so it keeps the same weaker
+    behavior on saturated/fully-diverged pairs that the old from-scratch
+    C++ Brent implementation had. Install the compiled extension for
+    the more robust solver.
+    """
+    if not _FORCE_PYTHON_ML:
+        return _fastphylo.compute_protein_distances_cpp(names, seqs, model_name)
+    return _compute_protein_distances_python(names, seqs, model_name)
+
+
+def _compute_protein_distances_python(
+    names: list[str],
+    seqs: list[str],
+    model_name: str,
+) -> _fastphylo.DistMatrix:
+    from scipy.optimize import minimize_scalar
+
     model = RateMatrix.instantiate(model_name)
-    return _fastphylo.compute_protein_distances_cpp(
-        names, seqs,
-        np.ascontiguousarray(model.right_eigenvectors, dtype=np.float64),
-        np.ascontiguousarray(model.left_eigenvectors,  dtype=np.float64),
-        np.ascontiguousarray(model.q_eigenvals,        dtype=np.float64),
-    )
+    n = len(names)
+    dm = _fastphylo.DistMatrix(n)
+    for idx, name in enumerate(names):
+        dm.set_name(idx, name)
+
+    for i in range(n):
+        dm.set(i, i, 0.0)
+        for j in range(i + 1, n):
+            N = _aa_count_matrix(seqs[i], seqs[j])
+
+            def neg_log_likelihood(t: float) -> float:
+                P = model.get_replacement_probs(t)
+                P_safe = np.where(P > 0, P, 1e-300)
+                return -float(np.sum(N * np.log(P_safe)))
+
+            result = minimize_scalar(
+                neg_log_likelihood,
+                bounds=(_ML_DELTA, _ML_MAX_DIST),
+                method="bounded",
+                options={"xatol": _ML_XTOL, "maxiter": _ML_MAXITER},
+            )
+            dm.set(i, j, result.x)
+            dm.set(j, i, result.x)
+
+    return dm
 
 
 # ---------------------------------------------------------------------------

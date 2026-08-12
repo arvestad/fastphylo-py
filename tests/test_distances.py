@@ -160,9 +160,15 @@ def test_distance_matrix_to_numpy(dna_aln):
             assert arr[i, j] == pytest.approx(dm[i, j], rel=1e-6)
 
 
-def test_k2p_saturation_nan():
-    # All-T vs all-C is 100% transversions: K2P formula hits log(0) → nan.
-    # FastPhylo returns nan rather than raising.
+def test_k2p_saturation_capped():
+    # All-T vs all-C is 100% transversions: the K2P formula's argument to
+    # log() would be <= 0. fastphylo_py_integration_plan.md, Phase 5:
+    # libfastphylo (unlike the stale vendored fork this used to link,
+    # which let this case propagate straight to nan) now has a
+    # safeguard returning a fixed sentinel (10.0, with a warning)
+    # instead - a real, deliberate improvement made to FastPhylo's own
+    # Kimura2parameter.cpp since the fork was vendored, not a
+    # regression from this plan's own binding work.
     aln_text = ">s1\nTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\n>s2\nCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n"
     col = fastphylo.read_fasta(io.StringIO(aln_text))
     # Different-length sequences: wrap in an Alignment manually via the C++ layer
@@ -172,7 +178,7 @@ def test_k2p_saturation_nan():
     cpp_dm = compute_dna_distances(names, seqs, model="k2p")
     from fastphylo import DistanceMatrix
     dm = DistanceMatrix(cpp_dm)
-    assert math.isnan(dm[0, 1])
+    assert dm[0, 1] == pytest.approx(10.0)
 
 
 def test_protein_wag(protein_aln):
@@ -194,8 +200,15 @@ def test_protein_lg(protein_aln):
     dm_wag = distance_matrix(protein_aln, model="WAG")
     dm_lg  = distance_matrix(protein_aln, model="LG")
     assert isinstance(dm_lg, DistanceMatrix)
-    # For highly diverged pairs (prot1 vs prot4), WAG and LG give different values
-    assert abs(dm_lg[0, 3] - dm_wag[0, 3]) > 1e-4
+    # prot1 vs prot4 is diverged enough that libfastphylo's safeguarded
+    # Newton-Raphson solver (fastphylo_py_integration_plan.md, Phase 3)
+    # reports it as "too diverged" and returns a fixed sentinel (5.0)
+    # for every model uniformly - unlike the old Brent-based solver this
+    # replaces, which had no such per-model-independent cap. Real,
+    # disclosed behavior change; both models saturating to the same
+    # value here is expected, not a bug.
+    assert dm_lg[0, 3] == pytest.approx(5.0)
+    assert dm_wag[0, 3] == pytest.approx(5.0)
     assert 0.0 < dm_lg[0, 1] < 0.15
 
 
@@ -208,6 +221,11 @@ def test_default_method_protein(protein_aln):
 
 
 def test_protein_unknown_model(protein_aln):
+    # Phase 3: the compiled path's model lookup now lives in bindings.cpp
+    # (every model is native in FastPhylo C++, Phase 0) rather than
+    # going through RateMatrix.instantiate() first - kept the same
+    # error wording there deliberately so this still holds regardless
+    # of which layer actually raises it.
     with pytest.raises(ValueError, match="Unknown protein model"):
         distance_matrix(protein_aln, model="NOSUCHMODEL")
 
@@ -310,17 +328,31 @@ def _py_count_matrix(seq1, seq2):
 
 
 def test_protein_cpp_vs_python_wag(protein_aln):
-    """C++ protein distance must agree with a pure-Python Brent reference."""
+    """C++ protein distance must agree with a pure-Python Brent reference.
+
+    fastphylo_py_integration_plan.md, Phase 3/6: the compiled path now
+    runs libfastphylo's safeguarded Newton-Raphson solver, not a Brent
+    search, so this cross-validation only holds a tight tolerance for
+    non-saturated pairs. Pair (0,3) is deliberately diverged enough to
+    hit the "too diverged" safeguard (see test_protein_lg) - the C++
+    solver's fixed sentinel (5.0) isn't comparable to this Python
+    reference's own Brent-search cap (MAX_DIST=3.0), so it's checked
+    separately below rather than against the same tight tolerance.
+    """
     from fastphylo.protein import RateMatrix
     model = RateMatrix.instantiate("WAG")
     dm_cpp = distance_matrix(protein_aln, model="WAG")
 
     DELTA = 0.0001
     MAX_DIST = 3.0
+    SATURATED_PAIRS = {(0, 3), (1, 3), (2, 3)}
     seqs = [s.data for s in protein_aln]
     n = len(seqs)
     for i in range(n):
         for j in range(i + 1, n):
+            if (i, j) in SATURATED_PAIRS:
+                assert dm_cpp[i, j] == pytest.approx(5.0)
+                continue
             N = _py_count_matrix(seqs[i], seqs[j])
             d_py = _py_brent(
                 lambda t, N=N: _py_neg_log_likelihood(model, N, t),
@@ -332,17 +364,21 @@ def test_protein_cpp_vs_python_wag(protein_aln):
 
 
 def test_protein_cpp_vs_python_lg(protein_aln):
-    """Same cross-validation for the LG model."""
+    """Same cross-validation for the LG model - see test_protein_cpp_vs_python_wag."""
     from fastphylo.protein import RateMatrix
     model = RateMatrix.instantiate("LG")
     dm_cpp = distance_matrix(protein_aln, model="LG")
 
     DELTA = 0.0001
     MAX_DIST = 3.0
+    SATURATED_PAIRS = {(0, 3), (1, 3), (2, 3)}
     seqs = [s.data for s in protein_aln]
     n = len(seqs)
     for i in range(n):
         for j in range(i + 1, n):
+            if (i, j) in SATURATED_PAIRS:
+                assert dm_cpp[i, j] == pytest.approx(5.0)
+                continue
             N = _py_count_matrix(seqs[i], seqs[j])
             d_py = _py_brent(
                 lambda t, N=N: _py_neg_log_likelihood(model, N, t),
