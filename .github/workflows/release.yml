@@ -36,7 +36,15 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install eigen simde
 
-      - uses: pypa/cibuildwheel@v2.19
+      # v2.19 (the pin the 1.1.0 release actually shipped with) predates
+      # Python 3.13's real release (Oct 2024) and simply doesn't know
+      # cp313 is a valid build target - CIBW_BUILD's "cp313-*" silently
+      # matched nothing, no error, no skip message. Confirmed directly
+      # (2026-08-12): a local run under 2.19.2 planned only
+      # "cp312-manylinux_x86_64"; the same run under 2.23.4 planned
+      # "cp312-manylinux_x86_64, cp313-manylinux_x86_64" - both actually
+      # attempted. This is why 1.1.0 on PyPI only has cp312 wheels.
+      - uses: pypa/cibuildwheel@v2.23
         env:
           CIBW_BUILD: "cp312-* cp313-*"
           CIBW_SKIP: "*-musllinux_*"        # skip musl (Alpine); glibc only

@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- **Linux and macOS wheels were missing for Python 3.13** on the 1.1.0
+  PyPI release: `release.yml` pinned `pypa/cibuildwheel@v2.19`, which
+  predates Python 3.13's actual release (October 2024) and simply
+  doesn't recognize `cp313` as a build target - `CIBW_BUILD`'s
+  `"cp313-*"` silently matched nothing, no error or skip message
+  anywhere in the build log. Confirmed directly: a local run under
+  2.19.2 only ever planned to build `cp312-manylinux_x86_64`; the same
+  run under 2.23.4 planned both `cp312-manylinux_x86_64` and
+  `cp313-manylinux_x86_64`. Bumped the pin to `v2.23`. Python 3.13
+  users installing `fastphylo` before this fix silently fell back to
+  building from the sdist (which does work, given a C++ toolchain and
+  Eigen/BLAS/LAPACK - see 1.1.0's own sdist fix below - just not the
+  smooth wheel-install experience 3.12 users got).
+
+## [1.1.0] - 2026-08-12
+
 ### Changed - backend replaced with libfastphylo
 
 fastphylo-py now consumes FastPhylo's C++ core (`libfastphylo`) as a
@@ -56,6 +74,22 @@ sizes - see `benchmarks/results.md` for full methodology and raw data.
   within noise) - expected, since it's the same algorithm either way,
   now linked from a properly-built shared library instead of a
   duplicate compiled copy.
+
+### Fixed
+
+- `fastphylo.__version__` was a hardcoded literal, independent of
+  `pyproject.toml`'s own version - the two had already drifted before
+  anyone noticed. Now read from the installed package's own metadata.
+- CI/release builds: `extern/fastphylo` (the new submodule) wasn't
+  being checked out at all (`actions/checkout` doesn't fetch submodules
+  by default), and libfastphylo's own new BLAS/LAPACK/Eigen3
+  dependency wasn't installed in any build environment (`tests.yml`'s
+  host runners, or the Linux release wheel's manylinux2014 container -
+  the latter needed `epel-release` first, since a plain `yum install
+  eigen3-devel` 404s on the base repos). Every build was failing
+  because of this, not because of anything wrong with the backend swap
+  itself. Also confirmed the sdist genuinely bundles the submodule's
+  files (not just its gitlink) and installs correctly on its own.
 
 ## [1.0.0] - 2026-07-29
 
