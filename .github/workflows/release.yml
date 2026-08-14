@@ -27,7 +27,7 @@ jobs:
       CIBW_TEST_COMMAND: "python -c \"import fastphylo; print(fastphylo.__version__)\""
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           # extern/fastphylo (the libfastphylo submodule) - see
           # tests.yml's identical fix for why this is required now.
@@ -84,7 +84,7 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       # Still unverified: whether scikit-build-core's sdist step
