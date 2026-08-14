@@ -1,0 +1,156 @@
+name: Check for FastPhylo updates
+
+# Periodically checks whether FastPhylo (github.com/arvestad/FastPhylo)
+# has cut a release newer than the commit extern/fastphylo is currently
+# pinned to. If so: bumps the submodule, builds and tests fastphylo-py
+# against it, and opens a PR either way - the PR's own title/body state
+# whether the build passed, so a GitHub notification lands regardless
+# of the outcome, not just on success.
+#
+# Deliberately does its own build+test here rather than relying on
+# tests.yml's pull_request trigger to fire on the PR this workflow
+# opens: PRs created with the default GITHUB_TOKEN do not trigger other
+# workflows (a real, documented GitHub Actions restriction, meant to
+# prevent bot-triggered workflow loops) - a PAT would be one way around
+# that, but doing the check inline here needs no extra secret setup at
+# all. Only checks one platform/Python combination (fast, representative)
+# rather than the full tests.yml matrix - review the PR and re-run/push
+# to it (which *does* trigger tests.yml normally) for full coverage
+# before merging.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # daily, 06:00 UTC - cheap when nothing's new
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  UPSTREAM_REPO: arvestad/FastPhylo
+
+jobs:
+  check-and-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Find FastPhylo's latest release tag
+        id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          # NOT /releases/latest: that endpoint explicitly excludes
+          # prereleases (GitHub's own documented behavior), and every
+          # FastPhylo release so far is a "-beta.N" prerelease (see
+          # RELEASING.md) - it would 404 forever. /releases (the full
+          # list) is returned newest-first; take the first entry.
+          latest_tag=$(gh api "repos/${UPSTREAM_REPO}/releases" --jq '.[0].tag_name' 2>/dev/null || true)
+          if [ -z "$latest_tag" ] || [ "$latest_tag" = "null" ]; then
+            echo "No releases found on ${UPSTREAM_REPO} - nothing to check."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Tags are lightweight (RELEASING.md: plain `git tag X`), so
+          # object.type is normally "commit" already - but resolve one
+          # level further if a future tag ever turns out annotated, so
+          # this doesn't silently pin to a tag object instead of a commit.
+          ref_json=$(gh api "repos/${UPSTREAM_REPO}/git/refs/tags/${latest_tag}")
+          object_type=$(echo "$ref_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['object']['type'])")
+          object_sha=$(echo "$ref_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['object']['sha'])")
+          if [ "$object_type" = "tag" ]; then
+            latest_sha=$(gh api "repos/${UPSTREAM_REPO}/git/tags/${object_sha}" --jq .object.sha)
+          else
+            latest_sha="$object_sha"
+          fi
+          current_sha=$(git -C extern/fastphylo rev-parse HEAD)
+          echo "Latest FastPhylo release: ${latest_tag} (${latest_sha})"
+          echo "Currently pinned:          ${current_sha}"
+
+          if [ "$latest_sha" = "$current_sha" ]; then
+            echo "Already up to date."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          branch="bump-libfastphylo-${latest_tag}"
+          if git ls-remote --exit-code --heads origin "$branch" > /dev/null 2>&1; then
+            echo "Branch $branch already exists - a PR for this release is presumably already open."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+          echo "sha=$latest_sha" >> "$GITHUB_OUTPUT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v6
+        if: steps.latest.outputs.found == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Install libfastphylo's build dependencies
+        if: steps.latest.outputs.found == 'true'
+        run: sudo apt-get update && sudo apt-get install -y liblapack-dev libblas-dev libeigen3-dev
+
+      - name: Bump the submodule
+        if: steps.latest.outputs.found == 'true'
+        run: |
+          cd extern/fastphylo
+          # GitHub (unlike git servers in general) allows fetching an
+          # arbitrary commit SHA directly, not just refs - no need to
+          # fetch every tag just to get this one commit.
+          git fetch origin "${{ steps.latest.outputs.sha }}"
+          git checkout "${{ steps.latest.outputs.sha }}"
+
+      - name: Build and test against the new commit
+        if: steps.latest.outputs.found == 'true'
+        id: build_test
+        continue-on-error: true
+        run: |
+          pip install scikit-build-core pybind11 numpy pytest
+          pip install -e . --no-build-isolation
+          python -m pytest -v
+
+      - name: Open a PR reporting the result
+        if: steps.latest.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ steps.latest.outputs.tag }}"
+          branch="${{ steps.latest.outputs.branch }}"
+          release_url="https://github.com/${UPSTREAM_REPO}/releases/tag/${tag}"
+
+          if [ "${{ steps.build_test.outcome }}" = "success" ]; then
+            status_line="Build and tests **passed** against this commit (single platform check: ubuntu-latest, Python 3.12 - push to this branch or re-run to get the full tests.yml matrix before merging)."
+          else
+            status_line="Build or tests **failed** against this commit - see the failed step's log in this workflow run for details. fastphylo-py is not ready for this FastPhylo release yet."
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add extern/fastphylo
+          git commit -m "Bump libfastphylo to ${tag}"
+          git push origin "$branch"
+
+          body_file="$(mktemp)"
+          {
+            echo "FastPhylo cut a new release: [\`${tag}\`](${release_url})."
+            echo
+            echo "This PR bumps the \`extern/fastphylo\` submodule to match."
+            echo
+            echo "${status_line}"
+            echo
+            echo "See ${tag}'s own CHANGELOG entry (in FastPhylo) for what changed."
+          } > "$body_file"
+
+          gh pr create --head "$branch" \
+            --title "Bump libfastphylo to ${tag}" \
+            --body-file "$body_file"

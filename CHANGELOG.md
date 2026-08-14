@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `.github/workflows/check-libfastphylo-updates.yml`: a daily scheduled
+  check for new FastPhylo releases. If `extern/fastphylo`'s pinned
+  commit is behind FastPhylo's latest release, it bumps the submodule,
+  builds and tests fastphylo-py against the new commit, and opens a PR
+  either way - the PR states whether the build passed, so cutting a
+  FastPhylo release now surfaces as a GitHub notification here
+  regardless of outcome, not something that has to be checked for
+  manually. Requires the repo's Actions settings to allow the default
+  token to create pull requests (Settings -> Actions -> General ->
+  Workflow permissions) - not verified end-to-end here, since that's a
+  one-time repo setting, not something a workflow run can check itself.
+
+## [1.1.1] - 2026-08-12
+
 ### Fixed
 
 - **Linux and macOS wheels were missing for Python 3.13** on the 1.1.0
