@@ -78,9 +78,17 @@ jobs:
             exit 0
           fi
 
+          # Checking for an open PR, not just whether the branch exists:
+          # a previous run can push the branch successfully and still
+          # fail at the PR-creation step (e.g. "Allow GitHub Actions to
+          # create and approve pull requests" not enabled yet under
+          # Settings -> Actions -> General) - branch-exists-as-the-skip-
+          # condition would then skip forever, silently never actually
+          # opening the PR even after the setting gets fixed.
           branch="bump-libfastphylo-${latest_tag}"
-          if git ls-remote --exit-code --heads origin "$branch" > /dev/null 2>&1; then
-            echo "Branch $branch already exists - a PR for this release is presumably already open."
+          open_pr_count=$(gh pr list --head "$branch" --state open --json number --jq 'length')
+          if [ "$open_pr_count" != "0" ]; then
+            echo "A PR for $branch is already open - nothing to do."
             echo "found=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -138,7 +146,12 @@ jobs:
           git checkout -b "$branch"
           git add extern/fastphylo
           git commit -m "Bump libfastphylo to ${tag}"
-          git push origin "$branch"
+          # --force: this branch is bot-owned and disposable - a
+          # previous run may have already pushed it and then failed at
+          # PR creation (see the open-PR check above), in which case a
+          # plain push would be rejected as non-fast-forward against
+          # that stale content.
+          git push --force origin "$branch"
 
           body_file="$(mktemp)"
           {
