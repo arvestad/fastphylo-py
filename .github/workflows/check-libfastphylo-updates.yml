@@ -98,7 +98,7 @@ jobs:
           echo "sha=$latest_sha" >> "$GITHUB_OUTPUT"
           echo "branch=$branch" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         if: steps.latest.outputs.found == 'true'
         with:
           python-version: "3.12"
